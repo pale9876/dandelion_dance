@@ -3,6 +3,7 @@
 //#include "gdexample.h"
 #include "entity.h"
 #include "nemesis_system.h"
+#include "squad.h"
 
 
 #include <gdextension_interface.h>
@@ -13,13 +14,17 @@
 
 using namespace godot;
 
+
 void initialize_mp_module(ModuleInitializationLevel p_level) {
     if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
         return;
     }
 
-    GDREGISTER_RUNTIME_CLASS(Entity);
     GDREGISTER_CLASS(NemesisSystem);
+
+    GDREGISTER_RUNTIME_CLASS(Entity);
+    GDREGISTER_RUNTIME_CLASS(Squad);
+
 
     NemesisSystem::init_singleton();
 

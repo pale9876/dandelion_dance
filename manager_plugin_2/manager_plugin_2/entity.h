@@ -16,11 +16,6 @@ class Entity : public CharacterBody2D
     GDCLASS(Entity, CharacterBody2D)
 
     public:
-    TypedDictionary<String, PackedStringArray>
-        first_name_variation = {};
-
-    TypedDictionary<String, PackedStringArray>
-        last_name_variation = {};
 
 
     protected:
@@ -28,13 +23,8 @@ class Entity : public CharacterBody2D
 
 
     private:
-    void add_first_name_variation(const String &region, const StringName &first_name);
-    void add_last_name_variation(const String &region, const StringName &last_name);
 
-    TypedDictionary<String, PackedStringArray> get_first_names() const;
-    void set_first_names(const TypedDictionary<String, PackedStringArray> &dict);
-    TypedDictionary<String, PackedStringArray> get_last_names() const;
-    void set_last_names(const TypedDictionary<String, PackedStringArray> &dict);
+    String full_name;
 
 };
 

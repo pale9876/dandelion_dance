@@ -5,11 +5,12 @@
 
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/variant/typed_dictionary.hpp>
+#include <godot_cpp/classes/engine.hpp>
 
 
 using namespace godot;
 
-class NemesisSystem : public godot::Node
+class NemesisSystem : public Node
 {
     GDCLASS(NemesisSystem, Node);
 
@@ -17,6 +18,7 @@ class NemesisSystem : public godot::Node
     static void init_singleton();
     static void uninit();
     static NemesisSystem &get_sys();
+    static NemesisSystem* get_nemesis();
 
     TypedDictionary<String, PackedStringArray>
         first_name_variation = {};
@@ -24,9 +26,10 @@ class NemesisSystem : public godot::Node
     TypedDictionary<String, PackedStringArray>
         last_name_variation = {};
 
-    void add_first_name_variation(const String& region, const StringName& first_name);
-    void add_last_name_variation(const String& region, const StringName& last_name);
+    void add_first_name_variation(const String& region, const String &first_name);
+    void add_last_name_variation(const String& region, const String &last_name);
 
+    String give_random_name(String faction);
 
     protected:
     static void _bind_methods();
@@ -34,10 +37,9 @@ class NemesisSystem : public godot::Node
     private:
     TypedDictionary<String, PackedStringArray> get_first_names() const;
     void set_first_names(const TypedDictionary<String, PackedStringArray>& dict);
+    
     TypedDictionary<String, PackedStringArray> get_last_names() const;
     void set_last_names(const TypedDictionary<String, PackedStringArray>& dict);
-
-
 
 };
 

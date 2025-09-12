@@ -1,4 +1,4 @@
-extends Node
+extends Entity
 
 func _ready() -> void:
-	NemesisSystem
+	print(NemesisSystem.get_nemesis())
