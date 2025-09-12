@@ -96,6 +96,8 @@ NemesisSystem* NemesisSystem::get_nemesis()
 
 void NemesisSystem::_bind_methods()
 {
+    // static methods
+
     ClassDB::bind_static_method(
         "NemesisSystem",
         D_METHOD("init_singleton"),
@@ -115,7 +117,6 @@ void NemesisSystem::_bind_methods()
     );
 
 
-    //ClassDB::bind_method
-    //
+   // methods
 
 }

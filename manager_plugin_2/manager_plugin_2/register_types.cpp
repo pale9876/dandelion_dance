@@ -4,7 +4,8 @@
 #include "entity.h"
 #include "nemesis_system.h"
 #include "squad.h"
-
+#include "auto_sprite.h"
+#include "auto_sprite_component.h"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
@@ -21,10 +22,11 @@ void initialize_mp_module(ModuleInitializationLevel p_level) {
     }
 
     GDREGISTER_CLASS(NemesisSystem);
+    GDREGISTER_CLASS(AutoSprite)
+    GDREGISTER_CLASS(AutoSpriteComponent);
 
     GDREGISTER_RUNTIME_CLASS(Entity);
     GDREGISTER_RUNTIME_CLASS(Squad);
-
 
     NemesisSystem::init_singleton();
 

@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dbrnmit5246p1"]
+
+[node name="AutoSpriteComponent" type="AutoSpriteComponent"]
+
+[node name="AutoSprite" type="AutoSprite" parent="."]
