@@ -4,6 +4,8 @@
 #define NEMESIS_SYSTEM_H
 
 #include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/variant/typed_dictionary.hpp>
+
 
 using namespace godot;
 
@@ -11,9 +13,29 @@ class NemesisSystem : public godot::Node
 {
     GDCLASS(NemesisSystem, Node);
 
-    protected:
-    static void bind_methods();
+    public:
+    static void init_singleton();
+    static void uninit();
+    static NemesisSystem &get_sys();
 
+    TypedDictionary<String, PackedStringArray>
+        first_name_variation = {};
+
+    TypedDictionary<String, PackedStringArray>
+        last_name_variation = {};
+
+    void add_first_name_variation(const String& region, const StringName& first_name);
+    void add_last_name_variation(const String& region, const StringName& last_name);
+
+
+    protected:
+    static void _bind_methods();
+
+    private:
+    TypedDictionary<String, PackedStringArray> get_first_names() const;
+    void set_first_names(const TypedDictionary<String, PackedStringArray>& dict);
+    TypedDictionary<String, PackedStringArray> get_last_names() const;
+    void set_last_names(const TypedDictionary<String, PackedStringArray>& dict);
 
 
 
