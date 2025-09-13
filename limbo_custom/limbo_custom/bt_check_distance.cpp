@@ -7,7 +7,16 @@ String BTCheckDistance::_generate_name()
 
 BT::Status BTCheckDistance::_tick(double delta)
 {
-    return BT::Status();
+    if (target)
+    {
+        return SUCCESS;
+    }
+    else
+    {
+        return FAILURE;
+    }
+
+    return RUNNING;
 }
 
 void BTCheckDistance::set_tolorance(const float &value)
@@ -47,6 +56,16 @@ bool BTCheckDistance::is_in_range()
     return false;
 }
 
+float BTCheckDistance::get_coyote_time() const
+{
+    return coyote_time;
+}
+
+void BTCheckDistance::set_coyote_time(const float& value)
+{
+    coyote_time = value;
+}
+
 void BTCheckDistance::_bind_methods()
 {
 
@@ -65,6 +84,23 @@ void BTCheckDistance::_bind_methods()
         PropertyInfo(Variant::FLOAT, "tolorance"),
         "set_tolorance",
         "get_tolorance"
+    );
+
+    // coyote_time
+    ClassDB::bind_method(
+        D_METHOD("set_coyote_time", "value"),
+        &BTCheckDistance::set_coyote_time
+    );
+
+    ClassDB::bind_method(
+        D_METHOD("get_coyote_time"),
+        &BTCheckDistance::get_coyote_time
+    );
+
+    ADD_PROPERTY(
+        PropertyInfo(Variant::FLOAT, "coyote_time"),
+        "set_coyote_time",
+        "get_coyote_time"
     );
 
 

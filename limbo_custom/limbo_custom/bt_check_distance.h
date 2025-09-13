@@ -6,12 +6,22 @@
 #include "bt/tasks/bt_action.h"
 #include "godot_cpp/classes/node2d.hpp"
 
+// manager_plugin
+#include "../../manager_plugin_2/manager_plugin_2/entity.h"
+#include "../../manager_plugin_2/manager_plugin_2/nemesis_system.h"
+
 class BTCheckDistance : public BTAction
 {
     GDCLASS(BTCheckDistance, BTAction);
     TASK_CATEGORY(Custom);
     
     public:
+
+    enum Targeting{
+        NEAR,
+        FAR,
+    };
+
     String _generate_name() override;
     BT::Status _tick(double delta) override;
 
@@ -21,11 +31,14 @@ class BTCheckDistance : public BTAction
     private:
     Node2D* target = nullptr;
     float tolorance = 0.0;
-
+    float coyote_time = 0.5;
 
     // setget
     void set_tolorance(const float &value);
     float get_tolorance() const;
+
+    float get_coyote_time() const;
+    void set_coyote_time(const float &value);
 
     // methods
     void set_target(Node2D* target);

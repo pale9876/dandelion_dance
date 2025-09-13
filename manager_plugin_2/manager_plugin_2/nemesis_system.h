@@ -41,6 +41,8 @@ class NemesisSystem : public Node
     TypedDictionary<String, PackedStringArray> get_last_names() const;
     void set_last_names(const TypedDictionary<String, PackedStringArray>& dict);
 
+    TypedDictionary<int, Dictionary> entities = {};
+    TypedDictionary<int, Dictionary> get_entities() const;
 };
 
 

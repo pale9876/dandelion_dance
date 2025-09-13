@@ -13,6 +13,8 @@ enum TrafficLight {
 @export var light: TrafficLight = TrafficLight.RED
 @export var inc_dec: bool = true
 #var tick: int = red_wait_tick
+@onready var node_2d: Node2D = $Node2D
+@onready var target: Node2D = $Node2D2
 
 #func _physics_process(delta: float) -> void:
 	#tick -= 1

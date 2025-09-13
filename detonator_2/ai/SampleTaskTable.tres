@@ -1,4 +1,4 @@
-[gd_resource type="BehaviorTree" load_steps=25 format=3 uid="uid://do65j01av7uxo"]
+[gd_resource type="BehaviorTree" load_steps=26 format=3 uid="uid://do65j01av7uxo"]
 
 [ext_resource type="Script" uid="uid://c01jko2ge1tej" path="res://ai/tasks/traffic_light_go.gd" id="1_aoqu2"]
 [ext_resource type="Script" uid="uid://dlegx1vp56gp0" path="res://ai/tasks/change_inc_dec.gd" id="1_nfb0q"]
@@ -64,7 +64,10 @@ value = SubResource("BBVariant_iats6")
 [sub_resource type="BTConsolePrint" id="BTConsolePrint_nfb0q"]
 text = "Blue"
 
+[sub_resource type="BTComment" id="BTComment_nfb0q"]
+
 [sub_resource type="BTAction" id="BTAction_iats6"]
+children = [SubResource("BTComment_nfb0q")]
 script = ExtResource("1_nfb0q")
 
 [sub_resource type="BTWaitTicks" id="BTWaitTicks_aoqu2"]

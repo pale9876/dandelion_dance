@@ -1,6 +1,6 @@
 extends BTAction
 class_name BTTrafficLight
-
+ 
 func _tick(delta: float) -> Status:
 	if agent.inc_dec:
 		agent.light += 1

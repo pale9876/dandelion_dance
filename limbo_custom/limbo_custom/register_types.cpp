@@ -113,6 +113,7 @@
  // custom tasks
 #include "bt_sample_task.h"
 #include "bt_check_distance.h"
+#include "bt_aim_at.h"
 
 #ifdef TOOLS_ENABLED
 #include "editor/debugger/behavior_tree_view.h"
@@ -211,6 +212,7 @@ void initialize_limboai_module(ModuleInitializationLevel p_level) {
         // Custom
         LIMBO_REGISTER_TASK(BTSampleTask);
         LIMBO_REGISTER_TASK(BTCheckDistance);
+        LIMBO_REGISTER_TASK(BTAimAt);
 
 
         GDREGISTER_ABSTRACT_CLASS(BBParam);
