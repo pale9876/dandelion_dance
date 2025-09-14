@@ -18,6 +18,10 @@ class AutoSpriteComponent: public Node2D
     public:
     void _ready() override;
 
+    // methods
+    void set_sprites(const TypedDictionary<StringName, Node> dict);
+    TypedDictionary<StringName, Node> get_sprites() const;
+
     protected:
     static void _bind_methods();
 
@@ -27,9 +31,6 @@ class AutoSpriteComponent: public Node2D
     int index = -1;
     StringName current_sprite = "";
     TypedDictionary<StringName, Node> sprites = {};
-    
-    TypedDictionary<StringName, Node> get_sprites() const;
-
     void set_index(const int idx);
     int get_index() const;
 

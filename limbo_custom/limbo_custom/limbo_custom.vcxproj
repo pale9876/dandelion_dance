@@ -102,7 +102,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;TOOLS_ENABLED;LIMBOAI_GDEXTENSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\shson\Documents\Re_Detonator\limbo_custom\limbo_custom\; C:\Users\shson\Documents\Re_Detonator\manager_plugin_2\godot-cpp\include\; C:\Users\shson\Documents\Re_Detonator\manager_plugin_2\godot-cpp\gen\include; C:\Users\shson\Documents\Re_Detonator\manager_plugin_2\godot-cpp\gdextension\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\shson\Documents\dandelion_dance\limbo_custom\limbo_custom\; C:\Users\shson\Documents\dandelion_dance\manager_plugin_2\godot-cpp\include\; C:\Users\shson\Documents\dandelion_dance\manager_plugin_2\godot-cpp\gen\include; C:\Users\shson\Documents\dandelion_dance\manager_plugin_2\godot-cpp\gdextension\; C:\Users\shson\Documents\dandelion_dance\manager_plugin_2\manager_plugin_2\;</AdditionalIncludeDirectories>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
     </ClCompile>
@@ -126,11 +126,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="bt_aim_at.h" />
     <ClInclude Include="bt_sample_task.h" />
     <ClInclude Include="bt_check_distance.h" />
     <ClInclude Include="register_types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bt_aim_at.cpp" />
     <ClCompile Include="bt_check_distance.cpp" />
     <ClCompile Include="bt_sample_task.cpp" />
     <ClCompile Include="register_types.cpp" />

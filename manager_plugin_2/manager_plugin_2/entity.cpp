@@ -1,6 +1,5 @@
 #include "entity.h"
 
-
 int Entity::get_id() const
 {
     return this->id;
@@ -16,7 +15,7 @@ String Entity::get_full_name() const
     return full_name;
 }
 
-void Entity::set_full_name(const String& name)
+void Entity::set_full_name(const String name)
 {
     this->full_name = name;
 }
@@ -26,7 +25,7 @@ bool Entity::is_unique() const
     return this->unique;
 }
 
-void Entity::set_unique(const bool &toggle)
+void Entity::set_unique(const bool toggle)
 {
     this->unique = toggle;
 }

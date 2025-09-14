@@ -19,7 +19,7 @@ BT::Status BTCheckDistance::_tick(double delta)
     return RUNNING;
 }
 
-void BTCheckDistance::set_tolorance(const float &value)
+void BTCheckDistance::set_tolorance(const float value)
 {
     this -> tolorance = value;
     this -> set_custom_name(vformat("Check Distance range: %s", tolorance));
@@ -61,7 +61,7 @@ float BTCheckDistance::get_coyote_time() const
     return coyote_time;
 }
 
-void BTCheckDistance::set_coyote_time(const float& value)
+void BTCheckDistance::set_coyote_time(const float value)
 {
     coyote_time = value;
 }
@@ -105,7 +105,6 @@ void BTCheckDistance::_bind_methods()
 
 
     // methods
-
     ClassDB::bind_method(
         D_METHOD("set_target", "target"),
         &BTCheckDistance::set_target

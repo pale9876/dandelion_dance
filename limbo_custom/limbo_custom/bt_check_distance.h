@@ -34,11 +34,11 @@ class BTCheckDistance : public BTAction
     float coyote_time = 0.5;
 
     // setget
-    void set_tolorance(const float &value);
+    void set_tolorance(const float value);
     float get_tolorance() const;
 
     float get_coyote_time() const;
-    void set_coyote_time(const float &value);
+    void set_coyote_time(const float value);
 
     // methods
     void set_target(Node2D* target);

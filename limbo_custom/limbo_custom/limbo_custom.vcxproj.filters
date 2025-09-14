@@ -18,24 +18,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bt_sample_task.h">
-      <Filter>Source Files\custom_tasks</Filter>
-    </ClInclude>
     <ClInclude Include="register_types.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="bt_check_distance.h">
-      <Filter>Source Files\custom_tasks</Filter>
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bt_sample_task.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bt_aim_at.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bt_sample_task.cpp">
       <Filter>Source Files\custom_tasks</Filter>
     </ClCompile>
-    <ClCompile Include="register_types.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bt_check_distance.cpp">
+      <Filter>Source Files\custom_tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="register_types.cpp">
+      <Filter>Source Files\custom_tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="bt_aim_at.cpp">
       <Filter>Source Files\custom_tasks</Filter>
     </ClCompile>
   </ItemGroup>

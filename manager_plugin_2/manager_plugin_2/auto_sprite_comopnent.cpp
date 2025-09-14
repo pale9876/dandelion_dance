@@ -27,6 +27,11 @@ void AutoSpriteComponent::update()
     }
 }
 
+void AutoSpriteComponent::set_sprites(const TypedDictionary<StringName, Node> dict)
+{
+    this->sprites = dict;
+}
+
 TypedDictionary<StringName, Node> AutoSpriteComponent::get_sprites() const
 {
     return sprites;
@@ -44,7 +49,6 @@ int AutoSpriteComponent::get_index() const
 
 void AutoSpriteComponent::set_current_sprite(const StringName sprite_name)
 {
-    
     this -> current_sprite = sprite_name;
 
 }
@@ -92,7 +96,12 @@ void AutoSpriteComponent::_bind_methods()
         "get_index"
     );
 
-    // current_sprite
+    // current_sprite (READ ONLY)
+
+
+    // sprites (READ ONLY)
+
+
 
     // methods
 }
