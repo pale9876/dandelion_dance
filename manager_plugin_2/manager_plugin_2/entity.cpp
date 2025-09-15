@@ -30,6 +30,25 @@ void Entity::set_unique(const bool toggle)
     this->unique = toggle;
 }
 
+void Entity::_enter_tree()
+{
+    NemesisSystem* nemesis = NemesisSystem::get_nemesis();
+    if (!(nemesis->has_id(this->id)))
+    nemesis -> entity_entered(
+        Object::cast_to<Entity>(this)
+    );
+}
+
+void Entity::_exit_tree()
+{
+    NemesisSystem* nemesis = NemesisSystem::get_nemesis();
+    
+    nemesis -> delete_entity(this->id);
+
+    id = - 1;
+}
+
+
 void Entity::_bind_methods()
 {
     // id
@@ -44,7 +63,7 @@ void Entity::_bind_methods()
     );
 
     ADD_PROPERTY(
-        PropertyInfo(Variant::INT, "id", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR),
+        PropertyInfo(Variant::INT, "id", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_READ_ONLY | PROPERTY_USAGE_DEFAULT),
         "set_id",
         "get_id"
     );

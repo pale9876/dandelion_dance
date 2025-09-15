@@ -3,14 +3,16 @@
 #ifndef NEMESIS_SYSTEM_H
 #define NEMESIS_SYSTEM_H
 
+#include "entity.h"
+
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/variant/typed_dictionary.hpp>
+#include <godot_cpp/variant/dictionary.hpp>
 #include <godot_cpp/classes/engine.hpp>
-
 
 using namespace godot;
 
-class NemesisSystem : public Node
+class NemesisSystem : public Node // Singleton
 {
     GDCLASS(NemesisSystem, Node);
 
@@ -30,19 +32,30 @@ class NemesisSystem : public Node
     void add_last_name_variation(const String& region, const String &last_name);
 
     String give_random_name(String faction);
+    bool entity_entered(Node* entity);
+    bool has_id(int id);
+    bool delete_entity(int id);
+
+
+    TypedDictionary<int, Dictionary> get_entities() const;
 
     protected:
     static void _bind_methods();
 
     private:
+    int index = 0;
+    TypedDictionary<int, Dictionary> entities = {};
+    
+
     TypedDictionary<String, PackedStringArray> get_first_names() const;
     void set_first_names(const TypedDictionary<String, PackedStringArray>& dict);
     
     TypedDictionary<String, PackedStringArray> get_last_names() const;
     void set_last_names(const TypedDictionary<String, PackedStringArray>& dict);
 
-    TypedDictionary<int, Dictionary> entities = {};
-    TypedDictionary<int, Dictionary> get_entities() const;
+    int get_max_index() const;
+    
+
 };
 
 

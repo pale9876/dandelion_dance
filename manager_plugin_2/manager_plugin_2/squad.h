@@ -5,8 +5,6 @@
 
 #include "entity.h"
 
-
-
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/variant/typed_dictionary.hpp>
 #include <godot_cpp/classes/wrapped.hpp>
@@ -17,11 +15,13 @@ class Squad : public Node2D
 {
     GDCLASS(Squad, Node2D)
 
+    public:
+    void _ready() override;
+
+
     protected:
     static void _bind_methods();
 
-    public:
-    void _ready() override;
 
 
     };

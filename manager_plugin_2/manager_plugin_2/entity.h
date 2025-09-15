@@ -15,9 +15,13 @@ using namespace godot;
 
 class Entity : public CharacterBody2D
 {
+
     GDCLASS(Entity, CharacterBody2D)
 
     public:
+    void _enter_tree() override;
+    void _exit_tree() override;
+
     // SETGET
     int get_id() const;
     void set_id(const int &id);
@@ -35,6 +39,9 @@ class Entity : public CharacterBody2D
     int id = -1;
     String full_name = "";
     bool unique = false;
+
+    //SETGET
+
 };
 
 #endif

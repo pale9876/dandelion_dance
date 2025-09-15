@@ -22,11 +22,12 @@ void initialize_mp_module(ModuleInitializationLevel p_level) {
     }
 
     GDREGISTER_CLASS(NemesisSystem);
+    GDREGISTER_CLASS(Entity);
+    GDREGISTER_CLASS(Squad);
+
     GDREGISTER_CLASS(AutoSprite)
     GDREGISTER_CLASS(AutoSpriteComponent);
 
-    GDREGISTER_RUNTIME_CLASS(Entity);
-    GDREGISTER_RUNTIME_CLASS(Squad);
 
     NemesisSystem::init_singleton();
 

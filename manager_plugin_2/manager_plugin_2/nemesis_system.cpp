@@ -44,8 +44,6 @@ void NemesisSystem::add_last_name_variation(const String& region, const String &
         PackedStringArray _arr = last_name_variation[region];
         _arr.push_back(last_name);
     }
-
-
 }
 
 String NemesisSystem::give_random_name(String faction)
@@ -68,6 +66,43 @@ String NemesisSystem::give_random_name(String faction)
     return result;
 }
 
+bool NemesisSystem::entity_entered(Node* entity)
+{
+    Entity* node = Object::cast_to<Entity>(entity);
+
+    if (!node)
+    {
+        print_error(vformat("There is no node or you trying add other node"));
+        return false;
+    }
+
+    Dictionary dict = {};
+
+    dict.set("node", entity);
+    
+    node -> set_id(index);
+    entities.set(index, dict);
+    index += 1;
+    return true;
+}
+
+bool NemesisSystem::has_id(int id)
+{
+    return (entities.has(id)) ? true : false;
+}
+
+bool NemesisSystem::delete_entity(int id)
+{
+    if (has_id(id))
+    {
+        entities.erase(id);
+        return true;
+    }
+
+    return false;
+}
+
+
 TypedDictionary<String, PackedStringArray> NemesisSystem::get_first_names() const
 {
     return first_name_variation;
@@ -86,6 +121,16 @@ TypedDictionary<String, PackedStringArray> NemesisSystem::get_last_names() const
 void NemesisSystem::set_last_names(const TypedDictionary<String, PackedStringArray>& dict)
 {
     last_name_variation = dict;
+}
+
+int NemesisSystem::get_max_index() const
+{
+    return index;
+}
+
+TypedDictionary<int, Dictionary> NemesisSystem::get_entities() const
+{
+    return entities;
 }
 
 NemesisSystem* NemesisSystem::get_nemesis()
@@ -118,5 +163,14 @@ void NemesisSystem::_bind_methods()
 
 
    // methods
+    ClassDB::bind_method(
+        D_METHOD("entity_entered", "entity"),
+        &NemesisSystem::entity_entered
+   );
+
+    ClassDB::bind_method(
+        D_METHOD("get_max_index"),
+        &NemesisSystem::get_max_index
+    );
 
 }
