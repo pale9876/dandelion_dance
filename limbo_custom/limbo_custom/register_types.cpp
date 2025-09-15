@@ -110,10 +110,13 @@
 #include "util/limbo_task_db.h"
 #include "util/limbo_utility.h"
 
- // custom tasks
+
+// custom tasks
 #include "bt_sample_task.h"
 #include "bt_check_distance.h"
 #include "bt_aim_at.h"
+#include "state_machine.h"
+
 
 #ifdef TOOLS_ENABLED
 #include "editor/debugger/behavior_tree_view.h"
@@ -210,6 +213,7 @@ void initialize_limboai_module(ModuleInitializationLevel p_level) {
 
 
         // Custom
+        GDREGISTER_CLASS(StateMachine);
         LIMBO_REGISTER_TASK(BTSampleTask);
         LIMBO_REGISTER_TASK(BTCheckDistance);
         LIMBO_REGISTER_TASK(BTAimAt);

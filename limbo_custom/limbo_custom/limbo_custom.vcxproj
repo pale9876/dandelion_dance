@@ -130,12 +130,14 @@
     <ClInclude Include="bt_sample_task.h" />
     <ClInclude Include="bt_check_distance.h" />
     <ClInclude Include="register_types.h" />
+    <ClInclude Include="state_machine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bt_aim_at.cpp" />
     <ClCompile Include="bt_check_distance.cpp" />
     <ClCompile Include="bt_sample_task.cpp" />
     <ClCompile Include="register_types.cpp" />
+    <ClCompile Include="state_machine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
