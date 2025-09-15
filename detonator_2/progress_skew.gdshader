@@ -32,5 +32,5 @@ void vertex() {
 }
 
 void fragment() {
-	
+	COLOR *= colour;
 }
