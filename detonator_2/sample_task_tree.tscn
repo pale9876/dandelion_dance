@@ -22,4 +22,3 @@ blackboard_plan = SubResource("BlackboardPlan_vqf7r")
 [node name="Node2D2" type="Node2D" parent="."]
 position = Vector2(428, 199)
 script = ExtResource("2_1a1ty")
-mouse = null

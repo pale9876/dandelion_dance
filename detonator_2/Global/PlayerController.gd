@@ -22,6 +22,9 @@ var ctrl_index: Dictionary[int, Unit] = {}
 
 var indexing: bool = false
 
+var clicked: Node2D = null
+var dragging_object: Node2D = null
+
 func _init() -> void:
 	input_component = InputComponent.new()
 	input_component.name = &"InputComponent"
@@ -96,3 +99,6 @@ func set_input_dir(value: Vector2) -> void:
 func set_input_margin(time: float) -> void:
 	_margin = maxf(0.0, time)
 #endregion
+
+func get_dragging_object() -> Node2D:
+	return dragging_object

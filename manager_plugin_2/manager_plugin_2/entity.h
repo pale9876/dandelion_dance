@@ -36,6 +36,10 @@ class Entity : public CharacterBody2D
     static void _bind_methods();
 
     private:
+    // methods
+    Entity();
+    ~Entity();
+
     int id = -1;
     String full_name = "";
     bool unique = false;
