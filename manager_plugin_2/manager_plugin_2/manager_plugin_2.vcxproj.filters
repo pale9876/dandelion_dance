@@ -36,7 +36,7 @@
     <ClInclude Include="executioner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="hit_stat.h">
+    <ClInclude Include="cyp_event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,7 +62,7 @@
     <ClCompile Include="executioner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hit_stat.cpp">
+    <ClCompile Include="cyp_event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

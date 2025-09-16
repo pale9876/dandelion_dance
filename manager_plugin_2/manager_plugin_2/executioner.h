@@ -15,15 +15,11 @@ class Executioner : public Node
 {
 	GDCLASS(Executioner, Node);
 
-	protected:
-	static void _bind_methods();
 
 	public:
 	static bool exec_init();
 	static bool deinit();
 	static Executioner& get_sys();
-
-	void _physics_process(double delta) override;
 
 	enum EventType
 	{
@@ -33,7 +29,13 @@ class Executioner : public Node
 		EVADE = 3,
 	};
 
-	bool add_event(int &event_type, Node* from, Node* to);
+	void _physics_process(double delta) override;
+
+
+	bool add_event(uint64_t event_type, Node* from, Node* to);
+
+	protected:
+	static void _bind_methods();
 
 	private:
 	uint64_t index = 0;
@@ -41,5 +43,7 @@ class Executioner : public Node
 
 	bool _handle(uint64_t idx);
 };
+
+VARIANT_ENUM_CAST(Executioner::EventType);
 
 #endif

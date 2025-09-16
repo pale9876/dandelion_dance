@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\godot-cpp\include\; C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\godot-cpp\gen\include; C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\godot-cpp\gdextension\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\godot-cpp\include\; C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\godot-cpp\gen\include; C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\godot-cpp\gdextension;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,7 +132,7 @@
     <ClInclude Include="auto_sprite_component.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="executioner.h" />
-    <ClInclude Include="hit_stat.h" />
+    <ClInclude Include="cyp_event.h" />
     <ClInclude Include="nemesis_system.h" />
     <ClInclude Include="register_types.h" />
     <ClInclude Include="squad.h" />
@@ -142,7 +142,7 @@
     <ClCompile Include="auto_sprite_comopnent.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="executioner.cpp" />
-    <ClCompile Include="hit_stat.cpp" />
+    <ClCompile Include="cyp_event.cpp" />
     <ClCompile Include="nemesis_system.cpp" />
     <ClCompile Include="register_types.cpp" />
     <ClCompile Include="squad.cpp" />

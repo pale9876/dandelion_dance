@@ -1,5 +1,6 @@
 #include "cyp_event.h"
 
+
 Vector2 CypEvent::get_force() const
 {
 	return force;
@@ -10,18 +11,15 @@ void CypEvent::set_force(const Vector2& value)
 	this->force = value;
 }
 
-
-Executioner::EventType CypEvent::get_event_type() const
+uint64_t CypEvent::get_event_type() const
 {
-	return event_type;
+	return uint64_t(event_type);
 }
 
-void CypEvent::set_event_type(const Executioner::EventType& type)
+void CypEvent::set_event_type(const uint64_t &type)
 {
-	event_type = type;
+	event_type = Executioner::EventType(type);
 }
-
-
 
 void CypEvent::_bind_methods()
 {
@@ -36,11 +34,11 @@ void CypEvent::_bind_methods()
 		&CypEvent::get_event_type
 	);
 
-	ADD_PROPERTY(
-		PropertyInfo(Variant::INT, "event_type", PROPERTY_HINT_ENUM, "Hit, Parry, Shield, Evade", PROPERTY_USAGE_CLASS_IS_ENUM),
-		"set_event_type",
-		"get_event_type"
-	);
+	//ADD_PROPERTY(
+	//	PropertyInfo(Variant::INT, "event_type", PROPERTY_HINT_ENUM, "Hit, Parry, Shield, Evade"),
+	//	"set_event_type",
+	//	"get_event_type"
+	//);
 
 	// force
 	ClassDB::bind_method(

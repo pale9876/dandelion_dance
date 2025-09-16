@@ -18,20 +18,18 @@ class CypEvent : public Resource
 	GDCLASS(CypEvent, Resource);
 
 	public:
-	
-	Executioner::EventType event_type = Executioner::EventType::HIT;
-	Vector2 force = Vector2(0.f, 0.f);
+	uint64_t get_event_type() const;
+	void set_event_type(const uint64_t &type);
 
+	Vector2 get_force() const;
+	void set_force(const Vector2 &value);
+	
 	protected:
 	static void _bind_methods();
 
 	private:
-	Executioner::EventType get_event_type() const;
-	void set_event_type(const Executioner::EventType &type);
-
-	Vector2 get_force() const;
-	void set_force(const Vector2 &value);
-
+	Executioner::EventType event_type = Executioner::EventType::HIT;
+	Vector2 force = Vector2(0.f, 0.f);
 
 };
 

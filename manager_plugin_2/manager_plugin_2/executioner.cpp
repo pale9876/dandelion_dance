@@ -21,6 +21,8 @@ Executioner& Executioner::get_sys()
 
 void Executioner::_physics_process(double delta)
 {
+	if (Engine::get_singleton()->is_editor_hint()) return;
+
 	if (!event_cache.is_empty())
 	{
 		for (int i : event_cache.keys())
@@ -32,8 +34,14 @@ void Executioner::_physics_process(double delta)
 	}
 }
 
-bool Executioner::add_event(int &event_type, Node* from, Node* to)
+bool Executioner::add_event(uint64_t event_type, Node* from, Node* to)
 {
+	if (Engine::get_singleton() -> is_editor_hint())
+	{
+		print_error(vformat("Cannot accepting event in editor hint mode"));
+		return false;
+	}
+
 	if (!from || !to)
 	{
 		print_error(vformat("From or to Nodes are not valid"));
@@ -80,16 +88,18 @@ void Executioner::_bind_methods()
 	BIND_ENUM_CONSTANT(PARRY);
 	BIND_ENUM_CONSTANT(SHIELD);
 
-	ClassDB::bind_method(
-		D_METHOD("add_event", "event_type", "from", "to"),
-		&Executioner::add_event
-	);
+	//ClassDB::bind_method(
+	//	D_METHOD("add_event", "event_type", "from", "to"),
+	//	&Executioner::add_event
+	//);
 
-	ClassDB::bind_static_method(
-		"Executioner",
-		D_METHOD("get_sys"),
-		&Executioner::get_sys()
-	);
+	// Not work Mistakes
+
+	//ClassDB::bind_static_method(
+	//	"Executioner",
+	//	D_METHOD("get_sys"),
+	//	&Executioner::get_sys()
+	//);
 
 }
 
