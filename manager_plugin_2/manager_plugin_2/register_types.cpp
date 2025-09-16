@@ -1,11 +1,12 @@
 #include "register_types.h"
 
-//#include "gdexample.h"
 #include "entity.h"
 #include "nemesis_system.h"
 #include "squad.h"
 #include "auto_sprite.h"
 #include "auto_sprite_component.h"
+#include "executioner.h"
+#include "cyp_event.h"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
@@ -21,18 +22,24 @@ void initialize_mp_module(ModuleInitializationLevel p_level) {
         return;
     }
 
-    GDREGISTER_CLASS(NemesisSystem);
+
+    GDREGISTER_VIRTUAL_CLASS(CypEvent);
     GDREGISTER_CLASS(Entity);
     GDREGISTER_CLASS(Squad);
+    GDREGISTER_CLASS(NemesisSystem);
+    GDREGISTER_CLASS(Executioner)
 
     GDREGISTER_CLASS(AutoSprite)
     GDREGISTER_CLASS(AutoSpriteComponent);
 
-
+    // Autoload init
     NemesisSystem::init_singleton();
+    Executioner::exec_init();
 
     Engine* engine = Engine::get_singleton();
     engine -> register_singleton("NemesisSystem", &NemesisSystem::get_sys());
+    engine -> register_singleton("Executioner", &Executioner::get_sys());
+
 }
 
 void uninitialize_mp_module(ModuleInitializationLevel p_level) {
@@ -40,10 +47,14 @@ void uninitialize_mp_module(ModuleInitializationLevel p_level) {
         return;
     }
 
+
+    // Autoload deinit
     Engine* engine = Engine::get_singleton();
     engine -> unregister_singleton("NemesisSystem");
+    engine -> unregister_singleton("Executioner");
 
     NemesisSystem::uninit();
+    Executioner::deinit();
 }
 
 extern "C" {

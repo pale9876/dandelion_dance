@@ -45,7 +45,7 @@ class NemesisSystem : public Node // Singleton
     static void _bind_methods();
 
     private:
-    int index = 0;
+    uint64_t index = 0;
     TypedDictionary<int, Dictionary> entities = {};
     
 

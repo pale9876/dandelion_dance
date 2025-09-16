@@ -33,6 +33,12 @@
     <ClInclude Include="auto_sprite_component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="executioner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hit_stat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="entity.cpp">
@@ -51,6 +57,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="auto_sprite_comopnent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="executioner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="hit_stat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

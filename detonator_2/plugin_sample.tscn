@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://47cloffys0mx"]
-
-[ext_resource type="Script" uid="uid://clx3meh01a157" path="res://plugin_sample.gd" id="1_sea2s"]
-
-[node name="Entity" type="Entity"]
-script = ExtResource("1_sea2s")

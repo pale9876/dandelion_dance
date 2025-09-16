@@ -1,0 +1,89 @@
+[gd_resource type="BehaviorTree" load_steps=26 format=3 uid="uid://do65j01av7uxo"]
+
+[ext_resource type="Script" uid="uid://c01jko2ge1tej" path="res://ai/tasks/traffic_light_go.gd" id="1_aoqu2"]
+[ext_resource type="Script" uid="uid://dlegx1vp56gp0" path="res://ai/tasks/change_inc_dec.gd" id="1_nfb0q"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_8nn2v"]
+
+[sub_resource type="BBVariant" id="BBVariant_8nn2v"]
+type = 2
+saved_value = 0
+resource_name = "<null>"
+
+[sub_resource type="BTCheckAgentProperty" id="BTCheckAgentProperty_aoqu2"]
+property = &"light"
+value = SubResource("BBVariant_8nn2v")
+
+[sub_resource type="BTConsolePrint" id="BTConsolePrint_8nn2v"]
+text = "Red"
+
+[sub_resource type="BTWaitTicks" id="BTWaitTicks_8nn2v"]
+num_ticks = 240
+
+[sub_resource type="BTAction" id="BTAction_76kwt"]
+script = ExtResource("1_nfb0q")
+
+[sub_resource type="BTAction" id="BTAction_nfb0q"]
+script = ExtResource("1_aoqu2")
+
+[sub_resource type="BTSequence" id="BTSequence_8nn2v"]
+custom_name = "Red"
+children = [SubResource("BTCheckAgentProperty_aoqu2"), SubResource("BTConsolePrint_8nn2v"), SubResource("BTWaitTicks_8nn2v"), SubResource("BTAction_76kwt"), SubResource("BTAction_nfb0q")]
+
+[sub_resource type="BBVariant" id="BBVariant_nfb0q"]
+type = 2
+saved_value = 1
+resource_name = "1"
+
+[sub_resource type="BTCheckAgentProperty" id="BTCheckAgentProperty_76kwt"]
+property = &"light"
+value = SubResource("BBVariant_nfb0q")
+
+[sub_resource type="BTConsolePrint" id="BTConsolePrint_aoqu2"]
+text = "Yellow"
+
+[sub_resource type="BTWaitTicks" id="BTWaitTicks_nfb0q"]
+num_ticks = 60
+
+[sub_resource type="BTAction" id="BTAction_nhy81"]
+script = ExtResource("1_aoqu2")
+
+[sub_resource type="BTSequence" id="BTSequence_aoqu2"]
+custom_name = "Yello"
+children = [SubResource("BTCheckAgentProperty_76kwt"), SubResource("BTConsolePrint_aoqu2"), SubResource("BTWaitTicks_nfb0q"), SubResource("BTAction_nhy81")]
+
+[sub_resource type="BBVariant" id="BBVariant_iats6"]
+type = 2
+saved_value = 2
+resource_name = "2"
+
+[sub_resource type="BTCheckAgentProperty" id="BTCheckAgentProperty_rjtwc"]
+property = &"light"
+value = SubResource("BBVariant_iats6")
+
+[sub_resource type="BTConsolePrint" id="BTConsolePrint_nfb0q"]
+text = "Blue"
+
+[sub_resource type="BTComment" id="BTComment_nfb0q"]
+
+[sub_resource type="BTAction" id="BTAction_iats6"]
+children = [SubResource("BTComment_nfb0q")]
+script = ExtResource("1_nfb0q")
+
+[sub_resource type="BTWaitTicks" id="BTWaitTicks_aoqu2"]
+num_ticks = 300
+
+[sub_resource type="BTAction" id="BTAction_rjtwc"]
+script = ExtResource("1_aoqu2")
+
+[sub_resource type="BTSequence" id="BTSequence_nfb0q"]
+custom_name = "Green"
+children = [SubResource("BTCheckAgentProperty_rjtwc"), SubResource("BTConsolePrint_nfb0q"), SubResource("BTAction_iats6"), SubResource("BTWaitTicks_aoqu2"), SubResource("BTAction_rjtwc")]
+
+[sub_resource type="BTSelector" id="BTSelector_76kwt"]
+custom_name = "TrafficLight"
+children = [SubResource("BTSequence_8nn2v"), SubResource("BTSequence_aoqu2"), SubResource("BTSequence_nfb0q")]
+
+[resource]
+blackboard_plan = SubResource("BlackboardPlan_8nn2v")
+root_task = SubResource("BTSelector_76kwt")

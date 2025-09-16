@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://dl20vnj68w0sr"]
+
+[ext_resource type="Script" uid="uid://mycy1ax8lbv1" path="res://sample_task_tree.gd" id="1_vqf7r"]
+[ext_resource type="Script" uid="uid://bp7x4kfkg5g5v" path="res://sample_point.gd" id="2_1a1ty"]
+[ext_resource type="BehaviorTree" uid="uid://dxkqje8b55ky8" path="res://ai/sample_task_2.tres" id="3_1a1ty"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_vqf7r"]
+
+[node name="SampleTaskTree" type="Node"]
+script = ExtResource("1_vqf7r")
+inc_dec = false
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(155, 138)
+script = ExtResource("2_1a1ty")
+mouse = true
+
+[node name="BTPlayer" type="BTPlayer" parent="Node2D"]
+behavior_tree = ExtResource("3_1a1ty")
+blackboard_plan = SubResource("BlackboardPlan_vqf7r")
+
+[node name="Node2D2" type="Node2D" parent="."]
+position = Vector2(428, 199)
+script = ExtResource("2_1a1ty")

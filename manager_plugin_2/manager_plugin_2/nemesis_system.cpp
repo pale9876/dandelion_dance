@@ -68,9 +68,9 @@ String NemesisSystem::give_random_name(String faction)
 
 bool NemesisSystem::entity_entered(Node* entity)
 {
-    Entity* node = Object::cast_to<Entity>(entity);
+    Entity* ett = Object::cast_to<Entity>(entity);
 
-    if (!node || has_node(entity))
+    if (!ett || has_node(ett))
     {
         print_error(vformat("There is same node or you trying add other node"));
         return false;
@@ -79,10 +79,10 @@ bool NemesisSystem::entity_entered(Node* entity)
     Dictionary dict = {};
 
     dict.set("node", entity); // Store Entity Addr
-    dict.set("pos", node -> get_global_position()); // Store Entity Global_Position
+    dict.set("pos", ett -> get_global_position()); // Store Entity Global_Position
 
-    node -> set_id(index);
-    entities.set(index, dict);
+    ett -> set_id(index);
+    entities.set(ett -> get_id(), dict); //
     this->index += 1;
 
     return true;
@@ -161,17 +161,17 @@ void NemesisSystem::_bind_methods()
 {
     // static methods
 
-    ClassDB::bind_static_method(
-        "NemesisSystem",
-        D_METHOD("init_singleton"),
-        &NemesisSystem::init_singleton
-    );
+    //ClassDB::bind_static_method(
+    //    "NemesisSystem",
+    //    D_METHOD("init_singleton"),
+    //    &NemesisSystem::init_singleton
+    //);
 
-    ClassDB::bind_static_method(
-        "NemesisSystem",
-        D_METHOD("uninit"),
-        &NemesisSystem::uninit
-    );
+    //ClassDB::bind_static_method(
+    //    "NemesisSystem",
+    //    D_METHOD("uninit"),
+    //    &NemesisSystem::uninit
+    //);
 
     ClassDB::bind_static_method(
         "NemesisSystem",

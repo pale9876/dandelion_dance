@@ -32,6 +32,8 @@ class Entity : public CharacterBody2D
     bool is_unique() const;
     void set_unique(const bool toggle);
 
+    void event_received(uint64_t event, Node* from);
+
     protected:
     static void _bind_methods();
 
@@ -40,7 +42,7 @@ class Entity : public CharacterBody2D
     Entity();
     ~Entity();
 
-    int id = -1;
+    uint64_t id = -1;
     String full_name = "";
     bool unique = false;
 

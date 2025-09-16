@@ -3,12 +3,10 @@
 
 Entity::Entity()
 {
-    id += 1;
 }
 
 Entity::~Entity()
 {
-
 }
 
 int Entity::get_id() const
@@ -41,10 +39,21 @@ void Entity::set_unique(const bool toggle)
     this->unique = toggle;
 }
 
+void Entity::event_received(uint64_t event, Node* from)
+{
+    Entity* ett = Object::cast_to<Entity>(from);
+
+    ERR_FAIL_COND_MSG(!ett, "there is no 'from' entity in this tree.");
+
+
+
+
+}
+
 void Entity::_enter_tree()
 {
     NemesisSystem* nemesis = NemesisSystem::get_nemesis();
-    if (!(nemesis->has_id(this->id)))
+    
     nemesis -> entity_entered(
         Object::cast_to<Entity>(this)
     );
@@ -56,7 +65,6 @@ void Entity::_exit_tree()
     
     nemesis -> delete_entity(this->id);
 
-    id = - 1;
 }
 
 
