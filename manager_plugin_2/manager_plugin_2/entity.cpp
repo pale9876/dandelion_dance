@@ -1,5 +1,16 @@
 #include "entity.h"
 
+
+Entity::Entity()
+{
+    id += 1;
+}
+
+Entity::~Entity()
+{
+
+}
+
 int Entity::get_id() const
 {
     return this->id;

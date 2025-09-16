@@ -13,8 +13,8 @@ const FALL_STATE: StringName = &"Fall"
 const SHIFT_STATE: StringName = &"Shift"
 const SLIDE_STATE: StringName = &"Slide"
 
-@export var _dict: Dictionary[StringName, UnitState] = {}
-@export var individual_acts: Dictionary[StringName, UnitState] = {}
+@export var _dict: Dictionary[StringName, UnitState] = {} # 기본 상태
+@export var individual_acts: Dictionary[StringName, UnitState] = {} # 독립 상태 (커스텀 액션)
 
 func _ready() -> void:
 	for node: Node in get_children():

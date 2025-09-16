@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bmidfw1jvsepy"]
+[gd_scene load_steps=9 format=3 uid="uid://bmidfw1jvsepy"]
 
 [ext_resource type="Script" uid="uid://d17j0um2nrj1u" path="res://main_scene.gd" id="1_0f027"]
 [ext_resource type="Script" uid="uid://mxg2sb50rc2k" path="res://stage.gd" id="2_2c62f"]
 [ext_resource type="PackedScene" uid="uid://eh7d5r34lx5w" path="res://unit.tscn" id="3_8mm7a"]
 [ext_resource type="Script" uid="uid://oan4b7rf6yuo" path="res://UnitStat.gd" id="4_hq1ik"]
 [ext_resource type="Script" uid="uid://yadqxkv5olbs" path="res://camera_2d.gd" id="5_8mm7a"]
+[ext_resource type="PackedScene" uid="uid://cv1kxqd5krltm" path="res://progress_ui.tscn" id="6_hq1ik"]
 
 [sub_resource type="Resource" id="Resource_nfk4m"]
 resource_local_to_scene = true
@@ -82,13 +83,15 @@ debug_color = Color(1, 0, 0, 1)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Control" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="PlayerProfile" parent="CanvasLayer/Control" instance=ExtResource("6_hq1ik")]
+layout_mode = 1
 
 [editable path="UnitLayer/Unit"]
 [editable path="UnitLayer/Unit2"]
