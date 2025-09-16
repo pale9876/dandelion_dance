@@ -23,6 +23,7 @@ class BTCheckDistance : public BTAction
     };
 
     String _generate_name() override;
+    void _enter() override;
     BT::Status _tick(double delta) override;
 
     protected:
@@ -41,7 +42,7 @@ class BTCheckDistance : public BTAction
     void set_coyote_time(const float value);
 
     // methods
-    void set_target(Node2D* target);
+    //void set_target(Node2D* target);
     Node2D* get_target() const;
     bool is_in_range();
 };

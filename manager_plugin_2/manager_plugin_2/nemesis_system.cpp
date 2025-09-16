@@ -70,19 +70,21 @@ bool NemesisSystem::entity_entered(Node* entity)
 {
     Entity* node = Object::cast_to<Entity>(entity);
 
-    if (!node)
+    if (!node || has_node(entity))
     {
-        print_error(vformat("There is no node or you trying add other node"));
+        print_error(vformat("There is same node or you trying add other node"));
         return false;
     }
 
     Dictionary dict = {};
 
-    dict.set("node", entity);
-    
+    dict.set("node", entity); // Store Entity Addr
+    dict.set("pos", node -> get_global_position()); // Store Entity Global_Position
+
     node -> set_id(index);
     entities.set(index, dict);
-    index += 1;
+    this->index += 1;
+
     return true;
 }
 
@@ -90,6 +92,22 @@ bool NemesisSystem::has_id(int id)
 {
     return (entities.has(id)) ? true : false;
 }
+
+bool NemesisSystem::has_node(Node* node)
+{
+    for (Variant value : entities.values())
+    {
+        Dictionary _dict = value;
+
+        if (Object::cast_to<Node>(_dict["node"]) == node)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 
 bool NemesisSystem::delete_entity(int id)
 {

@@ -32,8 +32,10 @@ class NemesisSystem : public Node // Singleton
     void add_last_name_variation(const String& region, const String &last_name);
 
     String give_random_name(String faction);
+
     bool entity_entered(Node* entity);
     bool has_id(int id);
+    bool has_node(Node* node);
     bool delete_entity(int id);
 
 

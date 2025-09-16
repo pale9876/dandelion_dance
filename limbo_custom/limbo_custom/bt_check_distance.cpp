@@ -5,18 +5,15 @@ String BTCheckDistance::_generate_name()
     return vformat("Check Distance range: %s", tolorance);
 }
 
+void BTCheckDistance::_enter()
+{
+    //target
+}
+
+
 BT::Status BTCheckDistance::_tick(double delta)
 {
-    if (target)
-    {
-        return SUCCESS;
-    }
-    else
-    {
-        return FAILURE;
-    }
-
-    return RUNNING;
+    return (target) ? ((is_in_range()) ? SUCCESS : RUNNING) : FAILURE;
 }
 
 void BTCheckDistance::set_tolorance(const float value)
@@ -30,10 +27,10 @@ float BTCheckDistance::get_tolorance() const
     return tolorance;
 }
 
-void BTCheckDistance::set_target(Node2D* target)
-{
-    this -> target = target;
-}
+//void BTCheckDistance::set_target(Node2D* target)
+//{
+//    this -> target = target;
+//}
 
 Node2D* BTCheckDistance::get_target() const
 {

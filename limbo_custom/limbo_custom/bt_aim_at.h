@@ -26,8 +26,8 @@ class BTAimAt : public BTAction
 
     private:
     Node* get_target();
-    Node2D* get_nearest();
-    Node2D* get_farthest();
+    Node2D* targeting_nearest();
+    Node2D* targeting_farthest();
 };
 
 #endif
