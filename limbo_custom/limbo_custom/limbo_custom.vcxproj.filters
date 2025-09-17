@@ -44,17 +44,11 @@
     <ClCompile Include="bt_aim_at.cpp">
       <Filter>Source Files\custom_tasks</Filter>
     </ClCompile>
-    <ClCompile Include="register_types.cpp">
+    <ClCompile Include="state_machine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="state_machine.cpp">
-      <Filter>Source Files\custom_tasks</Filter>
-    </ClCompile>
-    <ClCompile Include="entity_state.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity_state.cpp">
-      <Filter>Source Files\custom_tasks</Filter>
+    <ClCompile Include="register_types.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
