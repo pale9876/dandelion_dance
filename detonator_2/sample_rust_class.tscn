@@ -3,6 +3,12 @@
 [ext_resource type="Script" uid="uid://dooww2ldt1dxa" path="res://sample_rust_class.gd" id="1_e8am8"]
 
 [node name="AutoSpriteComponent" type="AutoSpriteComponent"]
+dict = {
+&"AutoSprite": NodePath("AutoSprite"),
+&"AutoSprite2": NodePath("AutoSprite2"),
+&"AutoSprite3": NodePath("AutoSprite3"),
+&"AutoSprite4": NodePath("AutoSprite4")
+}
 script = ExtResource("1_e8am8")
 
 [node name="AutoSprite" type="AutoSprite" parent="."]
