@@ -1,5 +1,5 @@
 [package]
-name = "gdext_rust_init"
+name = "rain_framework"
 version = "0.1.0"
 edition = "2024"
 
