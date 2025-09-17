@@ -1,0 +1,8 @@
+[configuration]
+entry_symbol = "rain_framework_init"
+compatibility_minimum = 4.4
+reloadable = true
+
+[libraries]
+windows.debug.x86_64 =   "res://../rain_framework/target/debug/rain_framework.dll"
+windows.release.x86_64 = "res://../rain_framework/target/release/rain_framework.dll"
