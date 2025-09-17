@@ -1,9 +1,0 @@
-[gd_scene format=3 uid="uid://c1v57xoq4cnud"]
-
-[node name="Node2D" type="Node2D"]
-
-[node name="Entity" type="Entity" parent="."]
-id = 2
-
-[node name="Entity2" type="Entity" parent="."]
-id = 3

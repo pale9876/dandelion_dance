@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqi0ucrdoq24b"]
+
+[ext_resource type="Script" uid="uid://dooww2ldt1dxa" path="res://sample_rust_class.gd" id="1_e8am8"]
+
+[node name="AutoSpriteComponent" type="AutoSpriteComponent"]
+script = ExtResource("1_e8am8")
+
+[node name="AutoSprite" type="AutoSprite" parent="."]
+
+[node name="AutoSprite2" type="AutoSprite" parent="."]
+
+[node name="AutoSprite3" type="AutoSprite" parent="."]
+
+[node name="AutoSprite4" type="AutoSprite" parent="."]

@@ -2,7 +2,6 @@
 
 entry_symbol = "limboai_init"
 compatibility_minimum = "4.2"
-reloadable = false
 
 [libraries]
 
@@ -47,7 +46,6 @@ BTComment = "res://addons/limboai/icons/BTComment.svg"
 BTCondition = "res://addons/limboai/icons/BTCondition.svg"
 BTConsolePrint = "res://addons/limboai/icons/BTConsolePrint.svg"
 BTCooldown = "res://addons/limboai/icons/BTCooldown.svg"
-BTCustom = "res://addons/limboai/icons/BTCustom.svg"
 BTDecorator = "res://addons/limboai/icons/BTDecorator.svg"
 BTDelay = "res://addons/limboai/icons/BTDelay.svg"
 BTDynamicSelector = "res://addons/limboai/icons/BTDynamicSelector.svg"

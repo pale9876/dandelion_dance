@@ -1,18 +1,14 @@
-[gd_resource type="BehaviorTree" load_steps=6 format=3 uid="uid://dxkqje8b55ky8"]
+[gd_resource type="BehaviorTree" load_steps=5 format=3 uid="uid://dxkqje8b55ky8"]
 
 [ext_resource type="Script" uid="uid://dlegx1vp56gp0" path="res://ai/tasks/change_inc_dec.gd" id="1_wvdef"]
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_2m7hj"]
 
-[sub_resource type="BTCheckDistance" id="BTCheckDistance_wvdef"]
-tolorance = 200.0
-custom_name = "Check Distance range: 200.0"
-
 [sub_resource type="BTAction" id="BTAction_qnea1"]
 script = ExtResource("1_wvdef")
 
 [sub_resource type="BTSequence" id="BTSequence_qnea1"]
-children = [SubResource("BTCheckDistance_wvdef"), SubResource("BTAction_qnea1")]
+children = [SubResource("BTAction_qnea1")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_2m7hj")

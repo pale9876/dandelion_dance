@@ -1,8 +1,0 @@
-[configuration]
-
-entry_symbol = "mp_module_init"
-compatibility_minimum = "4.4"
-reloadable = true
-
-[libraries]
-windows.debug.x86_64 = "res://addons/manager_plugin/bin/manager_plugin.windows.template_debug.x86_64.dll"

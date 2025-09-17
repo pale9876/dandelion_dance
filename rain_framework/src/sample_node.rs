@@ -5,6 +5,11 @@ use godot::classes::{Node, INode};
 #[class(tool, base=Node)]
 pub struct SampleNode
 {
+    #[var]
+    trans_name: GString,
+    #[export]
+    index: i64,
+
     base: Base<Node>,
 }
 
@@ -13,7 +18,12 @@ impl INode for SampleNode
 {
     fn init(base:Base<Node>) -> Self
     {
-        Self { base }
+        Self
+        {
+            trans_name: GString::from("Fire"),
+            index: 10,
+            base
+        }
     }
 
     fn enter_tree(&mut self)
