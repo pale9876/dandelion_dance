@@ -102,7 +102,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;TOOLS_ENABLED;LIMBOAI_GDEXTENSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+<<<<<<< HEAD
       <AdditionalIncludeDirectories>C:\Users\shson\Documents\dandelion_dance\limbo_custom\limbo_custom\; C:\Users\shson\Documents\dandelion_dance\manager_plugin_2\godot-cpp\include\; C:\Users\shson\Documents\dandelion_dance\manager_plugin_2\godot-cpp\gen\include; C:\Users\shson\Documents\dandelion_dance\manager_plugin_2\godot-cpp\gdextension\; C:\Users\shson\Documents\dandelion_dance\manager_plugin_2\manager_plugin_2\;</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>C:\Users\ssh\Documents\dandelion_dance\limbo_custom\limbo_custom\;C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\godot-cpp\gdextension\;C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\manager_plugin_2\;C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\godot-cpp\gen\include;C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\godot-cpp\src;C:\Users\ssh\Documents\dandelion_dance\manager_plugin_2\godot-cpp\include</AdditionalIncludeDirectories>
+>>>>>>> parent of e4d6779 (Merge branch 'main' of https://github.com/pale9876/dandelion_dance)
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
     </ClCompile>
@@ -136,6 +140,11 @@
     <ClCompile Include="bt_aim_at.cpp" />
     <ClCompile Include="bt_check_distance.cpp" />
     <ClCompile Include="bt_sample_task.cpp" />
+<<<<<<< HEAD
+=======
+    <ClCompile Include="entity_state.cpp" />
+    <ClCompile Include="entity_state.h" />
+>>>>>>> parent of e4d6779 (Merge branch 'main' of https://github.com/pale9876/dandelion_dance)
     <ClCompile Include="register_types.cpp" />
     <ClCompile Include="state_machine.cpp" />
   </ItemGroup>
