@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqi0ucrdoq24b"]
+[gd_scene load_steps=4 format=3 uid="uid://dqi0ucrdoq24b"]
 
 [ext_resource type="Script" uid="uid://dooww2ldt1dxa" path="res://sample_rust_class.gd" id="1_e8am8"]
+[ext_resource type="Script" uid="uid://dff5iy7jv2xqh" path="res://sample_auto_sprite.gd" id="2_ntj2u"]
+
+[sub_resource type="Trigger" id="Trigger_ntj2u"]
 
 [node name="AutoSpriteComponent" type="AutoSpriteComponent"]
 dict = {
@@ -12,9 +15,13 @@ dict = {
 script = ExtResource("1_e8am8")
 
 [node name="AutoSprite" type="AutoSprite" parent="."]
+trigger = SubResource("Trigger_ntj2u")
+script = ExtResource("2_ntj2u")
 
 [node name="AutoSprite2" type="AutoSprite" parent="."]
 
 [node name="AutoSprite3" type="AutoSprite" parent="."]
 
 [node name="AutoSprite4" type="AutoSprite" parent="."]
+
+[node name="Entity" type="Entity" parent="."]
