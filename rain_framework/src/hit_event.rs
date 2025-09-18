@@ -14,6 +14,7 @@ pub enum EventType
     SHEILD = 2,
     EVADE = 3,
     BUMP = 4,
+    GRABBED = 5,
 }
 
 #[derive(GodotClass)]

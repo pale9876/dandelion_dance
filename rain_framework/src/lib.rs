@@ -10,6 +10,10 @@ mod sample_node;
 mod auto_sprite;
 mod auto_sprite_component;
 
+// hitbox, hurtbox
+mod hitbox;
+
+
 // custom resource
 mod hit_event;
 mod trigger;

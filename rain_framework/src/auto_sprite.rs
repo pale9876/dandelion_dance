@@ -1,6 +1,5 @@
 use godot::prelude::*;
 use godot::classes::{Sprite2D, ISprite2D};
-use godot::classes::Engine;
 use crate::trigger::{self, Trigger};
 
 #[derive(GodotClass)]
@@ -13,11 +12,12 @@ pub struct AutoSprite
         usage_flags = [EDITOR]
     )]
     play: bool,
-    
-    #[export] paused: bool,
-    #[export] fps: f64,
-    max_time: f64,
-    time: f64,
+    #[var(
+
+    )] paused: bool,
+    #[var(get, set=set_fps, usage_flags=[EDITOR])] fps: f64,
+    #[export] max_time: f64,
+    #[export] time: f64,
     #[export] time_scale: f64,
     #[export] trigger: OnEditor<Gd<Trigger>>,
 
@@ -51,30 +51,28 @@ impl ISprite2D for AutoSprite
 
     fn physics_process(&mut self, delta: f64)
     {
-        if Engine::singleton().is_editor_hint()
-        {
-            return;
-        }
-
         if self.play
         {
-            let _t: f64 = delta * self.time_scale;
-
+            
             if self.paused
             {
-                return
+                return;
             }
             
-            match self.trigger.clone().try_to_unique()
-            {
-                Ok(uq_obj) => {
-                    let opt_obj = Some(uq_obj);
-                    self.signals().triggered().emit(&opt_obj);
-                },
-                Err((shared_obj, rc)) => {}
-            }
-
+            let _t: f64 = delta * self.time_scale;
             self.spend_time(_t);
+
+            // let current_time = self.time;
+            // godot_print!("{current_time}");
+
+            // match self.trigger.clone().try_to_unique()
+            // {
+            //     Ok(uq_obj) => {
+            //         let opt_obj = Some(uq_obj);
+            //         self.signals().triggered().emit(&opt_obj);
+            //     },
+            //     Err(_) => {}
+            // }
         }
     }
 }
@@ -91,36 +89,31 @@ impl AutoSprite
         self.play = toggle;
         if toggle
         {
-            self.play();
+            if self.paused
+            {
+                return
+            }
+            self.time = self.max_time;
         }
         else
         {
-            
+            self.stop();
         }
     }
 
     #[func]
-    fn stop()
-    {
-
-    }
-
-    #[func]
-    fn play(&mut self)
-    {
-        godot_print!("Play");
-        if !self.paused
-        {
-            return
-        }
-        self.base_mut().set_frame(0);
-    }
-
-    #[func]
-    fn pause(&mut self)
+    fn stop(&mut self)
     {
         self.play = false;
-        self.paused = true;
+        self.base_mut().set_frame(0);
+        godot_print!("Stop");
+
+    }
+
+    #[func]
+    fn pause(&mut self, toggle: bool)
+    {
+        self.paused = toggle;
     }
 
     #[func]
@@ -130,31 +123,33 @@ impl AutoSprite
     }
 
     #[func]
-    fn idx_inc(&mut self)
-    {
-        let _frame = self.base().get_frame();
-        self.base_mut().set_frame(_frame + 1);
-
-    }
-
-    #[func]
-    fn idx_dec(&mut self)
-    {
-        let current_frame = self.base().get_frame();
-        self.base_mut().set_frame(current_frame - 1);
-    }
-
-    #[func]
     fn spend_time(&mut self, &spend_time: f64)
     {
         self.time -= spend_time;
         if self.time < 0.
         {
-            self.time = self.max_time;
             let _frame = self.base().get_frame();
-            self.base_mut().set_frame(_frame + 1);
-
+            let max_frame = self.base().get_hframes() - 1;
+            if _frame < max_frame
+            {
+                self.base_mut().set_frame(_frame + 1);
+            }
+            else
+            {
+                self.base_mut().set_frame(0);
+                godot_print!("return frame 0");
+            }
+            
+            self.time = self.max_time;
         }
+    }
+
+    #[func]
+    fn set_fps(&mut self, fps: f64)
+    {
+        self.fps = fps;
+        self.fps.set_property(fps);
+        self.max_time = 1.0 / self.fps;
     }
 
 }

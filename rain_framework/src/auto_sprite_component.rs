@@ -10,6 +10,12 @@ pub struct AutoSpriteComponent
 {
     #[export]
     dict: Dictionary,
+
+    #[var(
+        set=set_idx
+    )]
+    idx: i64,
+
     base: Base<Node2D>
 }
 
@@ -20,30 +26,59 @@ impl INode2D for AutoSpriteComponent
     {
         Self {
             dict: Dictionary::new(),
+            idx: -1,
+
             base
         }
     }
 
+    fn enter_tree(&mut self)
+    {
+        self.signals()
+            .child_entered_tree()
+            .connect_self(Self::on_child_entered);
+    }
+
     fn ready(&mut self)
     {
-        self.update();
+        self.dict_update();
     }
 
 }
 
-
 #[godot_api]
 impl AutoSpriteComponent
 {
+    #[func]
+    fn set_idx(&mut self, idx: i64)
+    {
+        self.idx = idx;
+    }
 
     #[func]
-    fn move_next(&mut self)
+    fn on_child_entered(&mut self, node: Gd<Node>)
     {
+        let auto_sprite = node.try_cast::<AutoSprite>();
+        match auto_sprite {
+            Ok(auto_sprite) => {
+                let path = self.base().get_path_to(&auto_sprite);
+                self.dict.set(
+                    auto_sprite.get_name(), path
+                );
+            },
+            Err(_) => {}
+        }
 
     }
 
     #[func]
-    fn update(&mut self)
+    fn on_child_exited(&mut self, node: Gd<Node>)
+    {
+        
+    }
+
+    #[func]
+    fn dict_update(&mut self)
     {
         self.dict.clear();
         
