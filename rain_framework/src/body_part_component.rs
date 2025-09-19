@@ -5,12 +5,12 @@ use godot::classes::{INode2D, Node2D, RigidBody2D};
 #[class(tool, base=Node2D)]
 pub struct BodyPartComponent
 {
-    head: OnEditor<Gd<PackedScene>>,
-    body: OnEditor<Gd<PackedScene>>,
-    left_leg: OnEditor<Gd<PackedScene>>,
-    left_arm: OnEditor<Gd<PackedScene>>,
-    right_leg: OnEditor<Gd<PackedScene>>,
-    right_arm: OnEditor<Gd<PackedScene>>,
+    #[export] head: OnEditor<Gd<PackedScene>>,
+    #[export] body: OnEditor<Gd<PackedScene>>,
+    #[export] left_leg: OnEditor<Gd<PackedScene>>,
+    #[export] left_arm: OnEditor<Gd<PackedScene>>,
+    #[export] right_leg: OnEditor<Gd<PackedScene>>,
+    #[export] right_arm: OnEditor<Gd<PackedScene>>,
     base: Base<Node2D>
 }
 
@@ -29,7 +29,6 @@ impl INode2D for BodyPartComponent
             base
         }
     }
-
 }
 
 #[godot_api]

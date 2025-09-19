@@ -1,24 +1,22 @@
 use godot::prelude::*;
 use godot::classes::{Sprite2D, ISprite2D};
+
 use crate::trigger::{self, Trigger};
 
 #[derive(GodotClass)]
-#[class(tool, base=Sprite2D)]
+#[class(tool, init, base=Sprite2D)]
 pub struct AutoSprite
 {
     #[var(
         get = is_playing,
         set = set_play,
         usage_flags = [EDITOR]
-    )]
-    play: bool,
-    #[var(
-
-    )] paused: bool,
-    #[var(get, set=set_fps, usage_flags=[EDITOR])] fps: f64,
-    #[export] max_time: f64,
-    #[export] time: f64,
-    #[export] time_scale: f64,
+    )] #[init(val = false)]play: bool,
+    #[export] #[init(val = false)] paused: bool,
+    #[var(get, set=set_fps, usage_flags=[EDITOR])] #[init(val = 10.0)] fps: f64,
+    #[export] #[init(val = 1.0 / 10.0)] max_time: f64,
+    #[export] #[init(val = 1.0 / 10.0)] time: f64,
+    #[export] #[init(val = 1.0)] time_scale: f64,
     #[export] trigger: OnEditor<Gd<Trigger>>,
 
     base: Base<Sprite2D>,
@@ -27,22 +25,6 @@ pub struct AutoSprite
 #[godot_api]
 impl ISprite2D for AutoSprite
 {
-    fn init(base:Base<Sprite2D>) -> Self
-    {
-        Self
-        {
-            play: false,
-            paused: false,
-            fps: 10.0,
-            max_time: 10.0,
-            time: 10.0,
-            time_scale: 1.0,
-            trigger: OnEditor::default(),
-
-            base
-        }
-    }
-
     fn enter_tree(&mut self)
     {
         self.max_time = 1.0 / self.fps;

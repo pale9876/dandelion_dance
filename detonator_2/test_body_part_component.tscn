@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://dlrrlfbrjrkr4"]
+
+[node name="BodyPartComponent" type="BodyPartComponent"]
