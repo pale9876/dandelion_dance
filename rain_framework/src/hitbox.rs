@@ -82,10 +82,11 @@ impl Hitbox
         result
     }
 
-    #[func]
-    fn print_hello()
-    {
-        godot_print!("hello");
-    }
+    // static methods
+    // #[func]
+    // fn print_hello()
+    // {
+    //     godot_print!("hello");
+    // }
 
 }

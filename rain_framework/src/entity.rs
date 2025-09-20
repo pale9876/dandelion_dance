@@ -3,7 +3,7 @@ use godot::classes::{CharacterBody2D, ICharacterBody2D};
 use godot::classes::Engine;
 use godot::classes::Json;
 
-use crate::nemesis_system::{self, NemesisSystem};
+use crate::nemesis_system::NemesisSystem;
 
 #[derive(GodotClass)]
 #[class(tool, base=CharacterBody2D)]
@@ -38,14 +38,13 @@ impl ICharacterBody2D for Entity
 
     fn enter_tree(&mut self)
     {
-        
         let mut nemesis_system = self.get_nemesis();
         nemesis_system.bind_mut().e_index += 1;
         self.set_eid(nemesis_system.bind().e_index);
 
         if !self.unique
         {
-            let first_name = self.get_default_first_names().pick_random().unwrap();
+            let first_name = Entity::get_default_first_names().pick_random().unwrap();
             self.set_e_name(first_name);
         }
     }
@@ -75,7 +74,7 @@ impl Entity
 
 
     #[func]
-    fn get_default_first_names(&mut self) -> Array<GString>
+    fn get_default_first_names() -> Array<GString>
     {
         let koreans = array![
             "Haneul",

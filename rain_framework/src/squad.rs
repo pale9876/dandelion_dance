@@ -8,6 +8,10 @@ pub struct Squad
 {
     #[export]
     entities: Dictionary,
+    #[var(
+
+    )]
+    leader: Option<Gd<Entity>>,
 
     base: Base<Node2D>
 }
@@ -20,6 +24,7 @@ impl INode2D for Squad
         Self {
             //props
             entities: Dictionary::new(),
+            leader: Option::<Gd<Entity>>::None,
             //
             base
         }
@@ -40,6 +45,11 @@ impl INode2D for Squad
     {
         self._update();
     }
+
+    fn exit_tree(&mut self)
+    {
+
+    }
 }
 
 #[godot_api]
@@ -50,6 +60,13 @@ impl Squad
 
     }
 
+    #[func]
+    fn appoint_leader(&mut self)
+    {
+        
+    }
+    
+    #[func(virtual)]
     fn on_child_entered(&mut self, node: Gd<Node>)
     {
         let entity = node.try_cast::<Entity>();
@@ -64,8 +81,16 @@ impl Squad
         }
     }
 
+    #[func(virtual)]
     fn on_child_exited(&mut self, node: Gd<Node>)
     {
-
+        let entity = node.try_cast::<Entity>();
+        match entity
+        {
+            Ok(entity) => {
+                self.entities.remove(entity.get_name());
+            }
+            Err(_) => ()
+        }
     }
 }

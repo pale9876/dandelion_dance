@@ -45,9 +45,6 @@ stat = SubResource("Resource_nfk4m")
 [node name="Stand" parent="UnitLayer/Unit/Pose" index="0"]
 visible = false
 
-[node name="Hurtbox" parent="UnitLayer/Unit/Pose/Stand" index="0"]
-active = false
-
 [node name="General" parent="UnitLayer/Unit/Pose/Stand/Hurtbox" index="0"]
 visible = false
 disabled = true
@@ -65,9 +62,6 @@ debug_color = Color(1, 0, 0, 1)
 [node name="Unit2" parent="UnitLayer" instance=ExtResource("3_8mm7a")]
 position = Vector2(304, 163)
 stat = SubResource("Resource_8mm7a")
-
-[node name="Hurtbox" parent="UnitLayer/Unit2/Pose/Stand" index="0"]
-active = false
 
 [node name="General" parent="UnitLayer/Unit2/Pose/Stand/Hurtbox" index="0"]
 visible = false

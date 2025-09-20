@@ -56,5 +56,4 @@ impl Hurtbox
         result
     }
 
-
 }
