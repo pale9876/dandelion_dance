@@ -11,13 +11,17 @@ pub struct AutoSprite
         get = is_playing,
         set = set_play,
         usage_flags = [EDITOR]
-    )] #[init(val = false)]play: bool,
-    #[export] #[init(val = false)] paused: bool,
+    )]
+    #[init(val = false)]
+    play: bool,
+    
+    #[export] #[init(val=false)] paused: bool,
+    #[export] #[init(val=false)] repeat: bool,
     #[var(get, set=set_fps, usage_flags=[EDITOR])] #[init(val = 10.0)] fps: f64,
     #[export] #[init(val = 1.0 / 10.0)] max_time: f64,
     #[export] #[init(val = 1.0 / 10.0)] time: f64,
     #[export] #[init(val = 1.0)] time_scale: f64,
-    #[export] trigger: OnEditor<Gd<Trigger>>,
+    #[export] #[init(val=Array::new())] trigger: Array<Gd<Trigger>>,
 
     base: Base<Sprite2D>,
 }
@@ -44,17 +48,6 @@ impl ISprite2D for AutoSprite
             let _t: f64 = delta * self.time_scale;
             self.spend_time(_t);
 
-            // let current_time = self.time;
-            // godot_print!("{current_time}");
-
-            // match self.trigger.clone().try_to_unique()
-            // {
-            //     Ok(uq_obj) => {
-            //         let opt_obj = Some(uq_obj);
-            //         self.signals().triggered().emit(&opt_obj);
-            //     },
-            //     Err(_) => {}
-            // }
         }
     }
 }

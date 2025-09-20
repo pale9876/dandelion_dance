@@ -5,10 +5,8 @@ use godot::classes::{Resource, IResource};
 #[class(base=Resource)]
 pub struct Trigger
 {
-    #[export]
-    line: i64,
-    #[export]
-    trigger_name: GString,
+    #[export] line: i64,
+    #[export] trigger_name: GString,
 
     base: Base<Resource>
 }
@@ -24,4 +22,10 @@ impl IResource for Trigger
             base
         }
     }
+}
+
+#[godot_api]
+impl Trigger
+{
+
 }

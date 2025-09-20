@@ -44,12 +44,17 @@ impl INode2D for AutoSpriteComponent
         self.dict_update();
     }
 
+    fn exit_tree(&mut self)
+    {
+
+    }
+
 }
 
 #[godot_api]
 impl AutoSpriteComponent
 {
-    #[func]
+    #[func()]
     fn set_idx(&mut self, idx: i64)
     {
         self.idx = idx;
@@ -66,7 +71,7 @@ impl AutoSpriteComponent
                     auto_sprite.get_name(), path
                 );
             },
-            Err(_) => {}
+            Err(_) => ()
         }
 
     }
@@ -108,7 +113,7 @@ impl AutoSpriteComponent
                     let cast_success = Some(auto_sprite);
                     result.push(&cast_success);
                 },
-                Err(node) => {}
+                Err(node) => ()
             }
         }
 

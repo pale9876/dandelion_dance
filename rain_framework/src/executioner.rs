@@ -1,5 +1,3 @@
-use std::ffi::c_void;
-
 use godot::prelude::*;
 use godot::classes::{INode, Node};
 use godot::classes::Engine;
@@ -11,7 +9,9 @@ use crate::hit_event::*;
 #[class(tool, base=Node)]
 pub struct Executioner
 {
-    events: Array<VariantArray>, // [0]: event, [1]: from, [2]: to
+    #[var]
+    verbose: bool,
+    events: Array<Option<Gd<HitEvent>>>,
     base: Base<Node>
 }
 
@@ -21,6 +21,7 @@ impl INode for Executioner
     fn init(base:Base<Node>) -> Self
     {
         Self {
+            verbose: false,
             events: Array::new(),
             base
         }
@@ -31,13 +32,10 @@ impl INode for Executioner
         
     }
 
-    fn physics_process(&mut self, delta: f64)
+    fn physics_process(&mut self, _delta: f64)
     {
-        if Engine::singleton().is_editor_hint()
-        {
-            return
-        }
-
+        if Engine::singleton().is_editor_hint() { return }
+        
         if !self.events.is_empty()
         {
             self.ev_handler();
@@ -52,26 +50,43 @@ impl Executioner
     {
         for event in self.events.iter_shared()
         {
-            let ev = event.at(0);
-            let from = event.at(1);
-            let to = event.at(2);
-            
-            let from_entity = from.to::<Gd<Entity>>();
-            let to_entity = to.to::<Gd<Entity>>();
-            
-            match ev.to::<EventType>()
+            if let mut ev = event.unwrap()
             {
-                EventType::HIT => {
-                    let velocity = to_entity.get_velocity();
-                    // to_entity.set_velocity();
-                },
-                EventType::PARRY => {},
-                EventType::SHEILD => {},
-                EventType::EVADE => {},
-                EventType::BUMP => {},
-                EventType::GRABBED => {},
+                let ev_type = ev.bind().get_ev_type();
+                let force = ev.bind().get_force();
+                let mut from = ev.bind_mut().get_from().unwrap();
+                let mut to = ev.bind_mut().get_to().unwrap();
+
+                match ev_type
+                {
+                    // Hit
+                    EventType::HIT => {
+                        let velocity = to.get_velocity();
+                        to.set_velocity(velocity + force);
+                    },
+                    // Parry
+                    EventType::PARRY => {
+                        
+                    },
+                    // Shield
+                    EventType::SHIELD => {
+
+                    },
+                    // Evade
+                    EventType::EVADE => {
+
+                    },
+                    // Bump
+                    EventType::BUMP => {
+
+                    },
+                    // Grabbed
+                    EventType::GRABBED => {
+
+                    }
+                }
             }
         }
-    }
 
+    }
 }

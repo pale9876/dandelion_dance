@@ -1,16 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://dqi0ucrdoq24b"]
+[gd_scene load_steps=5 format=3 uid="uid://dqi0ucrdoq24b"]
 
 [ext_resource type="Script" uid="uid://dooww2ldt1dxa" path="res://sample_rust_class.gd" id="1_e8am8"]
 [ext_resource type="Script" uid="uid://dff5iy7jv2xqh" path="res://sample_auto_sprite.gd" id="2_ntj2u"]
 [ext_resource type="Texture2D" uid="uid://ckwscnj70miri" path="res://2D-Pixel-Art-Character-Template/Dash/dash.png" id="2_uaq4r"]
 
 [sub_resource type="Trigger" id="Trigger_uaq4r"]
-
-[sub_resource type="Trigger" id="Trigger_7kqup"]
-
-[sub_resource type="Trigger" id="Trigger_tfxas"]
-
-[sub_resource type="Trigger" id="Trigger_vfgcg"]
 
 [node name="AutoSpriteComponent" type="AutoSpriteComponent"]
 dict = {
@@ -23,19 +17,16 @@ script = ExtResource("1_e8am8")
 
 [node name="AutoSprite" type="AutoSprite" parent="."]
 time_scale = 0.5
-trigger = SubResource("Trigger_uaq4r")
+trigger = Array[Trigger]([SubResource("Trigger_uaq4r")])
 texture = ExtResource("2_uaq4r")
 hframes = 9
 frame = 3
 script = ExtResource("2_ntj2u")
 
 [node name="AutoSprite2" type="AutoSprite" parent="."]
-trigger = SubResource("Trigger_7kqup")
 
 [node name="AutoSprite3" type="AutoSprite" parent="."]
-trigger = SubResource("Trigger_tfxas")
 
 [node name="AutoSprite4" type="AutoSprite" parent="."]
-trigger = SubResource("Trigger_vfgcg")
 
 [node name="Entity" type="Entity" parent="."]

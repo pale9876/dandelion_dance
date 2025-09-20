@@ -12,6 +12,11 @@ mod auto_sprite_component;
 
 // hitbox, hurtbox
 mod hitbox;
+mod hurtbox;
+
+// pose & pose controller;
+mod pose;
+mod pose_controller;
 
 
 // custom resource
