@@ -5,12 +5,8 @@ use godot::classes::{INode2D, Node2D, RigidBody2D};
 #[class(tool, base=Node2D)]
 pub struct BodyPartComponent
 {
-    #[export] head: OnEditor<Gd<PackedScene>>,
-    #[export] body: OnEditor<Gd<PackedScene>>,
-    #[export] left_leg: OnEditor<Gd<PackedScene>>,
-    #[export] left_arm: OnEditor<Gd<PackedScene>>,
-    #[export] right_leg: OnEditor<Gd<PackedScene>>,
-    #[export] right_arm: OnEditor<Gd<PackedScene>>,
+    #[export] body_parts: Array<Gd<PackedScene>>,
+    
     base: Base<Node2D>
 }
 
@@ -20,12 +16,8 @@ impl INode2D for BodyPartComponent
     fn init(base: Base<Node2D>) -> Self
     {
         Self {
-            head: OnEditor::default(),
-            body: OnEditor::default(),
-            left_leg: OnEditor::default(),
-            left_arm: OnEditor::default(),
-            right_leg: OnEditor::default(),
-            right_arm: OnEditor::default(),
+            body_parts: Array::new(),
+
             base
         }
     }
@@ -37,10 +29,12 @@ impl BodyPartComponent
     #[func]
     fn create_parts(&mut self)
     {
-        if self.head.can_instantiate()
+        for body_part_scene in self.body_parts.iter_shared()
         {
-            let head_part = self.head.instantiate_as::<RigidBody2D>();
-            self.base_mut().add_child(&head_part);
+            if body_part_scene.can_instantiate()
+            {
+                
+            }
         }
     }
 }

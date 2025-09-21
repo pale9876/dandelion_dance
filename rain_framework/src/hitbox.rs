@@ -15,6 +15,7 @@ pub struct Hitbox
         usage_flags=[EDITOR]
     )] hit_grade: i64,
     #[export] collisions: Dictionary,
+
     base: Base<Area2D>
 }
 
@@ -74,7 +75,7 @@ impl Hitbox
             let collision = node.try_cast::<CollisionShape2D>();
             match collision
             {
-                Ok(collision) => {result.push(&collision)},
+                Ok(collision) => { result.push(&collision) },
                 Err(_) => {}
             }
         }
