@@ -19,7 +19,7 @@ impl IRigidBody2D for BodyPart
 {
     fn ready(&mut self)
     {
-        self.base_mut().apply_impulse(impulse);
+        // self.base_mut().apply_impulse(impulse);
     }
 
     

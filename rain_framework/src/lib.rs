@@ -18,7 +18,6 @@ mod hurtbox;
 mod pose;
 mod pose_controller;
 
-
 // custom resource
 mod hit_event;
 mod trigger;
@@ -30,6 +29,10 @@ mod squad;
 // body part
 mod body_part;
 mod body_part_component;
+
+// screen
+mod effect_screen;
+
 
 // singleton
 mod executioner;
