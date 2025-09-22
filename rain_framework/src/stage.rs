@@ -1,6 +1,7 @@
 use godot::prelude::*;
 use godot::classes::{CollisionPolygon2D, INode2D, Node2D, StaticBody2D};
 
+use crate::stage_collision::StageCollision;
 
 #[derive(GodotClass)]
 #[class(base=Node2D)]
@@ -35,7 +36,8 @@ impl Stage
     #[func]
     fn sb_init(&mut self)
     {
-        let sb_polygon = self.sb.get_node_as::<CollisionPolygon2D>("CollisionPolygon2D");
+        let sb_polygon = self.sb.get_node_as::<StageCollision>("StageCollision");
+        
     }
 
 }
