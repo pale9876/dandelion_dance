@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://di56o3wyn0yyb"]
+
+[ext_resource type="Script" uid="uid://cjw64ebvnw1qa" path="res://sample_shutter_scene.gd" id="1_dd8yn"]
+[ext_resource type="Shader" uid="uid://lwgbnxs162me" path="res://addons/rain_framework/motion_blur.gdshader" id="1_em0q7"]
+[ext_resource type="Script" uid="uid://cu81hr54k3g1i" path="res://sample_motion_blur.gd" id="2_c7kve"]
+[ext_resource type="Texture2D" uid="uid://ciqc24lixa5ks" path="res://icon.svg" id="2_s7161"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s7161"]
+shader = ExtResource("1_em0q7")
+shader_parameter/alpha = 0.617
+shader_parameter/blur = 300.0
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_dd8yn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_s7161")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ScreenShutter" type="ScreenShutter" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_s7161")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_c7kve")

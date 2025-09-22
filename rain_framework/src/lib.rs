@@ -31,8 +31,13 @@ mod body_part;
 mod body_part_component;
 
 // screen
-mod effect_screen;
+mod screen_shutter;
 
+// spot & map
+mod spot_map;
+mod spot;
+mod stage;
+mod stage_collision;
 
 // singleton
 mod executioner;

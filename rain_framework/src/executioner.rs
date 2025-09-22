@@ -52,7 +52,7 @@ impl Executioner
         {
             if let mut ev = event.unwrap()
             {
-                let ev_type = ev.bind().get_ev_type();
+                let ev_type = ev.bind().event_type;
                 let force = ev.bind().get_force();
                 let mut from = ev.bind_mut().get_from().unwrap();
                 let mut to = ev.bind_mut().get_to().unwrap();

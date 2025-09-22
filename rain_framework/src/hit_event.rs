@@ -24,9 +24,7 @@ pub enum EventType
 #[class(tool, base=Resource)]
 pub struct HitEvent
 {
-    #[var(
-        get, set=set_hit_event_type
-    )] event_type: EventType,
+    #[var] pub event_type: EventType,
     #[var] from: Option<Gd<Entity>>,
     #[var] to: Option<Gd<Entity>>,
     #[var] force: Vector2,
@@ -60,22 +58,4 @@ impl IResource for HitEvent
                     {PropertyUsageFlags::NO_EDITOR};
         }
     }
-}
-
-#[godot_api]
-impl HitEvent
-{
-    #[func]
-    pub fn set_hit_event_type(&mut self, t: i64)
-    {
-        self.event_type = EventType::from_godot(t);
-        self.base_mut().notify_property_list_changed();
-    }
-
-    pub fn get_ev_type(&self) -> EventType
-    {
-        self.event_type
-    }
-
-
 }
