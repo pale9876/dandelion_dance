@@ -25,6 +25,7 @@ mod trigger;
 // entity
 mod entity;
 mod squad;
+mod trader;
 
 // body part
 mod body_part;
@@ -37,7 +38,10 @@ mod screen_shutter;
 mod spot_map;
 mod spot;
 mod stage;
+mod sector;
+mod sector_area;
 mod stage_collision;
+mod sector_collision;
 
 // singleton
 mod executioner;

@@ -7,7 +7,6 @@ use crate::nemesis_system::NemesisSystem;
 
 #[derive(GodotClass)]
 #[class(tool, base=CharacterBody2D)]
-
 pub struct Entity
 {
     //props
@@ -17,6 +16,13 @@ pub struct Entity
     #[var] is_grabbed: bool,
     #[var] grabbed_by: Option<Gd<Entity>>,
 
+    base: Base<CharacterBody2D>
+}
+
+#[derive(GodotClass)]
+#[class(tool, init, base=CharacterBody2D)]
+pub struct Trader
+{
     base: Base<CharacterBody2D>
 }
 

@@ -1,11 +1,6 @@
 [gd_scene format=3 uid="uid://dqi0ucrdoq24b"]
 
-[node name="Squad" type="Squad" node_paths=PackedStringArray("leader")]
-entities = {
-&"Entity": NodePath("Entity"),
-&"Entity2": NodePath("Entity2")
-}
-leader = NodePath("Entity")
+[node name="Squad" type="Squad"]
 
 [node name="Entity" type="Entity" parent="."]
 

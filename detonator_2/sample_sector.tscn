@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://crmf4wy5hx668"]
+
+[node name="Sector" type="Sector" node_paths=PackedStringArray("sector_area")]
+sector_area = NodePath("SectorArea")
+
+[node name="SectorArea" type="SectorArea" parent="."]
+
+[node name="SectorCollision" type="SectorCollision" parent="SectorArea"]
+polygon = PackedVector2Array(-100, -50, 100, -50, 100, 50, -100, 50)

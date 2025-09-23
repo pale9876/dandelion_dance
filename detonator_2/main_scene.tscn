@@ -27,14 +27,15 @@ script = ExtResource("1_0f027")
 [node name="PCam" type="Camera2D" parent="."]
 script = ExtResource("5_8mm7a")
 
-[node name="Stage" type="Node2D" parent="."]
+[node name="Stage" type="Stage" parent="." node_paths=PackedStringArray("sb")]
+sb = NodePath("StageRect")
 script = ExtResource("2_2c62f")
 
 [node name="StageRect" type="StaticBody2D" parent="Stage"]
 
-[node name="Collider" type="CollisionPolygon2D" parent="Stage/StageRect"]
+[node name="StageCollision" type="StageCollision" parent="Stage/StageRect"]
 build_mode = 1
-polygon = PackedVector2Array(0, 0, 500, 0, 500, 300, 0, 300)
+polygon = PackedVector2Array(0, 0, 896, 0, 896, 384, 0, 384)
 
 [node name="UnitLayer" type="Node2D" parent="."]
 
@@ -79,7 +80,7 @@ debug_color = Color(1, 0, 0, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Control" type="Control" parent="CanvasLayer"]
+[node name="HUD" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -87,7 +88,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PlayerProfile" parent="CanvasLayer/Control" instance=ExtResource("6_hq1ik")]
+[node name="PlayerProfile" parent="CanvasLayer/HUD" instance=ExtResource("6_hq1ik")]
+visible = false
 layout_mode = 1
 
 [editable path="UnitLayer/Unit"]
