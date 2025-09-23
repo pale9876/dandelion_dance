@@ -47,6 +47,9 @@ mod sector_collision;
 mod executioner;
 mod nemesis_system;
 
+//ecs
+mod ecs;
+
 struct RainFramworkExtension;
 
 #[gdextension]

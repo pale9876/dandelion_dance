@@ -1,5 +1,7 @@
+use godot::classes::file_access::ModeFlags;
+use godot::global::Error;
 use godot::prelude::*;
-use godot::classes::{CharacterBody2D, ICharacterBody2D};
+use godot::classes::{CharacterBody2D, FileAccess, ICharacterBody2D};
 use godot::classes::Engine;
 use godot::classes::Json;
 
@@ -26,6 +28,12 @@ pub struct Trader
     base: Base<CharacterBody2D>
 }
 
+trait EID
+{
+    fn get_eid(&self) -> i64;
+    fn set_eid(&mut self, value: i64);
+}
+
 #[godot_api]
 impl ICharacterBody2D for Entity
 {
@@ -36,7 +44,7 @@ impl ICharacterBody2D for Entity
             unique: false,
             e_name: GString::from(""),
             is_grabbed: false,
-            grabbed_by: Option::<Gd<Entity>>::None,
+            grabbed_by: Option::None,
 
             base,
         }
@@ -62,6 +70,7 @@ impl ICharacterBody2D for Entity
         self.set_eid(-1);
     }
 }
+
 
 #[godot_api]
 impl Entity
@@ -122,9 +131,23 @@ impl Entity
 
     }
 
-    fn get_first_name_from_json(&mut self)
+    fn get_first_name_from_json(&mut self, path: GString) -> GString
     {
+        let mut result: GString = GString::from("");
         let mut json = Json::new_gd();
+
+        if let Some(file) = FileAccess::open(&path, ModeFlags::READ)
+        {
+
+            let data = file.get_as_text();
+            let parsed = json.parse(&data);
+            if parsed == Error::OK
+            {
+                result = json.get_data().stringify();
+            }
+        }
+
+        result
 
         // json.set_path(path);
     }
