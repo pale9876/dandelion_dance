@@ -94,7 +94,9 @@ impl Entity
         let koreans = array![
             "Haneul",
             "Yuri",
-            "Rinae"
+            "Rinae",
+            "Eunju",
+            "Hani",
         ];
 
         let japanese: Array<GString> = array![
@@ -104,20 +106,25 @@ impl Entity
             "Ren",
             "Yuriko",
             "Yuuko",
-
+            "Yuno",
+            "Yupiteru",
         ];
 
         let chinese: Array<GString> = array![
             "Rhwen",
             "Ling",
             "Yun",
-            "Jiaqi"
+            "Yuulong"
         ];
 
         let etcs: Array<GString> = array![
             "Santos",
             "Luna",
-            "Patria"
+            "Patria",
+            "Khasandra",
+            "Elisabeth",
+            "Ahsin"
+
         ];
 
         let mut result: Array<GString>= Array::new();
