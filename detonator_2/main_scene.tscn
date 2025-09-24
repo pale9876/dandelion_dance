@@ -27,8 +27,7 @@ script = ExtResource("1_0f027")
 [node name="PCam" type="Camera2D" parent="."]
 script = ExtResource("5_8mm7a")
 
-[node name="Stage" type="Stage" parent="." node_paths=PackedStringArray("sb")]
-sb = NodePath("StageRect")
+[node name="Stage" type="Stage" parent="."]
 script = ExtResource("2_2c62f")
 
 [node name="StageRect" type="StaticBody2D" parent="Stage"]

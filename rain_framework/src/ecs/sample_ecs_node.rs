@@ -38,7 +38,7 @@ impl INode2D for SampleEcsNode
 
     fn ready(&mut self)
     {
-
+        self.send_ecs_request(EcsRequest::ApplicationWillInitialize);
     }
 
     fn process(&mut self, delta: f64)
@@ -49,11 +49,23 @@ impl INode2D for SampleEcsNode
             Ok(e) => e,
         };
 
-        match event
+        godot_print!("{:?}", event);
+
+        let response = match event
         {
-            EcsEvents::REQUEST(_) => (),
-            EcsEvents::RESPONSE(_) => {}
-        }
+            EcsEvents::REQUEST(_) => return,
+            EcsEvents::RESPONSE(res) => res,
+        };
+
+        godot_print!("Event {:?}", response);
     }
 
+}
+
+impl SampleEcsNode
+{
+    pub fn send_ecs_request(&self, req: EcsRequest)
+    {
+        let _ = self.ecs_sender.send(EcsEvents::REQUEST(req));
+    }
 }

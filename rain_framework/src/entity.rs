@@ -12,8 +12,14 @@ use crate::nemesis_system::NemesisSystem;
 pub struct Entity
 {
     //props
+    #[var(
+        set=set_eid, get=get_eid,
+        usage_flags=[EDITOR, READ_ONLY]
+    )]
     eid: i64,
     #[var(usage_flags=[EDITOR])] unique: bool,
+    #[var()] first_name: GString,
+    #[var()] last_name: GString,
     #[var(usage_flags=[EDITOR])] e_name: GString,
     #[var] is_grabbed: bool,
     #[var] grabbed_by: Option<Gd<Entity>>,
@@ -28,12 +34,6 @@ pub struct Trader
     base: Base<CharacterBody2D>
 }
 
-trait EID
-{
-    fn get_eid(&self) -> i64;
-    fn set_eid(&mut self, value: i64);
-}
-
 #[godot_api]
 impl ICharacterBody2D for Entity
 {
@@ -42,32 +42,33 @@ impl ICharacterBody2D for Entity
         Self{
             eid: 0,
             unique: false,
-            e_name: GString::from(""),
+            first_name: GString::default(),
+            last_name: GString::default(),
+            e_name: GString::default(),
             is_grabbed: false,
             grabbed_by: Option::None,
 
             base,
         }
+
     }
 
     fn enter_tree(&mut self)
     {
-        let mut nemesis_system = self.get_nemesis();
-        nemesis_system.bind_mut().e_index += 1;
+        // set eid
+        let mut nemesis_system = Entity::get_nemesis();
+        let self_refer = self.to_gd();
+        nemesis_system.bind_mut().entity_entered(self_refer);
         self.set_eid(nemesis_system.bind().e_index);
 
-        if !self.unique
-        {
-            let first_name = Entity::get_default_first_names().pick_random().unwrap();
-            self.set_e_name(first_name);
-        }
+        // self.set_random_fist_name(GString::default());
+
     }
 
     fn exit_tree(&mut self)
     {
-        let mut nemesis: Gd<NemesisSystem> = self.get_nemesis();
-        nemesis.bind_mut().e_index -= 1;
-        self.set_eid(-1);
+        let mut nemesis_system: Gd<NemesisSystem> = Entity::get_nemesis();
+        nemesis_system.bind_mut().entity_exited(self.eid);
     }
 }
 
@@ -76,22 +77,35 @@ impl ICharacterBody2D for Entity
 impl Entity
 {
     #[func]
-    fn get_eid(&self) -> i64
+    pub fn get_eid(&self) -> i64
     {
         self.eid
     }
 
     #[func]
-    fn set_eid(&mut self, value: i64)
+    pub fn set_eid(&mut self, value: i64)
     {
         self.eid = value;
     }
 
+    #[func]
+    fn set_random_first_name(&mut self, faction: GString)
+    {
+        let r_name = Entity::get_default_first_names(faction)
+                                .pick_random()
+                                .unwrap_or(GString::default());
+        self.set_e_name(r_name.clone());
+        // Entity::get_nemesis().bind_mut().used_names.set()
+    }
 
     #[func]
-    fn get_default_first_names() -> Array<GString>
+    fn get_default_first_names(faction: GString) -> Array<GString>
     {
-        let koreans = array![
+        let nemesis_system: Gd<NemesisSystem> = Entity::get_nemesis();
+
+        let mut dict = Dictionary::new();
+
+        let koreans: Array<GString> = array![
             "Haneul",
             "Yuri",
             "Rinae",
@@ -104,6 +118,7 @@ impl Entity
             "Hana",
             "Rin",
             "Ren",
+            "Akira",
             "Yuriko",
             "Yuuko",
             "Yuno",
@@ -124,43 +139,73 @@ impl Entity
             "Khasandra",
             "Elisabeth",
             "Ahsin"
-
         ];
+
+        dict.set(GString::from("korean"), koreans);
+        dict.set(GString::from("japanese"), japanese);
+        dict.set(GString::from("chinese"), chinese);
+        dict.set(GString::from("etc"), etcs);
 
         let mut result: Array<GString>= Array::new();
 
-        result.extend_array(&koreans);
-        result.extend_array(&japanese);
-        result.extend_array(&chinese);
-        result.extend_array(&etcs);
-
-        result
-
-    }
-
-    fn get_first_name_from_json(&mut self, path: GString) -> GString
-    {
-        let mut result: GString = GString::from("");
-        let mut json = Json::new_gd();
-
-        if let Some(file) = FileAccess::open(&path, ModeFlags::READ)
+        if !faction.is_empty()
         {
-
-            let data = file.get_as_text();
-            let parsed = json.parse(&data);
-            if parsed == Error::OK
+            if dict.contains_key(faction.clone())
             {
-                result = json.get_data().stringify();
+                let _arr = dict.at(faction).to::<Array<GString>>();
+                result.extend_array(&_arr);
+            }
+        }
+        else
+        {
+            let etcs = dict.at("etc").to::<Array<GString>>();
+            result.extend_array(&etcs);
+        }
+
+        let used = nemesis_system.bind().get_used_names();
+
+        for name in used.iter_shared()
+        {
+            if result.contains(&name)
+            {
+                result.erase(&name);
             }
         }
 
         result
 
-        // json.set_path(path);
     }
 
     #[func]
-    fn get_nemesis(&mut self) -> Gd<NemesisSystem>
+    fn get_data_from_json(path: GString, faction: GString) -> Dictionary
+    {
+        let mut result: Variant = Variant::nil();
+        let mut dict = Dictionary::new();
+        let mut json = Json::new_gd();
+
+        if let Some(file) = FileAccess::open(&path, ModeFlags::READ)
+        {
+            let data = file.get_as_text();
+            let parsed = json.parse(&data);
+            if parsed == Error::OK
+            {
+                result = json.get_data();
+            }
+        }
+
+        dict = result.to::<Dictionary>();
+
+        dict
+    }
+    
+    // #[func]
+    // fn get_last_names_from_json(path: GString, faction: GString)
+    // {
+
+    // }
+
+    #[func]
+    fn get_nemesis() -> Gd<NemesisSystem>
     {
         let engine = Engine::singleton();
         let nemesis_c_name = &NemesisSystem::class_name().to_string_name();

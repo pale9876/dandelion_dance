@@ -9,6 +9,7 @@ pub struct NemesisSystem
 {
     pub e_index: i64,
     pub entities: Dictionary,
+    pub used_names: Dictionary,
 
     base: Base<Node>
 }
@@ -21,6 +22,7 @@ pub impl INode for NemesisSystem
         Self {
             e_index: -1,
             entities: Dictionary::new(),
+            used_names: Dictionary::new(),
 
             base
         }
@@ -43,15 +45,20 @@ impl NemesisSystem
         result
     }
 
-    fn entity_entered(&mut self, entity: Gd<Entity>)
+    pub fn entity_entered(&mut self, entity: Gd<Entity>)
     {
         self.e_index += 1;
         self.entities.set(self.e_index, Some(entity));
     }
 
-    fn entity_exited(&mut self, idx: i64)
+    pub fn entity_exited(&mut self, idx: i64)
     {
         self.entities.remove(idx);
+    }
+
+    pub fn get_used_names(&self) -> Dictionary
+    {
+        self.used_names.clone()
     }
 
 }
