@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1kd1pfyvyc4u"]
+
+[ext_resource type="Script" uid="uid://b43cj3q6kmlck" path="res://KoreanSample.cs" id="1_h186f"]
+
+[node name="Josa" type="Node"]
+script = ExtResource("1_h186f")

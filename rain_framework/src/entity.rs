@@ -111,6 +111,13 @@ impl Entity
             "Rinae",
             "Eunju",
             "Hani",
+            "Jinseon",
+            "Semi",
+            "Muna",
+            "Mirae",
+            "Yuna",
+            "Miro",
+
         ];
 
         let japanese: Array<GString> = array![
@@ -122,7 +129,10 @@ impl Entity
             "Yuriko",
             "Yuuko",
             "Yuno",
-            "Yupiteru",
+            "Yukiteru",
+            "Tsubaki",
+            "Minene",
+            "Aru",
         ];
 
         let chinese: Array<GString> = array![
@@ -138,7 +148,8 @@ impl Entity
             "Patria",
             "Khasandra",
             "Elisabeth",
-            "Ahsin"
+            "Ahsin",
+            "Marbel"
         ];
 
         dict.set(GString::from("korean"), koreans);
@@ -162,19 +173,107 @@ impl Entity
             result.extend_array(&etcs);
         }
 
-        let used = nemesis_system.bind().get_used_names();
+        // let used = nemesis_system.bind().get_used_names();
 
-        for name in used.iter_shared()
+        // for name in used.iter_shared()
+        // {
+        //     if result.contains(&name)
+        //     {
+        //         result.erase(&name);
+        //     }
+        // }
+
+        result
+
+    }
+
+    #[func]
+    fn get_default_last_names(faction: GString) -> Array<GString>
+    {
+        let mut dict: Dictionary = Dictionary::new();
+        let mut result: Array<GString> = Array::new();
+
+        let koreans: Array<GString> = array![
+            "Yuu",
+            "Gang",
+            "Kim",
+            "Gwon",
+            "Lee",
+            "Jang",
+        ];
+
+        let japanese: Array<GString> = array![
+            "Hasegawa",
+            "Gasai",
+            "Amano",
+            "Kasugano",
+            "Hirasaka",
+            "Uryuu",
+            "Tatsumaki",
+            "Hojou",
+            "Satou",
+            "Akise",
+        ];
+
+        dict.set("korean", koreans);
+        dict.set("japanese", japanese);
+
+        if !faction.is_empty()
         {
-            if result.contains(&name)
+            if dict.contains_key(faction.clone())
             {
-                result.erase(&name);
+                let _arr = dict.at(faction).to::<Array<GString>>();
+                result.extend_array(&_arr);
             }
+            else
+            {
+                godot_error!("{} isn't in default last name variants.", faction);
+            }
+        }
+        else
+        {
+            godot_error!("{} must has some value.", faction);
         }
 
         result
 
     }
+
+    #[func]
+    fn get_rand_name(has_l_name: bool, faction: GString) -> GString
+    {
+        let mut result: String = String::default();
+        let mut f_name: String;
+        let mut l_name: String = String::default();
+
+        if has_l_name
+        {
+            let l_name_gstr = Entity::get_default_last_names(faction.clone())
+                .pick_random()
+                .unwrap_or(GString::default());
+            l_name = String::from(&l_name_gstr);
+        }
+        
+        let f_name_gstr = Entity::get_default_first_names(faction.clone())
+            .pick_random()
+            .unwrap_or(GString::default());
+
+        f_name = String::from(&f_name_gstr);
+
+        result = l_name.clone() + " ".into() + &f_name.clone();
+
+        let nemesis = Entity::get_nemesis();
+        if nemesis.bind().used_names.contains_key(faction)
+        {
+            
+        }
+
+        let result_g = GString::from(result);
+
+        result_g
+
+    }
+
 
     #[func]
     fn get_data_from_json(path: GString, faction: GString) -> Dictionary
@@ -198,11 +297,7 @@ impl Entity
         dict
     }
     
-    // #[func]
-    // fn get_last_names_from_json(path: GString, faction: GString)
-    // {
 
-    // }
 
     #[func]
     fn get_nemesis() -> Gd<NemesisSystem>
