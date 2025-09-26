@@ -46,6 +46,7 @@ impl INode for Executioner
 #[godot_api]
 impl Executioner
 {
+    #[func(virtual)]
     fn ev_handler(&mut self)
     {
         for event in self.events.iter_shared()

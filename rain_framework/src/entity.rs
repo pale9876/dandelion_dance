@@ -60,9 +60,11 @@ impl ICharacterBody2D for Entity
         let self_refer = self.to_gd();
         nemesis_system.bind_mut().entity_entered(self_refer);
         self.set_eid(nemesis_system.bind().e_index);
+    }
 
-        // self.set_random_fist_name(GString::default());
-
+    fn physics_process(&mut self, delta: f64)
+    {
+        self.base_mut().move_and_slide();
     }
 
     fn exit_tree(&mut self)
@@ -117,7 +119,7 @@ impl Entity
             "Mirae",
             "Yuna",
             "Miro",
-
+            "Nagi"
         ];
 
         let japanese: Array<GString> = array![
@@ -133,6 +135,8 @@ impl Entity
             "Tsubaki",
             "Minene",
             "Aru",
+            "Nagi",
+            "Tsumugi"
         ];
 
         let chinese: Array<GString> = array![
@@ -172,16 +176,6 @@ impl Entity
             let etcs = dict.at("etc").to::<Array<GString>>();
             result.extend_array(&etcs);
         }
-
-        // let used = nemesis_system.bind().get_used_names();
-
-        // for name in used.iter_shared()
-        // {
-        //     if result.contains(&name)
-        //     {
-        //         result.erase(&name);
-        //     }
-        // }
 
         result
 
@@ -296,15 +290,18 @@ impl Entity
 
         dict
     }
-    
-
 
     #[func]
     fn get_nemesis() -> Gd<NemesisSystem>
     {
         let engine = Engine::singleton();
+        
         let nemesis_c_name = &NemesisSystem::class_name().to_string_name();
-        let result = (engine.get_singleton(nemesis_c_name).unwrap()).cast::<NemesisSystem>();
+        
+        let result = engine
+            .get_singleton(nemesis_c_name)
+            .unwrap()
+            .cast::<NemesisSystem>();
 
         result
     }
