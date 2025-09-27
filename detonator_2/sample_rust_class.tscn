@@ -1,3 +1,11 @@
-[gd_scene format=3 uid="uid://dqi0ucrdoq24b"]
+[gd_scene load_steps=2 format=3 uid="uid://dqi0ucrdoq24b"]
 
-[node name="SampleEcsNode" type="SampleEcsNode"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2krfw"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Entity" type="Entity" parent="."]
+position = Vector2(66, 30)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entity"]
+shape = SubResource("RectangleShape2D_2krfw")

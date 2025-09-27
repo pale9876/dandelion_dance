@@ -20,9 +20,15 @@ impl INode2D for PoseController
         }
     }
 
+    fn enter_tree(&mut self)
+    {
+        self.signals().child_entered_tree().connect_self(Self::on_child_entered);
+        self.signals().child_exiting_tree().connect_self(Self::on_child_exited);
+    }
+
     fn ready(&mut self)
     {
-        self._update();
+
     }
 
 }
@@ -30,9 +36,12 @@ impl INode2D for PoseController
 #[godot_api]
 impl PoseController
 {
+    fn on_child_entered(&mut self, node: Gd<Node>)
+    {
 
-    #[func]
-    fn _update(&mut self)
+    }
+
+    fn on_child_exited(&mut self, node: Gd<Node>)
     {
 
     }

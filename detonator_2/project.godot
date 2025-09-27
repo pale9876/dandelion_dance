@@ -17,7 +17,6 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-PlayerController="*res://Global/PlayerController.gd"
 StageController="*res://Global/stage_controller.gd"
 Judgement="*res://Global/Judgement.gd"
 UnitController="*res://Global/UnitController.gd"

@@ -28,7 +28,7 @@ pub struct InputMonitor
     #[var] input_direction: Vector2,
     #[var] direction_record: Array<Vector2>,
     #[var] abs_dir_record: Array<Vector2>,
-    mouse_in: Array<Gd<Node2D>>,
+    pub mouse_in: Array<Gd<Node2D>>,
 
     old_dir: Vector2,
     shift: bool,

@@ -1,4 +1,8 @@
-use godot::{classes::Engine, prelude::*};
+use godot::prelude::*;
+use godot::classes::{
+    Engine, IResourceFormatLoader, IResourceFormatSaver, ResourceFormatLoader,
+    ResourceFormatSaver, ResourceLoader, ResourceSaver,
+};
 
 use crate::executioner::Executioner;
 use crate::input_monitor::InputMonitor;
@@ -48,6 +52,8 @@ mod sector_collision;
 mod executioner;
 mod nemesis_system;
 mod input_monitor;
+mod naming_module;
+mod save_load_manager;
 
 // ecs
 // mod ecs;

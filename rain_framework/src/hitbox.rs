@@ -31,11 +31,6 @@ impl IArea2D for Hitbox
         }
     }
 
-    fn enter_tree(&mut self)
-    {
-        
-    }
-
     fn ready(&mut self)
     {
         for collision in self.get_areas().iter_shared()
@@ -45,11 +40,6 @@ impl IArea2D for Hitbox
                 self.base().get_path_to(&collision)
             );
         }
-    }
-
-    fn exit_tree(&mut self)
-    {
-
     }
 
 }
@@ -82,12 +72,5 @@ impl Hitbox
 
         result
     }
-
-    // static methods
-    // #[func]
-    // fn print_hello()
-    // {
-    //     godot_print!("hello");
-    // }
 
 }

@@ -33,7 +33,6 @@ impl IArea2D for Hurtbox
 
 }
 
-
 #[godot_api]
 impl Hurtbox
 {

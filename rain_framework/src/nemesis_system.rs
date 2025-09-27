@@ -7,9 +7,9 @@ use crate::entity::Entity;
 #[class(tool, base=Node)]
 pub struct NemesisSystem
 {
-    pub e_index: i64,
-    pub entities: Dictionary,
-    pub used_names: Dictionary,
+    e_index: i64,
+    entities: Dictionary,
+    used_names: Dictionary,
 
     base: Base<Node>
 }
