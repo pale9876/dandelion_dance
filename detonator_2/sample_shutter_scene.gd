@@ -15,7 +15,5 @@ func _process(delta: float) -> void:
 	
 	if _time > 0.0:
 		var rand_pos: Vector2 = Vector2(randf_range(0., 100.), randf_range(0., 100.))
-		global_position = pre_pos + rand_pos
+		global_position = (pre_pos + rand_pos) * clampf(_time, 0., 1.)
 		_time -= delta
-		pass
-		

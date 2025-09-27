@@ -168,20 +168,20 @@ func _on_input_event(vp: Node, ev: InputEvent, s_idx: int) -> void:
 		if ev.button_mask == MOUSE_BUTTON_MASK_LEFT:
 			dragging = true
 			current_collision.disabled = true
-
-	if ev is InputEventMouseButton:
-		if ev.is_pressed() and ev.button_index == MOUSE_BUTTON_LEFT:
-			_clicked()
-
-func _input(ev: InputEvent) -> void:
-	if ev is InputEventMouseButton:
-		if ev.is_released() and ev.button_index == MOUSE_BUTTON_LEFT:
-			dragging = false
-			current_collision.disabled = false
-
-func move(delta: float) -> Vector2:
-	velocity.x = move_toward(velocity.x, get_horz() * _speed, delta * DEFAULT_ACCEL)
-	return velocity
+#
+	#if ev is InputEventMouseButton:
+		#if ev.is_pressed() and ev.button_index == MOUSE_BUTTON_LEFT:
+			#_clicked()
+#
+#func _input(ev: InputEvent) -> void:
+	#if ev is InputEventMouseButton:
+		#if ev.is_released() and ev.button_index == MOUSE_BUTTON_LEFT:
+			#dragging = false
+			#current_collision.disabled = false
+#
+#func move(delta: float) -> Vector2:
+	#velocity.x = move_toward(velocity.x, get_horz() * _speed, delta * DEFAULT_ACCEL)
+	#return velocity
 
 func on_shift() -> void:
 	transit_state(ALWAYS_SHIFT)
@@ -192,14 +192,14 @@ func jump(delta: float) -> Vector2:
 func fric(delta: float) -> void:
 	velocity.x = move_toward(velocity.x, 0.0, delta * DEFAULT_FRIC)
 
-func _clicked() -> void:
-	PlayerController.set_control(self)
-
-func get_vert() -> float:
-	return PlayerController.get_input_dir().y
-
-func get_horz() -> float:
-	return PlayerController.get_input_dir().x
+#func _clicked() -> void:
+	#PlayerController.set_control(self)
+#
+#func get_vert() -> float:
+	#return PlayerController.get_input_dir().y
+#
+#func get_horz() -> float:
+	#return PlayerController.get_input_dir().x
 
 func _get_stage_gravity(delta: float) -> float:
 	velocity.y = minf(
@@ -239,11 +239,11 @@ func set_hp(value: int) -> void:
 func is_handy() -> bool:
 	return handy
 
-func set_handy(toggle: bool) -> void:
-	handy = toggle
-	if not toggle:
-		if PlayerController.control == self:
-			PlayerController.control_disable()
+#func set_handy(toggle: bool) -> void:
+	#handy = toggle
+	#if not toggle:
+		#if PlayerController.control == self:
+			#PlayerController.control_disable()
 
 func _set_move_dir(value: Vector2) -> void:
 	if value.x != 0.0:

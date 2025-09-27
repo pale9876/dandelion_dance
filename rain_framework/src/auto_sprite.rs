@@ -1,7 +1,7 @@
 use godot::prelude::*;
 use godot::classes::{Sprite2D, ISprite2D};
 
-use crate::trigger::{self, Trigger};
+use crate::trigger::{Trigger};
 
 #[derive(GodotClass)]
 #[class(tool, init, base=Sprite2D)]

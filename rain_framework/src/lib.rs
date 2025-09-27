@@ -1,6 +1,11 @@
-use godot::{classes::Engine, prelude::*};
+use godot::prelude::*;
+use godot::classes::{
+    Engine, IResourceFormatLoader, IResourceFormatSaver, ResourceFormatLoader,
+    ResourceFormatSaver, ResourceLoader, ResourceSaver,
+};
 
 use crate::executioner::Executioner;
+use crate::input_monitor::InputMonitor;
 use crate::nemesis_system::NemesisSystem;
 
 // test
@@ -25,7 +30,7 @@ mod trigger;
 // entity
 mod entity;
 mod squad;
-mod trader;
+// mod trader;
 
 // body part
 mod body_part;
@@ -46,9 +51,12 @@ mod sector_collision;
 // singleton
 mod executioner;
 mod nemesis_system;
+mod input_monitor;
+mod naming_module;
+mod save_load_manager;
 
-//ecs
-mod ecs;
+// ecs
+// mod ecs;
 
 struct RainFramworkExtension;
 
@@ -58,17 +66,25 @@ unsafe impl ExtensionLibrary for RainFramworkExtension {
     {
         if level == InitLevel::Scene
         {
+            let mut engine = Engine::singleton();
+
             // nemesis_system
-            Engine::singleton().register_singleton(
+            engine.register_singleton(
                 &NemesisSystem::class_name().to_string_name(),
                 &NemesisSystem::new_alloc()
             );
 
             // executioner
-            Engine::singleton().register_singleton(
+            engine.register_singleton(
                 &Executioner::class_name().to_string_name(),
                 &Executioner::new_alloc()
             );
+
+            engine.register_singleton(
+                &InputMonitor::class_name().to_string(),
+                &InputMonitor::new_alloc()
+            );
+
         }
     }
 
@@ -76,8 +92,10 @@ unsafe impl ExtensionLibrary for RainFramworkExtension {
         if level == InitLevel::Scene
         {
             let mut engine = Engine::singleton();
+
             let nemsys_class_name = &NemesisSystem::class_name().to_string_name();
             let executioner_class_name = &Executioner::class_name().to_string_name();
+            let input_monitor_class_name= &InputMonitor::class_name().to_string_name();
 
             // queue free nemesis system
             if let Some(nemesys) = engine.get_singleton(nemsys_class_name)
@@ -92,6 +110,13 @@ unsafe impl ExtensionLibrary for RainFramworkExtension {
             {
                 let mut casted = executioner.cast::<Executioner>();
                 engine.unregister_singleton(executioner_class_name);
+                casted.queue_free();
+            }
+
+            if let Some(input_moni) = engine.get_singleton(input_monitor_class_name)
+            {
+                let mut casted = input_moni.cast::<InputMonitor>();
+                engine.unregister_singleton(input_monitor_class_name);
                 casted.queue_free();
             }
 

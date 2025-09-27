@@ -8,8 +8,8 @@ pub struct BodyPart
 {
     init_force: Vector2,
 
-    #[init(node="AutoSprite")]
-    sprite: OnReady<Gd<Node>>,
+    #[export]
+    sprite: Option<Gd<AutoSprite>>,
     
     base: Base<RigidBody2D>
 }
@@ -19,15 +19,23 @@ impl IRigidBody2D for BodyPart
 {
     fn ready(&mut self)
     {
-        // self.base_mut().apply_impulse(impulse);
+        let force = self.init_force;
+        self.base_mut().apply_impulse(force);
     }
-
-    
-
 }
 
 #[godot_api]
 impl BodyPart
 {
-
+    #[func]
+    fn from_force(force: Vector2) -> Gd<Self>
+    {
+        Gd::from_init_fn(|base|{
+            Self {
+                init_force: force,
+                sprite: Option::None,
+                base
+            }
+        })
+    }
 }

@@ -1,11 +1,10 @@
-use godot::classes::file_access::ModeFlags;
-use godot::global::Error;
+use godot::obj::WithBaseField;
 use godot::prelude::*;
-use godot::classes::{CharacterBody2D, FileAccess, ICharacterBody2D};
+use godot::classes::{CharacterBody2D, ICharacterBody2D};
 use godot::classes::Engine;
-use godot::classes::Json;
 
 use crate::nemesis_system::NemesisSystem;
+use crate::input_monitor::InputMonitor;
 
 #[derive(GodotClass)]
 #[class(tool, base=CharacterBody2D)]
@@ -18,8 +17,8 @@ pub struct Entity
     )]
     eid: i64,
     #[var(usage_flags=[EDITOR])] unique: bool,
-    #[var()] first_name: GString,
-    #[var()] last_name: GString,
+    // #[var()] first_name: GString,
+    // #[var()] last_name: GString,
     #[var(usage_flags=[EDITOR])] e_name: GString,
     #[var] is_grabbed: bool,
     #[var] grabbed_by: Option<Gd<Entity>>,
@@ -42,27 +41,35 @@ impl ICharacterBody2D for Entity
         Self{
             eid: 0,
             unique: false,
-            first_name: GString::default(),
-            last_name: GString::default(),
+            // first_name: GString::default(),
+            // last_name: GString::default(),
             e_name: GString::default(),
             is_grabbed: false,
             grabbed_by: Option::None,
 
             base,
         }
-
     }
 
     fn enter_tree(&mut self)
     {
         // set eid
-        let mut nemesis_system = Entity::get_nemesis();
-        let self_refer = self.to_gd();
-        nemesis_system.bind_mut().entity_entered(self_refer);
-        self.set_eid(nemesis_system.bind().e_index);
+        // let mut nemesis_system = Entity::get_nemesis();
+        // nemesis_system.bind_mut().entity_entered(self_refer);
+        // self.set_eid(nemesis_system.bind().e_index);
 
-        // self.set_random_fist_name(GString::default());
+        // connect signals
+        if !Engine::singleton().is_editor_hint()
+        {
+            self.signals().mouse_entered().connect_self(Self::on_mouse_entered);
+            self.signals().mouse_exited().connect_self(Self::on_mouse_exited);
+        }
 
+    }
+
+    fn physics_process(&mut self, delta: f64)
+    {
+        self.base_mut().move_and_slide();
     }
 
     fn exit_tree(&mut self)
@@ -89,223 +96,39 @@ impl Entity
     }
 
     #[func]
-    fn set_random_first_name(&mut self, faction: GString)
-    {
-        let r_name = Entity::get_default_first_names(faction)
-                                .pick_random()
-                                .unwrap_or(GString::default());
-        self.set_e_name(r_name.clone());
-        // Entity::get_nemesis().bind_mut().used_names.set()
-    }
-
-    #[func]
-    fn get_default_first_names(faction: GString) -> Array<GString>
-    {
-        let nemesis_system: Gd<NemesisSystem> = Entity::get_nemesis();
-
-        let mut dict = Dictionary::new();
-
-        let koreans: Array<GString> = array![
-            "Haneul",
-            "Yuri",
-            "Rinae",
-            "Eunju",
-            "Hani",
-            "Jinseon",
-            "Semi",
-            "Muna",
-            "Mirae",
-            "Yuna",
-            "Miro",
-
-        ];
-
-        let japanese: Array<GString> = array![
-            "Mochi",
-            "Hana",
-            "Rin",
-            "Ren",
-            "Akira",
-            "Yuriko",
-            "Yuuko",
-            "Yuno",
-            "Yukiteru",
-            "Tsubaki",
-            "Minene",
-            "Aru",
-        ];
-
-        let chinese: Array<GString> = array![
-            "Rhwen",
-            "Ling",
-            "Yun",
-            "Yuulong"
-        ];
-
-        let etcs: Array<GString> = array![
-            "Santos",
-            "Luna",
-            "Patria",
-            "Khasandra",
-            "Elisabeth",
-            "Ahsin",
-            "Marbel"
-        ];
-
-        dict.set(GString::from("korean"), koreans);
-        dict.set(GString::from("japanese"), japanese);
-        dict.set(GString::from("chinese"), chinese);
-        dict.set(GString::from("etc"), etcs);
-
-        let mut result: Array<GString>= Array::new();
-
-        if !faction.is_empty()
-        {
-            if dict.contains_key(faction.clone())
-            {
-                let _arr = dict.at(faction).to::<Array<GString>>();
-                result.extend_array(&_arr);
-            }
-        }
-        else
-        {
-            let etcs = dict.at("etc").to::<Array<GString>>();
-            result.extend_array(&etcs);
-        }
-
-        // let used = nemesis_system.bind().get_used_names();
-
-        // for name in used.iter_shared()
-        // {
-        //     if result.contains(&name)
-        //     {
-        //         result.erase(&name);
-        //     }
-        // }
-
-        result
-
-    }
-
-    #[func]
-    fn get_default_last_names(faction: GString) -> Array<GString>
-    {
-        let mut dict: Dictionary = Dictionary::new();
-        let mut result: Array<GString> = Array::new();
-
-        let koreans: Array<GString> = array![
-            "Yuu",
-            "Gang",
-            "Kim",
-            "Gwon",
-            "Lee",
-            "Jang",
-        ];
-
-        let japanese: Array<GString> = array![
-            "Hasegawa",
-            "Gasai",
-            "Amano",
-            "Kasugano",
-            "Hirasaka",
-            "Uryuu",
-            "Tatsumaki",
-            "Hojou",
-            "Satou",
-            "Akise",
-        ];
-
-        dict.set("korean", koreans);
-        dict.set("japanese", japanese);
-
-        if !faction.is_empty()
-        {
-            if dict.contains_key(faction.clone())
-            {
-                let _arr = dict.at(faction).to::<Array<GString>>();
-                result.extend_array(&_arr);
-            }
-            else
-            {
-                godot_error!("{} isn't in default last name variants.", faction);
-            }
-        }
-        else
-        {
-            godot_error!("{} must has some value.", faction);
-        }
-
-        result
-
-    }
-
-    #[func]
-    fn get_rand_name(has_l_name: bool, faction: GString) -> GString
-    {
-        let mut result: String = String::default();
-        let mut f_name: String;
-        let mut l_name: String = String::default();
-
-        if has_l_name
-        {
-            let l_name_gstr = Entity::get_default_last_names(faction.clone())
-                .pick_random()
-                .unwrap_or(GString::default());
-            l_name = String::from(&l_name_gstr);
-        }
-        
-        let f_name_gstr = Entity::get_default_first_names(faction.clone())
-            .pick_random()
-            .unwrap_or(GString::default());
-
-        f_name = String::from(&f_name_gstr);
-
-        result = l_name.clone() + " ".into() + &f_name.clone();
-
-        let nemesis = Entity::get_nemesis();
-        if nemesis.bind().used_names.contains_key(faction)
-        {
-            
-        }
-
-        let result_g = GString::from(result);
-
-        result_g
-
-    }
-
-
-    #[func]
-    fn get_data_from_json(path: GString, faction: GString) -> Dictionary
-    {
-        let mut result: Variant = Variant::nil();
-        let mut dict = Dictionary::new();
-        let mut json = Json::new_gd();
-
-        if let Some(file) = FileAccess::open(&path, ModeFlags::READ)
-        {
-            let data = file.get_as_text();
-            let parsed = json.parse(&data);
-            if parsed == Error::OK
-            {
-                result = json.get_data();
-            }
-        }
-
-        dict = result.to::<Dictionary>();
-
-        dict
-    }
-    
-
-
-    #[func]
     fn get_nemesis() -> Gd<NemesisSystem>
     {
         let engine = Engine::singleton();
+        
         let nemesis_c_name = &NemesisSystem::class_name().to_string_name();
-        let result = (engine.get_singleton(nemesis_c_name).unwrap()).cast::<NemesisSystem>();
+        
+        let result = engine
+            .get_singleton(nemesis_c_name)
+            .unwrap()
+            .cast::<NemesisSystem>();
 
         result
+    }
+
+    #[func]
+    fn on_mouse_entered(&mut self)
+    {
+        let mut input_monitor = Engine::singleton().get_singleton("InputMonitor").unwrap().cast::<InputMonitor>();
+        let casted = self.base_mut().clone().upcast::<Node2D>();
+        input_monitor.bind_mut().mouse_in.push(&casted);
+
+        godot_print!("Mouse Entered");
+    }
+
+    #[func]
+    fn on_mouse_exited(&mut self)
+    {
+        let mut input_monitor = Engine::singleton().get_singleton("InputMonitor").unwrap().cast::<InputMonitor>();
+        let casted = self.base_mut().clone().upcast::<Node2D>();
+        if input_monitor.bind_mut().mouse_in.clone().contains(&casted.clone())
+        {
+            input_monitor.bind_mut().mouse_in.erase(&casted);
+            godot_print!("Mouse Exited");
+        }
     }
 }

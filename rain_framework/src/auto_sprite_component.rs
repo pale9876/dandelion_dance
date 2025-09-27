@@ -1,3 +1,4 @@
+use godot::classes::class_macros::registry::signal;
 use godot::prelude::*;
 use godot::classes::{Node2D, INode2D};
 
@@ -14,7 +15,7 @@ pub struct AutoSpriteComponent
     #[var(
         set=set_idx
     )]
-    idx: i64,
+    index: i64,
 
     base: Base<Node2D>
 }
@@ -25,8 +26,8 @@ impl INode2D for AutoSpriteComponent
     fn init(base:Base<Node2D>) -> Self
     {
         Self {
-            dict: Dictionary::new(),
-            idx: -1,
+            dict: Dictionary::new(), // <StringName, NodePath>
+            index: -1,
 
             base
         }
@@ -41,7 +42,7 @@ impl INode2D for AutoSpriteComponent
 
     fn ready(&mut self)
     {
-        self.dict_update();
+
     }
 
     fn exit_tree(&mut self)
@@ -54,10 +55,30 @@ impl INode2D for AutoSpriteComponent
 #[godot_api]
 impl AutoSpriteComponent
 {
+    #[signal] fn sprite_changed(sprite_name: StringName);
+
     #[func()]
     fn set_idx(&mut self, idx: i64)
     {
-        self.idx = idx;
+        if self.index != idx
+        {
+            self.index = idx;
+            self.idx_changed(idx);
+        }
+    }
+
+    #[func]
+    fn idx_changed(&mut self, idx: i64)
+    {
+        for node_path in self.dict.values_array().iter_shared()
+        {
+            let npath = node_path.to::<NodePath>();
+            let mut auto_sprite = self.base_mut().get_node_as::<AutoSprite>(&npath);
+            let index_num = auto_sprite.get_index() as i64;
+            auto_sprite.set_visible(if index_num == idx {true} else {false});
+            let c_name = auto_sprite.get_name();
+            self.signals().sprite_changed().emit(&c_name);
+        }
     }
 
     #[func]
@@ -79,7 +100,17 @@ impl AutoSpriteComponent
     #[func]
     fn on_child_exited(&mut self, node: Gd<Node>)
     {
-        
+        match node.try_cast::<AutoSprite>()
+        {
+            Ok(auto_sprite) => {
+                let c_name = auto_sprite.get_name();
+                if self.dict.contains_key(c_name.clone())
+                {
+                    self.dict.remove(c_name);
+                }
+            },
+            Err(_) => ()
+        }
     }
 
     #[func]
