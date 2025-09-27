@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d14at43fisx5t"]
+
+[ext_resource type="Script" uid="uid://6nbyo5tcaua6" path="res://test_korean_string.gd" id="1_kpfr8"]
+
+[node name="TestKoreanString" type="Node"]
+script = ExtResource("1_kpfr8")
