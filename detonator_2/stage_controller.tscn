@@ -57,7 +57,7 @@ metadata/_custom_type_script = "uid://bwso8geusuowb"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Region2/MarginArea"]
 visible = false
-polygon = PackedVector2Array(550, -50, 1250, -50, 1250, 450, 550, 450)
+polygon = PackedVector2Array(500, -100, 1300, -100, 1300, 500, 500, 500)
 
 [node name="Region3" type="Node2D" parent="." node_paths=PackedStringArray("margin_area")]
 script = ExtResource("2_75cke")
