@@ -68,6 +68,5 @@ impl PlayerData
                 base
             }
         )
-            
     }
 }

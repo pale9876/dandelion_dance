@@ -1,7 +1,7 @@
 extends Node2D
 
 
-@onready var stage: Stage = $Stage
+#@onready var stage: Stage = $Stage
 @onready var unit_layer: Node2D = $UnitLayer
 @onready var pcam: PlayerCamera = $PCam
 

@@ -39,7 +39,7 @@ var _speed: float: set = set_speed
 var dragging: bool = false
 
 @export var pickable: bool = true
-@export var auto_sprite: AutoSprite
+@export var auto_sprite: Sprite2D
 
 var invincible: bool = false
 var _intime: float = 0.0: set = activate_invincible # 무적시간
@@ -82,7 +82,7 @@ func _ready() -> void:
 		input_pickable = true
 		input_event.connect(_on_input_event)
 
-	UnitController.add_unit(self)
+	#UnitController.add_unit(self)
 
 
 	if state_machine:
@@ -147,16 +147,16 @@ func _physics_process(delta: float) -> void:
 
 	if is_on_floor():
 		_airstate = AirState.NONE
-	else:
-		_get_stage_gravity(delta)
+	#else:
+		#_get_stage_gravity(delta)
 
 	#_moved(delta)
 	move_and_slide()
 	
 	old_velocity = velocity
 
-func _exit_tree() -> void:
-	UnitController.del_unit(self)
+#func _exit_tree() -> void:
+	#UnitController.del_unit(self)
 
 func _on_state_changed(curr_state: LimboState, prev_state: LimboState) -> void:
 	state_monitor.text = str(curr_state.name)
@@ -201,19 +201,19 @@ func fric(delta: float) -> void:
 #func get_horz() -> float:
 	#return PlayerController.get_input_dir().x
 
-func _get_stage_gravity(delta: float) -> float:
-	velocity.y = minf(
-		velocity.y + StageController.gravity * delta,
-		MAX_GRAVITY
-	)
-	
-	if velocity.y > 0.0: # fall
-		_airstate = AirState.FALLDOWN
-		
-	elif velocity.y < 0.0: # jump up
-		_airstate = AirState.JUMPUP
-	
-	return StageController.gravity
+#func _get_stage_gravity(delta: float) -> float:
+	#velocity.y = minf(
+		#velocity.y + StageController.gravity * delta,
+		#MAX_GRAVITY
+	#)
+	#
+	#if velocity.y > 0.0: # fall
+		#_airstate = AirState.FALLDOWN
+		#
+	#elif velocity.y < 0.0: # jump up
+		#_airstate = AirState.JUMPUP
+	#
+	#return StageController.gravity
 
 func _damaged(value: int) -> void:
 	_current_hp -= value

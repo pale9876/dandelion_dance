@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqiuukyntykv7"]
+
+[ext_resource type="Script" uid="uid://dp0ergxc16eo7" path="res://cs_classes/KoreanLabel.cs" id="1_8v6np"]
+
+[node name="KoreanLabel" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+script = ExtResource("1_8v6np")

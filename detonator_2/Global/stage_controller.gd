@@ -1,7 +1,7 @@
 extends Node
 
 var gravity: float = 970.0
-var current_stage: Stage
+var current_stage: Node
 
 func change_stage() -> void:
 	pass
