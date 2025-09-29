@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 #if TOOLS
 [Tool]
 [GlobalClass]
-public partial class PoseController : Node
+public partial class PoseComponent : Node
 {
 
     [Export] Dictionary<StringName, AutoSprite> auto_sprites;

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+[GlobalClass]
 public partial class Entity : CharacterBody2D
 {
     [Export] private bool _ghost { set => set_ghost(value); get => ghost; }

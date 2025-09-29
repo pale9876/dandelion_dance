@@ -23,7 +23,6 @@ enum AirState {
 	FALLDOWN,
 }
 
-
 signal chosen() # (디버그) 플레이어에게 선택받음
 signal hp_changed(value: int)
 signal max_hp_changed(value: int)

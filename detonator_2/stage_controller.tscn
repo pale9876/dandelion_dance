@@ -13,7 +13,7 @@ idx_dict = {
 1: NodePath("Region2"),
 2: NodePath("Region3")
 }
-_current_index = 2
+_current_index = 0
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 script = ExtResource("2_o0cff")
@@ -23,7 +23,6 @@ build_mode = 1
 polygon = PackedVector2Array(1200, 0, 2200, 0, 2200, 400, 1200, 400)
 
 [node name="Region" type="Node2D" parent="." node_paths=PackedStringArray("margin_area")]
-visible = false
 script = ExtResource("2_75cke")
 _margin = Vector2(100, 100)
 _debug_color = Color(0, 0, 0.490196, 0.462745)
@@ -58,6 +57,7 @@ visible = false
 polygon = PackedVector2Array(500, -100, 1300, -100, 1300, 500, 500, 500)
 
 [node name="Region3" type="Node2D" parent="." node_paths=PackedStringArray("margin_area")]
+visible = false
 script = ExtResource("2_75cke")
 _margin = Vector2(100, 100)
 _debug_color = Color(0.54784, 0.2944, 0.64, 0.509804)
