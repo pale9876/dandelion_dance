@@ -3,8 +3,11 @@ using System;
 
 public partial class Entity : CharacterBody2D
 {
-    [Export] public bool ghost;
-    public bool _ghost { set => set_ghost(value); get => ghost; }
+    [Export] private bool _ghost { set => set_ghost(value); get => ghost; }
+    public bool ghost;
+    [Export] public bool unique { get; set; }
+    [Export] public String first_name { get; set; }
+    [Export] public String last_name { get; set; }
 
     public override void _EnterTree()
     {
@@ -22,6 +25,11 @@ public partial class Entity : CharacterBody2D
     {
         ghost = toggle;
         this.Visible = (toggle) ? false : true;
+    }
+
+    public String get_full_name()
+    {
+        return last_name + " " + first_name;
     }
 
 }

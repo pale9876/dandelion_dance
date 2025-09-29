@@ -10,9 +10,7 @@ public partial class Executioner : Node
     public override void _PhysicsProcess(double _delta)
     {
         foreach (HitEvent ev in events.Values)
-        {
             hit_event_handler(ev);
-        }
 
         index = -1;
     }
@@ -46,5 +44,9 @@ public partial class Executioner : Node
         }
     }
 
+    private void hit(Node from, Node to, float force, Vector2 dir)
+    {
+        
+    }
 
 }

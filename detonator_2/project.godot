@@ -15,6 +15,12 @@ run/main_scene="uid://bmidfw1jvsepy"
 config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+ESystem="*res://cs_classes/global/ESystem.cs"
+Executioner="*res://cs_classes/global/Executioner.cs"
+PlayDataManager="*res://cs_classes/global/PlayDataManager.cs"
+
 [display]
 
 window/size/viewport_width=1280

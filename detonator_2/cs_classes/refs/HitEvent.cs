@@ -22,7 +22,6 @@ public partial class HitEvent : RefCounted
     public Node to;
     public float dir;
     public float force;
-    
 
     public HitEvent(EventType type, Node from, Node to, Dictionary values)
     {

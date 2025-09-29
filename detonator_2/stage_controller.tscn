@@ -1,10 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://cnbp8uyefwulx"]
+[gd_scene load_steps=5 format=3 uid="uid://cnbp8uyefwulx"]
 
-[ext_resource type="Script" uid="uid://u58x005ikflf" path="res://Stage.cs" id="1_uedxq"]
+[ext_resource type="Script" uid="uid://u58x005ikflf" path="res://cs_classes/Stage.cs" id="1_uedxq"]
 [ext_resource type="Script" uid="uid://drj8e5ywasglc" path="res://cs_classes/Region.cs" id="2_75cke"]
+[ext_resource type="Script" uid="uid://bsflrngqxr2qd" path="res://cs_classes/StageRect.cs" id="2_o0cff"]
 [ext_resource type="Script" uid="uid://bwso8geusuowb" path="res://MarginArea.cs" id="3_k2acr"]
 
-[node name="Stage" type="Node2D" node_paths=PackedStringArray("idx_dict", "static_body")]
+[node name="Stage" type="Node2D" node_paths=PackedStringArray("idx_dict")]
 script = ExtResource("1_uedxq")
 _index = 2
 idx_dict = {
@@ -13,9 +14,9 @@ idx_dict = {
 2: NodePath("Region3")
 }
 _current_index = 2
-static_body = NodePath("StaticBody2D")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+script = ExtResource("2_o0cff")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
 build_mode = 1
@@ -25,7 +26,6 @@ polygon = PackedVector2Array(1200, 0, 2200, 0, 2200, 400, 1200, 400)
 visible = false
 script = ExtResource("2_75cke")
 _margin = Vector2(100, 100)
-_region = Vector2(600, 400)
 _debug_color = Color(0, 0, 0.490196, 0.462745)
 alert_colour = Color(0.75, 0.7275, 0.075, 0.184314)
 margin_area = NodePath("MarginArea")
@@ -42,9 +42,7 @@ polygon = PackedVector2Array(-100, -100, 700, -100, 700, 500, -100, 500)
 [node name="Region2" type="Node2D" parent="." node_paths=PackedStringArray("margin_area")]
 visible = false
 script = ExtResource("2_75cke")
-_pivot_point = Vector2(600, 0)
 _margin = Vector2(100, 100)
-_region = Vector2(600, 400)
 _debug_color = Color(0.36, 0.26886, 0.1836, 0.333333)
 alert_colour = Color(0.265, 0.446083, 0.53, 0.309804)
 margin_area = NodePath("MarginArea")
@@ -61,9 +59,7 @@ polygon = PackedVector2Array(500, -100, 1300, -100, 1300, 500, 500, 500)
 
 [node name="Region3" type="Node2D" parent="." node_paths=PackedStringArray("margin_area")]
 script = ExtResource("2_75cke")
-_pivot_point = Vector2(1200, 0)
 _margin = Vector2(100, 100)
-_region = Vector2(1000, 400)
 _debug_color = Color(0.54784, 0.2944, 0.64, 0.509804)
 alert_colour = Color(0.69, 0.44574, 0.4416, 0.541176)
 margin_area = NodePath("MarginArea")

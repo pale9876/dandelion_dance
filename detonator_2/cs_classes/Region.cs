@@ -10,14 +10,14 @@ public partial class Region : Node2D
     // SETGET Props
     [Export] private Vector2 _pivot_point { get => pivot_point; set => pivot_changed(value); }
     [Export] private Vector2 _margin { get => margin; set => set_margin(value); }
-    [Export] private Vector2 _region { set => region_changed(value); get => region; }
+    [Export] private Vector2 _size { set => region_changed(value); get => size; }
     [Export] private Color _debug_color { set => set_debug_color(value); get => debug_colour; }
     [Export] public Color alert_colour { get; set; }
     
     // export props
     public Vector2 pivot_point { get; set; }
     public Vector2 margin = Vector2.Zero;
-    public Vector2 region { get; set; }
+    public Vector2 size { get; set; }
     public Color debug_colour { get; set; }
 
     // Export node
@@ -42,13 +42,13 @@ public partial class Region : Node2D
         if (Engine.IsEditorHint())
         {
             DrawRect(
-                new Rect2(pivot_point, region),
+                new Rect2(pivot_point, size),
                 debug_colour,
                 true
                 );
 
             DrawRect(
-                new Rect2(pivot_point - margin, region + (margin * 2)),
+                new Rect2(pivot_point - margin, size + (margin * 2)),
                 alert_colour,
                 true
                 );
@@ -59,7 +59,7 @@ public partial class Region : Node2D
     {
         if (margin_area != null)
         {
-            margin_area.set_collision(margin, this.GlobalPosition + pivot_point, region);
+            margin_area.set_collision(margin, this.GlobalPosition + pivot_point, size);
         }
 
         QueueRedraw();
@@ -104,7 +104,7 @@ public partial class Region : Node2D
 
     public void region_changed(Vector2 value)
     {
-        region = value;
+        size = value;
         QueueRedraw();
     }
 

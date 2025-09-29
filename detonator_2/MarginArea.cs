@@ -33,6 +33,7 @@ public partial class MarginArea : Area2D
             Vector2 end_point = pivot + region + margin;
 
             var poly = new Vector2[4];
+            
             poly[0] = start_point;
             poly[1] = new Vector2(end_point.X, start_point.Y);
             poly[2] = end_point;
