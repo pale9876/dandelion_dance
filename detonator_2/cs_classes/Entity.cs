@@ -16,6 +16,13 @@ public partial class Entity : CharacterBody2D
         sys.add_entity(this);
     }
 
+    public bool mns_with_global()
+    {
+        Velocity *= GlobalAnimation.global_scale;
+        
+        return MoveAndSlide();
+    }
+
     public ESystem get_sys()
     {
         var e_system = GetNode<ESystem>("/root/ESystem");

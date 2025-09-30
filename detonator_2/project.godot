@@ -21,6 +21,7 @@ ESystem="*res://cs_classes/global/ESystem.cs"
 Executioner="*res://cs_classes/global/Executioner.cs"
 PlayDataManager="*res://cs_classes/global/PlayDataManager.cs"
 PlayerInput="*res://cs_classes/global/PlayerInput.cs"
+GlobalAnimation="*res://cs_classes/global/GlobalAnimation.cs"
 
 [display]
 

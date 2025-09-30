@@ -1,29 +1,46 @@
 using Godot;
-using System;
-
 
 [Tool]
 [GlobalClass]
 public partial class AutoSprite : Sprite2D
 {
-    [Signal] public delegate void startEventHandler();
-    [Signal] public delegate void stoppedEventHandler();
-
-    public enum State{
+    public enum State
+    {
         IDLE,
         PHYSICS,
     }
+    [Signal] public delegate void startEventHandler();
+    [Signal] public delegate void stoppedEventHandler();
 
     [Export] public State state = State.PHYSICS;
-    [Export] public bool playing = false;
+    [Export] public bool playing { set => set_play(value); get => _playing; }
     [Export] public bool repeat = false;
-    private bool _play { set => set_play(value); get => playing; }
+    [Export] public float fps { set => setFps(value); get => _fps; }
+    [Export] public float time_scale { set => setTimeScale(value); get => _time_scale; }
+    private float time { set => setTime(value); get => _time; }
+
+
+    private bool _playing = false;
+    private float _fps = 10.0f;
+    private float _time = 0f;
+    private float _time_scale = 1.0f;
+
+
+    public override void _EnterTree()
+    {
+        if (!Engine.IsEditorHint())
+        {
+            var g_animation = GetNode<GlobalAnimation>("root/GlobalAnimation");
+            g_animation.add_sprite(this);
+        }
+    }
 
     public override void _Process(double delta)
     {
         if (state == State.IDLE)
         {
             if (playing)
+                time -= (float)delta * time_scale * GlobalAnimation.global_scale;
                 next_frame();
         }
     }
@@ -33,7 +50,10 @@ public partial class AutoSprite : Sprite2D
         if (state == State.PHYSICS)
         {
             if (playing)
+            {
+                time -= (float)delta * time_scale * GlobalAnimation.global_scale;
                 next_frame();
+            }
         }
     }
 
@@ -53,6 +73,21 @@ public partial class AutoSprite : Sprite2D
             }
         }
         return false;
+    }
+
+    public void setTimeScale(float scale)
+    {
+        time_scale = Mathf.Clamp(scale, 0.0f, 2.5f);
+    }
+    public void setTime(float value)
+    {
+        _time = Mathf.Max(0.0f, value);
+    }
+
+    public void setFps(float value)
+    {
+        fps = value;
+        _time = 1f / value;
     }
 
     public void set_play(bool toggle)

@@ -40,6 +40,14 @@ public partial class Unit : Entity
         _update();
     }
 
+    public override void _PhysicsProcess(double delta)
+    {
+
+        mns_with_global();
+        
+    }
+
+
     public void _update()
     {
         collisions.Clear();
