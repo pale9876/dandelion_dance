@@ -3,7 +3,8 @@
 [ext_resource type="Script" uid="uid://u58x005ikflf" path="res://cs_classes/Stage.cs" id="1_uedxq"]
 [ext_resource type="Script" uid="uid://drj8e5ywasglc" path="res://cs_classes/Region.cs" id="2_75cke"]
 [ext_resource type="Script" uid="uid://bsflrngqxr2qd" path="res://cs_classes/StageRect.cs" id="2_o0cff"]
-[ext_resource type="Script" uid="uid://bwso8geusuowb" path="res://MarginArea.cs" id="3_k2acr"]
+[ext_resource type="Script" uid="uid://bwso8geusuowb" path="res://cs_classes/MarginArea.cs" id="3_k2acr"]
+
 
 [node name="Stage" type="Node2D" node_paths=PackedStringArray("idx_dict")]
 script = ExtResource("1_uedxq")

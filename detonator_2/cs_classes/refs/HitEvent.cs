@@ -10,6 +10,7 @@ public partial class HitEvent : RefCounted
 
     public enum EventType
     {
+        NONE = -1,
         HIT = 0,
         SHIELD = 1,
         PARRY = 2,
@@ -17,11 +18,10 @@ public partial class HitEvent : RefCounted
         GRABBED = 4,
     }
 
-    public EventType event_type;
+    public EventType event_type = EventType.NONE;
     public Node from;
     public Node to;
-    public float dir;
-    public float force;
+    public Dictionary effects;
 
     public HitEvent(EventType type, Node from, Node to, Dictionary values)
     {
@@ -31,8 +31,7 @@ public partial class HitEvent : RefCounted
 
         if (values.Count != 0)
         {
-            if (values.ContainsKey(event_force)) { this.force = (float)values[event_force].AsDouble(); }
-            if (values.ContainsKey(event_dir)) { this.dir = (float)values[event_dir].AsDouble(); }
+            effects = values;
         }
     }
 

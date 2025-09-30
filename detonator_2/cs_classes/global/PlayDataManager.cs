@@ -12,10 +12,8 @@ public partial class PlayDataManager : Node
     private Resource current_data;
 
     public void set_path(String value) { path = value; }
-    public void save()
+    public void save(int idx)
     {
-        index += 1;
-
         Error r_saver = ResourceSaver.Save(current_data, path + index.ToString(), ResourceSaver.SaverFlags.Compress);
         if (r_saver != Error.Ok)
         {

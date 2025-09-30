@@ -9,17 +9,23 @@ public partial class AutoSprite : Sprite2D
         IDLE,
         PHYSICS,
     }
+    
     [Signal] public delegate void startEventHandler();
     [Signal] public delegate void stoppedEventHandler();
+    [Signal] public delegate void finishedEventHandler();
+    [Signal] public delegate void roopedEventHandler();
 
     [Export] public State state = State.PHYSICS;
     [Export] public bool playing { set => set_play(value); get => _playing; }
     [Export] public bool repeat = false;
     [Export] public float fps { set => setFps(value); get => _fps; }
     [Export] public float time_scale { set => setTimeScale(value); get => _time_scale; }
+    [Export] public bool paused { set; get; }
+
     private float time { set => setTime(value); get => _time; }
 
 
+    private bool _paused = false;
     private bool _playing = false;
     private float _fps = 10.0f;
     private float _time = 0f;
@@ -57,27 +63,29 @@ public partial class AutoSprite : Sprite2D
         }
     }
 
-    public bool next_frame()
+    public void next_frame()
     {
-        if (FrameCoords.X < Hframes)
+        if (FrameCoords.X < Hframes - 1)
         {
             FrameCoords = FrameCoords with { X = FrameCoords.X + 1 };
-            return true;
         }
         else
         {
             if (repeat)
             {
                 FrameCoords = FrameCoords with { X = 0 };
-                return true;
+                EmitSignalrooped();
+            }
+            else
+            {
+                EmitSignalfinished();
             }
         }
-        return false;
     }
 
     public void setTimeScale(float scale)
     {
-        time_scale = Mathf.Clamp(scale, 0.0f, 2.5f);
+        _time_scale = Mathf.Clamp(scale, 0.0f, 2.5f);
     }
     public void setTime(float value)
     {
@@ -86,13 +94,13 @@ public partial class AutoSprite : Sprite2D
 
     public void setFps(float value)
     {
-        fps = value;
+        _fps = value;
         _time = 1f / value;
     }
 
     public void set_play(bool toggle)
     {
-        playing = toggle;
+        _playing = toggle;
 
         if (toggle)
         {

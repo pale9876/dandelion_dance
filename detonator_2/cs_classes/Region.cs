@@ -29,6 +29,8 @@ public partial class Region : Node2D
 
     public override void _Ready()
     {
+        base._Ready();
+
         if (!Engine.IsEditorHint())
         {
             margin_area.BodyEntered += on_body_entered;
@@ -38,6 +40,7 @@ public partial class Region : Node2D
 
     public override void _Draw()
     {
+        base._Draw();
 
         if (Engine.IsEditorHint())
         {

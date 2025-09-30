@@ -1,28 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://bmidfw1jvsepy"]
+[gd_scene load_steps=9 format=3 uid="uid://bmidfw1jvsepy"]
 
 [ext_resource type="Script" uid="uid://d17j0um2nrj1u" path="res://main_scene.gd" id="1_0f027"]
-[ext_resource type="PackedScene" uid="uid://eh7d5r34lx5w" path="res://unit.tscn" id="3_8mm7a"]
 [ext_resource type="Script" uid="uid://bsflrngqxr2qd" path="res://cs_classes/StageRect.cs" id="4_7ycvg"]
 [ext_resource type="Script" uid="uid://drj8e5ywasglc" path="res://cs_classes/Region.cs" id="4_66tet"]
-[ext_resource type="Script" uid="uid://oan4b7rf6yuo" path="res://UnitStat.gd" id="4_hq1ik"]
-[ext_resource type="Script" uid="uid://bwso8geusuowb" path="res://MarginArea.cs" id="5_7ycvg"]
+[ext_resource type="Script" uid="uid://bwso8geusuowb" path="res://cs_classes/MarginArea.cs" id="5_7ycvg"]
 [ext_resource type="Script" uid="uid://yadqxkv5olbs" path="res://camera_2d.gd" id="5_8mm7a"]
 [ext_resource type="PackedScene" uid="uid://cv1kxqd5krltm" path="res://progress_ui.tscn" id="6_hq1ik"]
 [ext_resource type="Script" uid="uid://u58x005ikflf" path="res://cs_classes/Stage.cs" id="6_nfk4m"]
-
-[sub_resource type="Resource" id="Resource_nfk4m"]
-resource_local_to_scene = true
-script = ExtResource("4_hq1ik")
-hp = 10000
-speed = 300.0
-metadata/_custom_type_script = "uid://oan4b7rf6yuo"
-
-[sub_resource type="Resource" id="Resource_8mm7a"]
-resource_local_to_scene = true
-script = ExtResource("4_hq1ik")
-hp = 10000
-speed = 300.0
-metadata/_custom_type_script = "uid://oan4b7rf6yuo"
+[ext_resource type="PackedScene" uid="uid://dhlgdxnmpa7mu" path="res://sample_unit.tscn" id="7_66tet"]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_0f027")
@@ -30,9 +15,7 @@ script = ExtResource("1_0f027")
 [node name="PCam" type="Camera2D" parent="."]
 script = ExtResource("5_8mm7a")
 
-[node name="UnitLayer" type="Node2D" parent="."]
-
-[node name="Stage" type="Node2D" parent="UnitLayer" node_paths=PackedStringArray("idx_dict", "stage_rect")]
+[node name="Stage" type="Node2D" parent="." node_paths=PackedStringArray("idx_dict", "stage_rect")]
 script = ExtResource("6_nfk4m")
 _index = 2
 idx_dict = {
@@ -44,70 +27,68 @@ _current_index = 0
 stage_rect = NodePath("StageRect")
 metadata/_custom_type_script = "uid://u58x005ikflf"
 
-[node name="StageRect" type="StaticBody2D" parent="UnitLayer/Stage" node_paths=PackedStringArray("collision")]
+[node name="StageRect" type="StaticBody2D" parent="Stage" node_paths=PackedStringArray("collision")]
 script = ExtResource("4_7ycvg")
 collision = NodePath("CollisionPolygon2D")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="UnitLayer/Stage/StageRect"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/StageRect"]
 visible = false
 polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
 
-[node name="Region" type="Node2D" parent="UnitLayer/Stage" node_paths=PackedStringArray("margin_area")]
+[node name="Region" type="Node2D" parent="Stage"]
 script = ExtResource("4_66tet")
 _size = Vector2(1000, 300)
-margin_area = NodePath("MarginArea")
 metadata/_custom_type_script = "uid://drj8e5ywasglc"
 
-[node name="MarginArea" type="Area2D" parent="UnitLayer/Stage/Region" node_paths=PackedStringArray("collision")]
+[node name="MarginArea" type="Area2D" parent="Stage/Region" node_paths=PackedStringArray("collision")]
 script = ExtResource("5_7ycvg")
 collision = NodePath("CollisionPolygon2D")
 metadata/_custom_type_script = "uid://bwso8geusuowb"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="UnitLayer/Stage/Region/MarginArea"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/Region/MarginArea"]
 visible = false
 polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
 
-[node name="Region2" type="Node2D" parent="UnitLayer/Stage" node_paths=PackedStringArray("margin_area")]
+[node name="Region2" type="Node2D" parent="Stage"]
 visible = false
 script = ExtResource("4_66tet")
 _pivot_point = Vector2(1000, 0)
 _size = Vector2(1000, 300)
-margin_area = NodePath("MarginArea")
 metadata/_custom_type_script = "uid://drj8e5ywasglc"
 
-[node name="MarginArea" type="Area2D" parent="UnitLayer/Stage/Region2" node_paths=PackedStringArray("collision")]
+[node name="MarginArea" type="Area2D" parent="Stage/Region2" node_paths=PackedStringArray("collision")]
 script = ExtResource("5_7ycvg")
 collision = NodePath("CollisionPolygon2D")
 metadata/_custom_type_script = "uid://bwso8geusuowb"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="UnitLayer/Stage/Region2/MarginArea"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/Region2/MarginArea"]
 visible = false
 polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
 
-[node name="Region3" type="Node2D" parent="UnitLayer/Stage" node_paths=PackedStringArray("margin_area")]
+[node name="Region3" type="Node2D" parent="Stage"]
 visible = false
 script = ExtResource("4_66tet")
 _pivot_point = Vector2(2000, 0)
 _size = Vector2(1000, 300)
-margin_area = NodePath("MarginArea")
 metadata/_custom_type_script = "uid://drj8e5ywasglc"
 
-[node name="MarginArea" type="Area2D" parent="UnitLayer/Stage/Region3" node_paths=PackedStringArray("collision")]
+[node name="MarginArea" type="Area2D" parent="Stage/Region3" node_paths=PackedStringArray("collision")]
 script = ExtResource("5_7ycvg")
 collision = NodePath("CollisionPolygon2D")
 metadata/_custom_type_script = "uid://bwso8geusuowb"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="UnitLayer/Stage/Region3/MarginArea"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/Region3/MarginArea"]
 visible = false
 polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
 
-[node name="Unit" parent="UnitLayer" instance=ExtResource("3_8mm7a")]
-position = Vector2(42, 132)
-stat = SubResource("Resource_nfk4m")
+[node name="UnitLayer" type="Node2D" parent="."]
 
-[node name="Unit2" parent="UnitLayer" instance=ExtResource("3_8mm7a")]
-position = Vector2(304, 163)
-stat = SubResource("Resource_8mm7a")
+[node name="Unit" parent="UnitLayer" node_paths=PackedStringArray("collisions") instance=ExtResource("7_66tet")]
+collisions = {
+"Crouch": NodePath("Crouch"),
+"Idle": NodePath("Idle"),
+"Slide": NodePath("Slide")
+}
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -120,8 +101,4 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PlayerProfile" parent="CanvasLayer/HUD" instance=ExtResource("6_hq1ik")]
-visible = false
 layout_mode = 1
-
-[editable path="UnitLayer/Unit"]
-[editable path="UnitLayer/Unit2"]

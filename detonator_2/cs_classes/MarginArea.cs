@@ -19,7 +19,7 @@ public partial class MarginArea : Area2D
         this.ChildEnteredTree -= on_child_entered;
     }
 
-    public void on_child_entered(Node node)
+    private void on_child_entered(Node node)
     {
         if (node is CollisionPolygon2D)
             (node as CollisionPolygon2D).Visible = false;

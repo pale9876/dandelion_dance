@@ -9,18 +9,20 @@ public partial class Executioner : Node
 
     public override void _PhysicsProcess(double _delta)
     {
+        base._PhysicsProcess(_delta);
+
         foreach (HitEvent ev in events.Values)
             hit_event_handler(ev);
 
         index = -1;
     }
 
-    private HitEvent create_event(HitEvent.EventType type, Node from, Node to, Dictionary values)
+    private HitEvent create_event(HitEvent.EventType type, Node from, Node to, Dictionary values = null)
     {
         return new HitEvent(type, from, to, values);
     }
 
-    public void add_event(HitEvent.EventType type, Node from, Node to, Dictionary values)
+    public void add_event(HitEvent.EventType type, Node from, Node to, Dictionary values = null)
     {
         index += 1;
         var ev = create_event(type, from, to, values);
@@ -32,6 +34,7 @@ public partial class Executioner : Node
         switch (ev.event_type)
         {
             case HitEvent.EventType.HIT:
+                hit(ev.from, ev.to, ev.effects);
                 break;
             case HitEvent.EventType.SHIELD:
                 break;
@@ -44,7 +47,7 @@ public partial class Executioner : Node
         }
     }
 
-    private void hit(Node from, Node to, float force, Vector2 dir)
+    private void hit(Node from, Node to, Dictionary values)
     {
         
     }

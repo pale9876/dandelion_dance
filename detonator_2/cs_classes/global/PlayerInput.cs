@@ -24,17 +24,22 @@ public partial class PlayerInput : Node
 
     public override void _Process(double delta)
     {
-
+        base._Process(delta);
     }
 
     public override void _PhysicsProcess(double delta)
     {
+
+        base._PhysicsProcess(delta);
+
         old_input_direction = get_current_direction();
         old_abs_input_direction = get_current_abs_direction();
     }
 
     public override void _Input(InputEvent @event)
     {
+        base._Input(@event);
+
         if (@event is InputEventKey)
         {
             InputEventKey key_ev = (@event as InputEventKey);

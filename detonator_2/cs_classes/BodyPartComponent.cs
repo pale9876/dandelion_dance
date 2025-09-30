@@ -2,9 +2,10 @@ using Godot;
 using Godot.Collections;
 using System;
 
+[GlobalClass]
 public partial class BodyPartComponent : Node2D
 {
-    [Export] public Array<PackedScene> part_scenes { get; set;}
+    [Export] private Array<PackedScene> part_scenes = new Array<PackedScene>();
 
     public void spawn_body_parts(Vector2 min_force, Vector2 max_force)
     {

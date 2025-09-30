@@ -11,7 +11,8 @@ public partial class StageRect : StaticBody2D
 
     public override void _Draw()
     {
-
+        base._Draw();
+        
         if (collision != null)
         {
             var start_point = collision.Polygon[0];

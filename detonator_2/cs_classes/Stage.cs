@@ -24,6 +24,8 @@ public partial class Stage : Node2D
 
     public override void _Ready()
     {
+        base._Ready();
+
         _update();
     }
 

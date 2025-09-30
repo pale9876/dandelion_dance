@@ -12,8 +12,13 @@ public partial class Entity : CharacterBody2D
 
     public override void _EnterTree()
     {
-        ESystem sys = get_sys();
-        sys.add_entity(this);
+        base._EnterTree();
+
+        if (!Engine.IsEditorHint())
+        {
+            ESystem sys = get_sys();
+            sys.add_entity(this);
+        }
     }
 
     public bool mns_with_global()
@@ -25,7 +30,7 @@ public partial class Entity : CharacterBody2D
 
     public ESystem get_sys()
     {
-        var e_system = GetNode<ESystem>("/root/ESystem");
+        var e_system = GetNode<ESystem>("root/ESystem");
         return e_system;
     }
 

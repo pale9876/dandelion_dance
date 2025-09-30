@@ -1,0 +1,239 @@
+[gd_scene load_steps=17 format=3 uid="uid://dhlgdxnmpa7mu"]
+
+[ext_resource type="Script" uid="uid://crysbkqye74hu" path="res://cs_classes/Unit.cs" id="1_8e872"]
+[ext_resource type="Script" uid="uid://nty86admf01v" path="res://cs_classes/UnitCollision.cs" id="2_an3if"]
+[ext_resource type="Script" uid="uid://dyftpff5gcnl6" path="res://cs_classes/PoseComponent.cs" id="3_an3if"]
+[ext_resource type="Script" uid="uid://qb3oudupp276" path="res://cs_classes/Pose.cs" id="4_sene6"]
+[ext_resource type="Script" uid="uid://qsyfa6gtevhc" path="res://cs_classes/AutoSpriteComponent.cs" id="5_43cav"]
+[ext_resource type="Script" uid="uid://dduh83inwe77n" path="res://cs_classes/AutoSprite.cs" id="5_s5161"]
+[ext_resource type="Script" uid="uid://dggw50eje6730" path="res://cs_classes/Hitbox.cs" id="6_snrm1"]
+[ext_resource type="Script" uid="uid://de0oflltc34eb" path="res://cs_classes/Hurtbox.cs" id="7_43cav"]
+[ext_resource type="Script" uid="uid://2wsc7pehfkxu" path="res://cs_classes/BodyPartComponent.cs" id="8_snrm1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_43cav"]
+size = Vector2(16, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3ftq2"]
+size = Vector2(32, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eoxxv"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ns0d8"]
+size = Vector2(16, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2iyrq"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s5161"]
+size = Vector2(32, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_snrm1"]
+size = Vector2(16, 32)
+
+[node name="Unit" type="CharacterBody2D" node_paths=PackedStringArray("collisions", "pose_component")]
+script = ExtResource("1_8e872")
+collisions = {
+"Crouch": NodePath("Crouch"),
+"Idle": NodePath("Idle"),
+"Slide": NodePath("Slide")
+}
+debug_colour = Color(0, 0.360784, 0, 0.243137)
+pose_component = NodePath("PoseComponent")
+metadata/_custom_type_script = "uid://crysbkqye74hu"
+
+[node name="Idle" type="CollisionShape2D" parent="."]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_43cav")
+debug_color = Color(0, 0.360784, 0, 0.243137)
+script = ExtResource("2_an3if")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="Slide" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(8, -8)
+shape = SubResource("RectangleShape2D_3ftq2")
+disabled = true
+debug_color = Color(0, 0.360784, 0, 0.243137)
+script = ExtResource("2_an3if")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="Crouch" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_eoxxv")
+disabled = true
+debug_color = Color(0, 0.360784, 0, 0.243137)
+script = ExtResource("2_an3if")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="PoseComponent" type="Node2D" parent="." node_paths=PackedStringArray("poses", "index", "current_pose")]
+script = ExtResource("3_an3if")
+poses = {
+&"Crouch": NodePath("Crouch"),
+&"Idle": NodePath("Idle"),
+&"Move": NodePath("Move"),
+&"Shift": NodePath("Shift"),
+&"Slide": NodePath("Slide")
+}
+index = {
+0: NodePath("Idle"),
+1: NodePath("Crouch"),
+2: NodePath("Move"),
+3: NodePath("Shift"),
+4: NodePath("Slide")
+}
+current_pose = NodePath("Slide")
+metadata/_custom_type_script = "uid://dyftpff5gcnl6"
+
+[node name="Idle" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite", "auto_sprite_component", "hurtbox")]
+script = ExtResource("4_sene6")
+auto_sprite = NodePath("AutoSprite")
+auto_sprite_component = NodePath("AutoSpriteComponent")
+hurtbox = NodePath("Hurtbox")
+metadata/_custom_type_script = "uid://qb3oudupp276"
+
+[node name="AutoSpriteComponent" type="Node2D" parent="PoseComponent/Idle" node_paths=PackedStringArray("auto_sprites")]
+script = ExtResource("5_43cav")
+auto_sprites = {
+"AutoSprite": NodePath("AutoSprite")
+}
+metadata/_custom_type_script = "uid://qsyfa6gtevhc"
+
+[node name="AutoSprite" type="Sprite2D" parent="PoseComponent/Idle/AutoSpriteComponent"]
+script = ExtResource("5_s5161")
+metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="AutoSprite" type="Sprite2D" parent="PoseComponent/Idle"]
+script = ExtResource("5_s5161")
+metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="Hurtbox" type="Area2D" parent="PoseComponent/Idle" node_paths=PackedStringArray("collisions")]
+script = ExtResource("7_43cav")
+collisions = [NodePath("UnitCollision")]
+metadata/_custom_type_script = "uid://de0oflltc34eb"
+
+[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Idle/Hurtbox"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_ns0d8")
+debug_color = Color(0.933333, 0.211765, 0.380392, 0.109804)
+script = ExtResource("2_an3if")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="Crouch" type="Node2D" parent="PoseComponent"]
+visible = false
+script = ExtResource("4_sene6")
+metadata/_custom_type_script = "uid://qb3oudupp276"
+
+[node name="AutoSprite" type="Sprite2D" parent="PoseComponent/Crouch"]
+visible = false
+script = ExtResource("5_s5161")
+metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="Hurtbox" type="Area2D" parent="PoseComponent/Crouch" node_paths=PackedStringArray("collisions")]
+visible = false
+script = ExtResource("7_43cav")
+collisions = [NodePath("UnitCollision")]
+debug_colour = Color(0.890196, 0, 0, 0)
+metadata/_custom_type_script = "uid://de0oflltc34eb"
+
+[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Crouch/Hurtbox"]
+visible = false
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_2iyrq")
+disabled = true
+debug_color = Color(0.890196, 0, 0, 0)
+script = ExtResource("2_an3if")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="Move" type="Node2D" parent="PoseComponent"]
+visible = false
+script = ExtResource("4_sene6")
+metadata/_custom_type_script = "uid://qb3oudupp276"
+
+[node name="AutoSprite" type="Sprite2D" parent="PoseComponent/Move"]
+visible = false
+script = ExtResource("5_s5161")
+metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="Hurtbox" type="Area2D" parent="PoseComponent/Move" node_paths=PackedStringArray("collisions")]
+visible = false
+script = ExtResource("7_43cav")
+collisions = [NodePath("UnitCollision")]
+metadata/_custom_type_script = "uid://de0oflltc34eb"
+
+[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Move/Hurtbox"]
+visible = false
+disabled = true
+script = ExtResource("2_an3if")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="Shift" type="Node2D" parent="PoseComponent"]
+visible = false
+script = ExtResource("4_sene6")
+metadata/_custom_type_script = "uid://qb3oudupp276"
+
+[node name="AutoSprite" type="Sprite2D" parent="PoseComponent/Shift"]
+visible = false
+script = ExtResource("5_s5161")
+metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="Hurtbox" type="Area2D" parent="PoseComponent/Shift" node_paths=PackedStringArray("collisions")]
+visible = false
+script = ExtResource("7_43cav")
+collisions = [NodePath("UnitCollision")]
+metadata/_custom_type_script = "uid://de0oflltc34eb"
+
+[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Shift/Hurtbox"]
+visible = false
+disabled = true
+script = ExtResource("2_an3if")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="Slide" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite", "hitbox", "hurtbox")]
+script = ExtResource("4_sene6")
+auto_sprite = NodePath("AutoSprite")
+hitbox = NodePath("Hitbox")
+hurtbox = NodePath("Hurtbox")
+metadata/_custom_type_script = "uid://qb3oudupp276"
+
+[node name="AutoSprite" type="Sprite2D" parent="PoseComponent/Slide"]
+visible = false
+script = ExtResource("5_s5161")
+metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="Hitbox" type="Area2D" parent="PoseComponent/Slide" node_paths=PackedStringArray("collisions")]
+visible = false
+script = ExtResource("6_snrm1")
+collisions = [NodePath("UnitCollision")]
+debug_colour = Color(0.529412, 0.529412, 0, 0)
+metadata/_custom_type_script = "uid://dggw50eje6730"
+
+[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Slide/Hitbox"]
+visible = false
+position = Vector2(16, -8)
+shape = SubResource("RectangleShape2D_s5161")
+disabled = true
+debug_color = Color(0.529412, 0.529412, 0, 0)
+script = ExtResource("2_an3if")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="Hurtbox" type="Area2D" parent="PoseComponent/Slide" node_paths=PackedStringArray("collisions")]
+visible = false
+script = ExtResource("7_43cav")
+collisions = [NodePath("UnitCollision")]
+debug_colour = Color(0.827451, 0, 0, 0.145098)
+metadata/_custom_type_script = "uid://de0oflltc34eb"
+
+[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Slide/Hurtbox"]
+visible = false
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_snrm1")
+disabled = true
+debug_color = Color(0.827451, 0, 0, 0.145098)
+script = ExtResource("2_an3if")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="BodyPartComponent" type="Node2D" parent="."]
+script = ExtResource("8_snrm1")
+metadata/_custom_type_script = "uid://2wsc7pehfkxu"

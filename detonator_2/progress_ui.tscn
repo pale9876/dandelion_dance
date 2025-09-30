@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://cv1kxqd5krltm"]
+[gd_scene load_steps=13 format=3 uid="uid://cv1kxqd5krltm"]
 
 [ext_resource type="Texture2D" uid="uid://bvxqtftn2q540" path="res://assets/aseprite/HPProgressOver.png" id="1_2ohdj"]
+[ext_resource type="Script" uid="uid://5pgswi3ilufv" path="res://PlayerProfile.cs" id="1_3c0ln"]
 [ext_resource type="Shader" uid="uid://rurk7ukp5ar7" path="res://progress_skew.gdshader" id="1_yonyf"]
 [ext_resource type="Texture2D" uid="uid://qgc3b3xb11e1" path="res://assets/aseprite/HPProgressValue.png" id="2_yonyf"]
 [ext_resource type="Texture2D" uid="uid://dlsorhk6e3er" path="res://assets/aseprite/ProfileOveray.png" id="4_gojvy"]
@@ -42,8 +43,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_3c0ln")
 
-[node name="TraumaProgress" type="TextureProgressBar" parent="."]
+[node name="HealthTrauma" type="TextureProgressBar" parent="."]
 material = SubResource("ShaderMaterial_6sy25")
 layout_mode = 0
 offset_left = 116.0
@@ -53,7 +55,7 @@ offset_bottom = 635.0
 pivot_offset = Vector2(44, 7)
 max_value = 1.0
 step = 0.001
-value = 0.84
+value = 0.76
 texture_progress = SubResource("CompressedTexture2D_xhu0u")
 tint_progress = Color(0.286275, 0.0431373, 0, 1)
 
@@ -72,8 +74,9 @@ texture_over = ExtResource("1_2ohdj")
 texture_progress = ExtResource("2_yonyf")
 tint_progress = Color(1, 0.16, 0.16, 1)
 
-[node name="StressProgress2" type="TextureProgressBar" parent="."]
+[node name="StressTrauma" type="TextureProgressBar" parent="."]
 material = SubResource("ShaderMaterial_xhu0u")
+layout_mode = 0
 offset_left = 125.0
 offset_top = 640.0
 offset_right = 540.0
@@ -81,12 +84,13 @@ offset_bottom = 671.0
 pivot_offset = Vector2(23, 7)
 max_value = 1.0
 step = 0.001
-value = 0.66
+value = 0.76
 texture_progress = ExtResource("5_3c0ln")
 tint_progress = Color(0.0858153, 0.196736, 0.353911, 1)
 
 [node name="StressProgress" type="TextureProgressBar" parent="."]
 material = SubResource("ShaderMaterial_xhu0u")
+layout_mode = 0
 offset_left = 125.0
 offset_top = 640.0
 offset_right = 540.0
