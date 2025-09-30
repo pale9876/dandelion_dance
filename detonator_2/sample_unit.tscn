@@ -14,7 +14,7 @@
 size = Vector2(16, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ftq2"]
-size = Vector2(32, 16)
+size = Vector2(16, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eoxxv"]
 size = Vector2(16, 16)
@@ -50,10 +50,8 @@ script = ExtResource("2_an3if")
 metadata/_custom_type_script = "uid://nty86admf01v"
 
 [node name="Slide" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(8, -8)
+position = Vector2(0, -8)
 shape = SubResource("RectangleShape2D_3ftq2")
-disabled = true
 debug_color = Color(0, 0.360784, 0, 0.243137)
 script = ExtResource("2_an3if")
 metadata/_custom_type_script = "uid://nty86admf01v"
@@ -83,12 +81,11 @@ index = {
 3: NodePath("Shift"),
 4: NodePath("Slide")
 }
-current_pose = NodePath("Slide")
+current_pose = NodePath("Idle")
 metadata/_custom_type_script = "uid://dyftpff5gcnl6"
 
-[node name="Idle" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite", "auto_sprite_component", "hurtbox")]
+[node name="Idle" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite_component", "hurtbox")]
 script = ExtResource("4_sene6")
-auto_sprite = NodePath("AutoSprite")
 auto_sprite_component = NodePath("AutoSpriteComponent")
 hurtbox = NodePath("Hurtbox")
 metadata/_custom_type_script = "uid://qb3oudupp276"
@@ -190,9 +187,9 @@ disabled = true
 script = ExtResource("2_an3if")
 metadata/_custom_type_script = "uid://nty86admf01v"
 
-[node name="Slide" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite", "hitbox", "hurtbox")]
+[node name="Slide" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("hitbox", "hurtbox")]
+visible = false
 script = ExtResource("4_sene6")
-auto_sprite = NodePath("AutoSprite")
 hitbox = NodePath("Hitbox")
 hurtbox = NodePath("Hurtbox")
 metadata/_custom_type_script = "uid://qb3oudupp276"

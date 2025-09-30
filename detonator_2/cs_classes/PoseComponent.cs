@@ -133,7 +133,7 @@ public partial class PoseComponent : Node2D
     {
         _current_index = Math.Clamp(idx, -1, index.Count);
 
-        if (idx > 0 && index.ContainsKey(idx))
+        if (idx >= 0 && index.ContainsKey(idx))
         {
             current_pose = index[idx];
         }
