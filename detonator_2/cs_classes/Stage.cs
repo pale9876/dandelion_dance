@@ -51,7 +51,6 @@ public partial class Stage : Node2D
         }
     }
 
-
     private void set_index(int idx)
     {
         index = idx;
@@ -100,9 +99,6 @@ public partial class Stage : Node2D
 
     }
 
-    private Array<Region> get_regions()
-    {
-        return idx_dict.Values as Array<Region>;
-    }
+    private Array<Region> get_regions() => idx_dict.Values as Array<Region>;
 
 }

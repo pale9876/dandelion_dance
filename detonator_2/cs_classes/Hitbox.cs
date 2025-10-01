@@ -126,7 +126,7 @@ public partial class Hitbox : Area2D
         {
             collision.Visible = this.Visible;
         }
-        GD.Print($"{Name} => Visibility Changed");
+        // GD.Print($"{Name} => Visibility Changed");
     }
 
     public void on_area_entered(Area2D area)

@@ -6,6 +6,7 @@ using System;
 [GlobalClass]
 public partial class Unit : Entity
 {
+
     public const String TO_MOVE = "to_move";
     public const String TO_IDLE = "to_idle";
     public const String JUMP_UP = "jump_up";
@@ -15,24 +16,27 @@ public partial class Unit : Entity
     public const String ALWAYS_MOVE = "always_move";
     public const String ALWAYS_SHIFT = "always_shif";
 
-
     public const float DEFAULT_FRICTION = 2250.0f;
     public const float DEFAULT_ACCELERATION = 3350.0f;
 
-    const float MAX_GRAVITY = 3550.0f;
+    private const float DEFAULT_GRAVITY = 970.0f;
+    private const float MAX_GRAVITY = 3550.0f;
 
     public enum AirState
     {
-        NONE,
-        JUMPUP,
-        AIRBORN,
-        FALLDOWN,
+        NONE = 0,
+        JUMPUP = 1, // 상승
+        DEFER = 2,// JUMPUP과 FALLDOWN의 중간값. 상태를 정의할 수 없으니 보류함.
+        FALLDOWN = 3, // 하강
+        AIRBORN = 4, // 공중에 떠있는 상태로 정지함.
     }
 
-    enum State
+    public enum State
     {
-        NORMAL,
-        GRABBED,
+        SPAWN = 0, // 스폰중
+        NORMAL = 1, // 통상
+        GRABBED = 2, // 잡기당함
+        DEAD = 3, // 죽음
     }
 
 
@@ -48,7 +52,13 @@ public partial class Unit : Entity
     [Export] public BodyPartComponent body_part_component;
     [Export] public PsychoValuement psycho_valuement;
     [Export] public StateMachine state_machine = null;
+
     [Export] public bool invincible = false;
+    [Export] public bool throughable { get => _throughable; set => setThroughable(value); }
+    private bool _throughable = false;
+
+
+    private AirState airstate = AirState.NONE;
 
     private State state { get => _state; set => change_state(value); }
     private State _state = State.NORMAL;
@@ -83,6 +93,30 @@ public partial class Unit : Entity
 
         if (Engine.IsEditorHint()) return;
 
+        if (!this.IsOnFloor())
+        {
+            airstate = (airstate == AirState.NONE) ? AirState.JUMPUP : AirState.DEFER;
+
+            if (!(airstate == AirState.AIRBORN))
+            {
+                Velocity = Velocity with
+                {
+                    X = Velocity.X,
+                    Y = Mathf.Min(
+                            get_gravity(delta), MAX_GRAVITY
+                        )
+                };
+            }
+
+            airstate = (Velocity.Y > 0.0f) ? // Y축 운동량이 아래로
+                AirState.FALLDOWN : (Velocity.Y < 0.0f) ? // Y축 운동량이 위로
+                AirState.JUMPUP : AirState.DEFER;
+        }
+        else
+        {
+            airstate = AirState.NONE;
+        }
+
         switch (state)
         {
             case State.NORMAL:
@@ -92,6 +126,14 @@ public partial class Unit : Entity
                 grabbed_event_handler();
                 break;
         }
+
+        _update_info();
+
+    }
+
+    public void jump()
+    {
+        
     }
 
     public void grabbed_event_handler()
@@ -152,6 +194,17 @@ public partial class Unit : Entity
             collision.DebugColor = color;
     }
 
-    public Array<UnitCollision> get_collisions() => collisions.Values as Array<UnitCollision>;
+    public void setThroughable(bool toggle)
+    {
+        _throughable = toggle;
+        if (toggle)
+        {
+
+        }
+    }
+
+    private Array<UnitCollision> get_collisions() => collisions.Values as Array<UnitCollision>;
+
+    private float get_gravity(double delta) => Velocity.Y + ((float)delta * DEFAULT_GRAVITY);
 
 }

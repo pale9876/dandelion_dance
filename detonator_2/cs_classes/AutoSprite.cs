@@ -10,7 +10,9 @@ public partial class AutoSprite : Sprite2D
         IDLE,
         PHYSICS,
     }
-    
+
+    private long id = -1;
+
     [Signal] public delegate void startEventHandler();
     [Signal] public delegate void stoppedEventHandler();
     [Signal] public delegate void finishedEventHandler();
@@ -38,7 +40,7 @@ public partial class AutoSprite : Sprite2D
 
         if (!Engine.IsEditorHint())
         {
-            var g_animation = GetNode<GlobalAnimation>("root/GlobalAnimation");
+            GlobalAnimation g_animation = GetNode<GlobalAnimation>("/root/GlobalAnimation");
             g_animation.add_sprite(this);
         }
 
@@ -57,7 +59,7 @@ public partial class AutoSprite : Sprite2D
     {
         if (state == State.IDLE)
         {
-            if (playing) time -= (float)delta * time_scale * GlobalAnimation.global_scale;
+            if (playing) time -= (float)delta * time_scale * get_g_anim().global_scale;
             if (time == 0.0f)
             {
                 time = 1.0f / fps;
@@ -72,7 +74,7 @@ public partial class AutoSprite : Sprite2D
         {
             if (playing)
             {
-                time -= (float)delta * time_scale * GlobalAnimation.global_scale;
+                time -= (float)delta * time_scale * get_g_anim().global_scale;
                 if (time == 0.0f)
                 {
                     time = 1.0f / fps;
@@ -84,7 +86,7 @@ public partial class AutoSprite : Sprite2D
 
     public void on_visible_changed()
     {
-        var parent = GetParentOrNull<AutoSpriteComponent>();
+        AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
         if (parent != null)
         {
             if (parent.Visible != this.Visible)
@@ -92,7 +94,14 @@ public partial class AutoSprite : Sprite2D
                 GD.PrintErr($"{this} => 이 노드는 상위 노드와 Visible이 상이할 수 없음.");
                 this.Visible = parent.Visible;
             }
+            playing = this.Visible ? true : false;
         }
+    }
+
+    private GlobalAnimation get_g_anim()
+    {
+        GlobalAnimation g_anim = GetNode<GlobalAnimation>("/root/GlobalAnimation");
+        return g_anim;
     }
 
     public void next_frame()
@@ -144,6 +153,8 @@ public partial class AutoSprite : Sprite2D
             stop();
         }
     }
+
+    public void set_id(long id) => this.id = id;
 
     public void play()
     {

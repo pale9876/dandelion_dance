@@ -88,8 +88,8 @@ public partial class AutoSpriteComponent : Node2D
     private void set_index(int idx)
     {
         int max_count = index.Count - 1;
-        _current_index = Math.Clamp(idx, 0, max_count);
-        if (idx < max_count)
+        _current_index = Math.Clamp(idx, -1, max_count);
+        if (idx < max_count && idx > -1)
         {
             change_current_sprite(index[idx]);
         }

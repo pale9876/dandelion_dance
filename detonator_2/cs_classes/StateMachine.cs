@@ -20,6 +20,7 @@ public partial class StateMachine : LimboHsm
         {
             if (parent != null)
             {
+                InitialState = start_state;
                 Initialize(parent);
                 SetActive(true);
             }
@@ -29,6 +30,4 @@ public partial class StateMachine : LimboHsm
             }
         }
     }
-
-
 }

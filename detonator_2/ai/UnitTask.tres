@@ -1,4 +1,4 @@
-[gd_resource type="BehaviorTree" load_steps=6 format=3 uid="uid://cyhr50o43d0mb"]
+[gd_resource type="BehaviorTree" load_steps=7 format=3 uid="uid://cyhr50o43d0mb"]
 
 [ext_resource type="Script" uid="uid://bmxe81pwj3hig" path="res://ai/tasks/ExtraComment.gd" id="1_bq2wm"]
 
@@ -7,13 +7,19 @@
 [sub_resource type="BTComment" id="BTComment_ilp4o"]
 custom_name = "TODO :: Check Unit. PsychoModule"
 script = ExtResource("1_bq2wm")
-text = "유닛이 피격 시 적극적 행동 점수 감소
-유닛이 타격 시 소극적 행동 점수 증가
-확률 = (각 행동) /소극적 + 적극적
-적극적과 소극적 모두 20.0 이하와 80.0 이상 값이 책정될 수 없음."
+text = "유닛이 피격 시 공격적 행동 점수 감소
+유닛이 타격 시 방어적 행동 점수 증가
+확률 = (각 행동) /방어적 + 공격적
+공격적과 방어적 모두 15% 이하와 85% 이상 값이 책정될 수 없음."
+
+[sub_resource type="BTComment" id="BTComment_bq2wm"]
+custom_name = "If :: 타겟이 같은 스테이지에 있을 때 :"
+script = ExtResource("1_bq2wm")
+text = "만약 타겟이 공격범위 밖에 다가가는 스텝을 밟는다."
 
 [sub_resource type="BTSequence" id="BTSequence_1ganl"]
 custom_name = "Decide Defensive or Aggressive Next Action"
+children = [SubResource("BTComment_bq2wm")]
 
 [sub_resource type="BTSelector" id="BTSelector_j05h3"]
 children = [SubResource("BTComment_ilp4o"), SubResource("BTSequence_1ganl")]

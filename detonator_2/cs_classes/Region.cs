@@ -27,9 +27,9 @@ public partial class Region : Node2D
     //Tool Button
     [ExportToolButton("Update")] private Callable update => Callable.From(_update);
 
-    public override void _Ready()
+    public override void _EnterTree()
     {
-        base._Ready();
+        base._EnterTree();
 
         if (!Engine.IsEditorHint())
         {
@@ -37,6 +37,18 @@ public partial class Region : Node2D
             margin_area.BodyExited += on_body_exited;
         }
     }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+
+        if (!Engine.IsEditorHint())
+        {
+            margin_area.BodyEntered -= on_body_entered;
+            margin_area.BodyExited -= on_body_exited;
+        }
+    }
+
 
     public override void _Draw()
     {
@@ -73,7 +85,7 @@ public partial class Region : Node2D
     {
         if (node is Entity)
         {
-            var entity = (Entity)node;
+            Entity entity = node as Entity;
             entity.ghost = false;
         }
     }
@@ -82,7 +94,7 @@ public partial class Region : Node2D
     {
         if (node is Entity)
         {
-            var entity = (Entity)node;
+            Entity entity = node as Entity;
             entity.ghost = true;
         }
     }

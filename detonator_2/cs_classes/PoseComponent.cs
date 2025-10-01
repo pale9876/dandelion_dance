@@ -15,6 +15,7 @@ public partial class PoseComponent : Node2D
     [Export] Dictionary<int, Pose> index = new Dictionary<int, Pose>();
     [Export] public Pose current_pose { get => _current_pose; set => change_pose(value); }
     private Pose _current_pose = null;
+    [Export] public Pose init_pose;
 
     private int current_index { get => _current_index; set => change_index(value); }
     private int _current_index = -1;
@@ -41,8 +42,15 @@ public partial class PoseComponent : Node2D
     {
         base._Ready();
 
-        if (index.Count > 0)
-            current_index = 0;
+        if (Engine.IsEditorHint())
+        {
+            if (index.Count > 0)
+                current_index = 0;
+        }
+        else
+        {
+            current_index = init_pose.get_id();
+        }
     }
 
     public override void _ExitTree()
@@ -110,13 +118,13 @@ public partial class PoseComponent : Node2D
         String pose_name = pose.Name;
         if (!poses.ContainsKey(pose_name)) poses.Add(pose.Name, pose);
         if (!index.ContainsKey(idx)) index.Add(idx, pose);
-        pose.id = idx;
+        pose.set_id(idx);
     }
 
     public void remove_pose(Pose pose)
     {
         if (poses.ContainsKey(pose.Name)) poses.Remove(pose.Name);
-        if (index.ContainsKey(pose.id)) index.Remove(pose.id);
+        if (index.ContainsKey(pose.get_id())) index.Remove(pose.get_id());
     }
 
     private void next_pose()
@@ -131,7 +139,7 @@ public partial class PoseComponent : Node2D
 
     private void change_index(int idx)
     {
-        _current_index = Math.Clamp(idx, -1, index.Count);
+        _current_index = Math.Clamp(idx, (index.Count > 0) ? 0 : -1,index.Count - 1);
 
         if (idx >= 0 && index.ContainsKey(idx))
         {
@@ -141,15 +149,17 @@ public partial class PoseComponent : Node2D
 
     public void change_pose(Pose pose)
     {
-        Pose old_pose = _current_pose;
+        Pose old_pose = _current_pose == null ? null : _current_pose;
+
         _current_pose = pose;
+        
+        if (Engine.IsEditorHint()) return;
 
         foreach (Pose p in poses.Values)
             p.Visible = (p == pose) ? true : false;
 
-        if (Engine.IsEditorHint()) return;
 
-        if (pose != null && IsInstanceValid(pose))
+        if (pose != null && old_pose != null)
         {
             old_pose._pose_exited();
             pose._pose_entered();

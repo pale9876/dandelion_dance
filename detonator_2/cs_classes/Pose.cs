@@ -7,7 +7,7 @@ using Godot.Collections;
 public partial class Pose : Node2D
 {
 
-    public int id = -1;
+    private int id = -1;
 
     [Export] public Dictionary<StringName, AutoSpriteComponent> auto_sprite_components = new Dictionary<StringName, AutoSpriteComponent>();
     [Export] public Dictionary<String, Hitbox> hitboxes = new Dictionary<String, Hitbox>();
@@ -83,4 +83,7 @@ public partial class Pose : Node2D
             }
         }
     }
+
+    public int get_id() => id;
+    public void set_id(int id) => this.id = id;
 }

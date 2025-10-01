@@ -13,6 +13,7 @@
 script = ExtResource("1_0f027")
 
 [node name="PCam" type="Camera2D" parent="."]
+position = Vector2(584, 136)
 script = ExtResource("5_8mm7a")
 
 [node name="Stage" type="Node2D" parent="." node_paths=PackedStringArray("idx_dict", "stage_rect")]
@@ -32,12 +33,15 @@ script = ExtResource("4_7ycvg")
 collision = NodePath("CollisionPolygon2D")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/StageRect"]
-visible = false
+build_mode = 1
 polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
 
-[node name="Region" type="Node2D" parent="Stage"]
+[node name="Region" type="Node2D" parent="Stage" node_paths=PackedStringArray("margin_area")]
 script = ExtResource("4_66tet")
+_margin = Vector2(100, 100)
 _size = Vector2(1000, 300)
+alert_colour = Color(0.239216, 0.121569, 0.0941176, 0.380392)
+margin_area = NodePath("MarginArea")
 metadata/_custom_type_script = "uid://drj8e5ywasglc"
 
 [node name="MarginArea" type="Area2D" parent="Stage/Region" node_paths=PackedStringArray("collision")]
@@ -49,11 +53,12 @@ metadata/_custom_type_script = "uid://bwso8geusuowb"
 visible = false
 polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
 
-[node name="Region2" type="Node2D" parent="Stage"]
+[node name="Region2" type="Node2D" parent="Stage" node_paths=PackedStringArray("margin_area")]
 visible = false
 script = ExtResource("4_66tet")
 _pivot_point = Vector2(1000, 0)
 _size = Vector2(1000, 300)
+margin_area = NodePath("MarginArea")
 metadata/_custom_type_script = "uid://drj8e5ywasglc"
 
 [node name="MarginArea" type="Area2D" parent="Stage/Region2" node_paths=PackedStringArray("collision")]
@@ -65,11 +70,12 @@ metadata/_custom_type_script = "uid://bwso8geusuowb"
 visible = false
 polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
 
-[node name="Region3" type="Node2D" parent="Stage"]
+[node name="Region3" type="Node2D" parent="Stage" node_paths=PackedStringArray("margin_area")]
 visible = false
 script = ExtResource("4_66tet")
 _pivot_point = Vector2(2000, 0)
 _size = Vector2(1000, 300)
+margin_area = NodePath("MarginArea")
 metadata/_custom_type_script = "uid://drj8e5ywasglc"
 
 [node name="MarginArea" type="Area2D" parent="Stage/Region3" node_paths=PackedStringArray("collision")]
@@ -84,6 +90,7 @@ polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
 [node name="UnitLayer" type="Node2D" parent="."]
 
 [node name="Unit" parent="UnitLayer" node_paths=PackedStringArray("collisions") instance=ExtResource("7_66tet")]
+position = Vector2(72, 272)
 collisions = {
 "Crouch": NodePath("Crouch"),
 "Idle": NodePath("Idle"),
