@@ -6,6 +6,8 @@ using Godot.Collections;
 [GlobalClass]
 public partial class Hitbox : Area2D
 {
+
+    public bool execute = false;
     private int id = -1;
     
     private Array<Hurtbox> entered_boxes = [];
@@ -48,6 +50,10 @@ public partial class Hitbox : Area2D
     {
         base._PhysicsProcess(delta);
 
+        if (execute)
+        {
+
+        }
         foreach (Hurtbox hurt_box in entered_boxes)
         {
             var query = PhysicsRayQueryParameters2D.Create(this.GlobalPosition, hurt_box.GlobalPosition, 0, [this.GetRid()]);
@@ -62,11 +68,11 @@ public partial class Hitbox : Area2D
                     if (p_obj is Hurtbox && p_obj == hurt_box)
                     {
                         GD.Print($"{Name} Hit to {hurt_box.Name}");
-                        Executioner executioner = GetNode<Executioner>("/root/Executioner");
-                        executioner.add_event(
-                            HitEvent.EventType.HIT, this, hurt_box.Owner,
-                            new Dictionary { }
-                        );
+                        // Executioner executioner = GetNode<Executioner>("root/Executioner");
+                        // executioner.add_event(
+                        //     HitEvent.EventType.HIT, this, hurt_box.Owner,
+                        //     new Dictionary { }
+                        // );
                     }
                 }
             }

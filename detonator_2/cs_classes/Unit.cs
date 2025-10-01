@@ -44,8 +44,9 @@ public partial class Unit : Entity
 
     [Export] private Color debug_colour { get => _debug_color; set => change_debug_color(value); }
     private Color _debug_color = new Color();
-    [Export] public PoseComponent pose_component { get; set; }
-    [Export] public BodyPartComponent body_part_component { get; set; }
+    [Export] public PoseComponent pose_component;
+    [Export] public BodyPartComponent body_part_component;
+    [Export] public PsychoValuement psycho_valuement;
     [Export] public StateMachine state_machine = null;
     [Export] public bool invincible = false;
 
@@ -85,7 +86,6 @@ public partial class Unit : Entity
         switch (state)
         {
             case State.NORMAL:
-
                 mns_with_global();
                 break;
             case State.GRABBED:
@@ -149,9 +149,7 @@ public partial class Unit : Entity
         _debug_color = color;
 
         foreach (UnitCollision collision in get_collisions())
-        {
             collision.DebugColor = color;
-        }
     }
 
     public Array<UnitCollision> get_collisions() => collisions.Values as Array<UnitCollision>;

@@ -2,6 +2,7 @@ using Godot;
 using Godot.Collections;
 using System;
 
+[Tool]
 [GlobalClass]
 public partial class BodyPartComponent : Node2D
 {

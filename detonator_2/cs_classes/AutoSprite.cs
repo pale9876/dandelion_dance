@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Godot;
 
 [Tool]
@@ -24,7 +25,6 @@ public partial class AutoSprite : Sprite2D
 
     private float time { set => setTime(value); get => _time; }
 
-
     private bool _paused = false;
     private bool _playing = false;
     private float _fps = 10.0f;
@@ -34,20 +34,35 @@ public partial class AutoSprite : Sprite2D
 
     public override void _EnterTree()
     {
+        base._EnterTree();
+
         if (!Engine.IsEditorHint())
         {
             var g_animation = GetNode<GlobalAnimation>("root/GlobalAnimation");
             g_animation.add_sprite(this);
         }
+
+        VisibilityChanged += on_visible_changed;
+
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+
+        VisibilityChanged -= on_visible_changed;
     }
 
     public override void _Process(double delta)
     {
         if (state == State.IDLE)
         {
-            if (playing)
-                time -= (float)delta * time_scale * GlobalAnimation.global_scale;
+            if (playing) time -= (float)delta * time_scale * GlobalAnimation.global_scale;
+            if (time == 0.0f)
+            {
+                time = 1.0f / fps;
                 next_frame();
+            }
         }
     }
 
@@ -58,7 +73,24 @@ public partial class AutoSprite : Sprite2D
             if (playing)
             {
                 time -= (float)delta * time_scale * GlobalAnimation.global_scale;
-                next_frame();
+                if (time == 0.0f)
+                {
+                    time = 1.0f / fps;
+                    next_frame();
+                }
+            }
+        }
+    }
+
+    public void on_visible_changed()
+    {
+        var parent = GetParentOrNull<AutoSpriteComponent>();
+        if (parent != null)
+        {
+            if (parent.Visible != this.Visible)
+            {
+                GD.PrintErr($"{this} => 이 노드는 상위 노드와 Visible이 상이할 수 없음.");
+                this.Visible = parent.Visible;
             }
         }
     }
@@ -78,6 +110,7 @@ public partial class AutoSprite : Sprite2D
             }
             else
             {
+                playing = false;
                 EmitSignalfinished();
             }
         }
@@ -110,17 +143,19 @@ public partial class AutoSprite : Sprite2D
         {
             stop();
         }
-
     }
 
     public void play()
     {
-        EmitSignalstart();
+        if (!paused)
+        {
+            FrameCoords = FrameCoords with { X = 0 };
+            EmitSignalstart();
+        }
     }
 
     public void stop()
     {
-        FrameCoords = FrameCoords with { X = 0 };
         EmitSignalstopped();
     }
 

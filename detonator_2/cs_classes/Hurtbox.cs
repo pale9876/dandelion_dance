@@ -6,12 +6,21 @@ using Godot.Collections;
 [GlobalClass]
 public partial class Hurtbox : Area2D
 {
+    public enum State
+    {
+        NORMAL,
+        UNGRABBED,
+        DREADNOUGHT,
+        INVINCIBLE,
+    }
 
     private int index = -1;
 
     [Export] private Array<UnitCollision> collisions = new Array<UnitCollision>();
     [Export] private Color debug_colour { get => _debug_color; set => set_debug_color(value); }
     private Color _debug_color = new Color();
+
+    public State state = State.NORMAL;
 
     [ExportToolButton("Update")] private Callable update => Callable.From(_update);
 
