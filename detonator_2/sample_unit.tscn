@@ -42,6 +42,11 @@ debug_colour = Color(0, 0.360784, 0, 0.243137)
 pose_component = NodePath("PoseComponent")
 metadata/_custom_type_script = "uid://crysbkqye74hu"
 
+[node name="BodyPartComponent" type="Node2D" parent="."]
+script = ExtResource("8_snrm1")
+part_scenes = Array[PackedScene]([])
+metadata/_custom_type_script = "uid://2wsc7pehfkxu"
+
 [node name="Idle" type="CollisionShape2D" parent="."]
 position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_43cav")
@@ -87,6 +92,7 @@ current_pose = NodePath("Slide")
 metadata/_custom_type_script = "uid://dyftpff5gcnl6"
 
 [node name="Idle" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite", "auto_sprite_component", "hurtbox")]
+visible = false
 script = ExtResource("4_sene6")
 auto_sprite = NodePath("AutoSprite")
 auto_sprite_component = NodePath("AutoSpriteComponent")
@@ -233,7 +239,3 @@ disabled = true
 debug_color = Color(0.827451, 0, 0, 0.145098)
 script = ExtResource("2_an3if")
 metadata/_custom_type_script = "uid://nty86admf01v"
-
-[node name="BodyPartComponent" type="Node2D" parent="."]
-script = ExtResource("8_snrm1")
-metadata/_custom_type_script = "uid://2wsc7pehfkxu"
