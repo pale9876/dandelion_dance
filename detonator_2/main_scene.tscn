@@ -103,7 +103,7 @@ collisions = {
 "Slide": NodePath("Slide")
 }
 
-[node name="FowardEffectLayer" type="Node2D" parent="."]
+[node name="ForeGroundEffectLayer" type="Node2D" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

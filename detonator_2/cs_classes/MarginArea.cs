@@ -11,6 +11,8 @@ public partial class MarginArea : Area2D
 
     public override void _EnterTree()
     {
+        base._EnterTree();
+
         this.ChildEnteredTree += on_child_entered;
 
         if (!Engine.IsEditorHint())
@@ -22,6 +24,8 @@ public partial class MarginArea : Area2D
 
     public override void _ExitTree()
     {
+        base._ExitTree();
+        
         this.ChildEnteredTree -= on_child_entered;
 
         if (!Engine.IsEditorHint())

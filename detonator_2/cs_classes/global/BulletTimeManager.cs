@@ -25,6 +25,11 @@ public partial class BulletTimeManager : Node
         }
     }
 
+    public void start_bullet_time(double time)
+    {
+        
+    }
+
     public void setBulletTime(double value)
     {
         _bullet_time = value;

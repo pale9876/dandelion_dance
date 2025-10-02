@@ -2,19 +2,34 @@ using Godot;
 using Godot.Collections;
 using System;
 
+[Tool]
 public partial class Effect2DBus : Node
 {
-    private Node2D background_effect_layer = null;
-    private Node2D foward_effect_layer = null;
+    private ulong index = 0;
 
-    public void spawn_at_front()
+    public Node2D background_effect_layer = null;
+    public Node2D foreground_effect_layer = null;
+
+    public void _spawn_effect(Node2D at)
     {
 
+        index += 1;
     }
 
-    public void spawn_at_background()
+    public bool clear_role(Layer layer)
     {
-        
+        if (background_effect_layer == layer)
+        {
+            background_effect_layer = null;
+            return true;
+        }
+        else if (foreground_effect_layer == layer)
+        {
+            foreground_effect_layer = null;
+            return true;
+        }
+
+        return false;
     }
 
 }
