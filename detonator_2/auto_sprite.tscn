@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbb0o2isn1llc"]
-
-[ext_resource type="Script" uid="uid://dduh83inwe77n" path="res://cs_classes/AutoSprite.cs" id="1_okgox"]
-
-[node name="AutoSprite" type="Sprite2D"]
-script = ExtResource("1_okgox")
-metadata/_custom_type_script = "uid://dduh83inwe77n"

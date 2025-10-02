@@ -8,8 +8,8 @@ public partial class Entity : CharacterBody2D
     private long eid = -1;
 
     [Export] public bool eyes_only = false;
-    [Export] private bool ghost { set => setGhost(value); get => _ghost; }
-    public bool _ghost;
+    [Export] public bool ghost { set => setGhost(value); get => _ghost; }
+    private bool _ghost;
     [Export] public bool unique { get; set; }
     [Export] public String first_name { get; set; }
     [Export] public String last_name { get; set; }

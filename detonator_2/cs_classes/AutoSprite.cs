@@ -56,6 +56,8 @@ public partial class AutoSprite : Sprite2D
 
     public override void _Process(double delta)
     {
+        base._Process(delta);
+
         if (state == State.IDLE)
         {
             if (playing) time -= (float)delta * time_scale;
@@ -69,6 +71,8 @@ public partial class AutoSprite : Sprite2D
 
     public override void _PhysicsProcess(double delta)
     {
+        base._PhysicsProcess(delta);
+
         if (state == State.PHYSICS)
         {
             if (playing)

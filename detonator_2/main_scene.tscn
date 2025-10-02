@@ -1,20 +1,16 @@
 [gd_scene load_steps=9 format=3 uid="uid://bmidfw1jvsepy"]
 
 [ext_resource type="Script" uid="uid://d17j0um2nrj1u" path="res://main_scene.gd" id="1_0f027"]
+[ext_resource type="Script" uid="uid://dy5hus27swp2n" path="res://cs_classes/StageCamera.cs" id="2_66tet"]
 [ext_resource type="Script" uid="uid://bsflrngqxr2qd" path="res://cs_classes/StageRect.cs" id="4_7ycvg"]
 [ext_resource type="Script" uid="uid://drj8e5ywasglc" path="res://cs_classes/Region.cs" id="4_66tet"]
 [ext_resource type="Script" uid="uid://bwso8geusuowb" path="res://cs_classes/MarginArea.cs" id="5_7ycvg"]
-[ext_resource type="Script" uid="uid://yadqxkv5olbs" path="res://camera_2d.gd" id="5_8mm7a"]
 [ext_resource type="PackedScene" uid="uid://cv1kxqd5krltm" path="res://progress_ui.tscn" id="6_hq1ik"]
 [ext_resource type="Script" uid="uid://u58x005ikflf" path="res://cs_classes/Stage.cs" id="6_nfk4m"]
 [ext_resource type="PackedScene" uid="uid://dhlgdxnmpa7mu" path="res://sample_unit.tscn" id="7_66tet"]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_0f027")
-
-[node name="PCam" type="Camera2D" parent="."]
-position = Vector2(584, 136)
-script = ExtResource("5_8mm7a")
 
 [node name="Stage" type="Node2D" parent="." node_paths=PackedStringArray("idx_dict", "stage_rect")]
 script = ExtResource("6_nfk4m")
@@ -27,6 +23,10 @@ idx_dict = {
 _current_index = 0
 stage_rect = NodePath("StageRect")
 metadata/_custom_type_script = "uid://u58x005ikflf"
+
+[node name="StageCamera" type="Camera2D" parent="Stage"]
+position = Vector2(584, 136)
+script = ExtResource("2_66tet")
 
 [node name="StageRect" type="StaticBody2D" parent="Stage" node_paths=PackedStringArray("collision")]
 script = ExtResource("4_7ycvg")

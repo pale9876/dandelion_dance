@@ -5,15 +5,18 @@ using System;
 public partial class ESystem : Node
 {
     private int index = -1;
-    public Dictionary<long, Dictionary<String, Variant>> entities = new Dictionary<long, Dictionary<String, Variant>>();
+    public Dictionary<long, Dictionary<String, Variant>> entities = new();
 
-    public Entity player { get => getPlayer(); set => setPlayer(value); }
-    private Entity _player = null;
+
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+    }
 
     public override void _ExitTree()
     {
         base._ExitTree();
-        
+
         entities.Clear();
         index = -1;
     }
@@ -33,6 +36,8 @@ public partial class ESystem : Node
         );
     }
 
+    public Dictionary<String, Variant> get_entity_info(long idx) => (entities.ContainsKey(idx)) ? entities[idx] : new Dictionary<String, Variant>();
+
     public Array<Entity> get_entities()
     {
         var result = new Array<Entity>();
@@ -43,12 +48,6 @@ public partial class ESystem : Node
         }
 
         return result;
-    }
-
-    public Entity getPlayer() => this._player;
-    public void setPlayer(Entity entity)
-    {
-        _player = entity;
     }
 
 }

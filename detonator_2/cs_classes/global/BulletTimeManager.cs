@@ -5,13 +5,13 @@ using System;
 public partial class BulletTimeManager : Node
 {
 
-    const double LinearAccel = 1250.0f;
     const double DEFAULT_TIME_SCALE = 1.0f;
 
     private double bullet_time { get => _bullet_time; set => setBulletTime(value); }
     private double _bullet_time = DEFAULT_TIME_SCALE;
     public double propose_time_scale { get => _propose_time_scale; set => setProposeTimeScale(value); }
     private double _propose_time_scale = 1.0f;
+    public double linear_scale = 3.0;
 
     public override void _Process(double delta)
     {
@@ -20,7 +20,7 @@ public partial class BulletTimeManager : Node
         if (_propose_time_scale != bullet_time)
         {
             bullet_time = Mathf.MoveToward(
-                bullet_time, _propose_time_scale, LinearAccel * delta
+                bullet_time, _propose_time_scale, delta * linear_scale
             );
         }
     }

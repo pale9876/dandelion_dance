@@ -96,7 +96,5 @@ public partial class NamingModule : Node
         result = (last_name, first_name);
 
         return result;
-
     }
-
 }
