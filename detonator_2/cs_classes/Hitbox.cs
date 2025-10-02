@@ -68,11 +68,6 @@ public partial class Hitbox : Area2D
                     if (p_obj is Hurtbox && p_obj == hurt_box)
                     {
                         GD.Print($"{Name} Hit to {hurt_box.Name}");
-                        // Executioner executioner = GetNode<Executioner>("root/Executioner");
-                        // executioner.add_event(
-                        //     HitEvent.EventType.HIT, this, hurt_box.Owner,
-                        //     new Dictionary { }
-                        // );
                     }
                 }
             }

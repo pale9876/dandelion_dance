@@ -15,21 +15,20 @@ public partial class PlayerInput : Node
 
     const float MARGIN_TIME = 0.35f;
 
-    public Dictionary<int, Entity> index = new Dictionary<int, Entity>();
+    public Dictionary<int, Entity> index = new();
     private State state = State.NONE;
-    private Entity inControl = null;
+    public Entity inControl { get; set; }
+    private Entity _inControl = null;
+    public Entity observe { get; set; }
+    private Entity _observe = null;
     public bool shift = false;
     public Vector2 old_input_direction = Vector2.Zero;
     public Vector2 old_abs_input_direction = Vector2.Zero;
 
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-    }
+    public Array<Entity> mouse_pointing = new Array<Entity>();
 
     public override void _PhysicsProcess(double delta)
     {
-
         base._PhysicsProcess(delta);
 
         old_input_direction = get_current_direction();
@@ -118,6 +117,12 @@ public partial class PlayerInput : Node
         float input_x = Input.GetActionStrength("right") - Input.GetActionStrength("left");
         float input_y = Input.GetActionStrength("down") - Input.GetActionStrength("up");
         return new Vector2(Mathf.Abs(input_x), input_y);
+    }
+
+    public void entity_exit(Entity entity)
+    {
+        if (inControl == entity) inControl = null;
+        if (mouse_pointing.Contains(entity)) mouse_pointing.Remove(entity);
     }
 
 }

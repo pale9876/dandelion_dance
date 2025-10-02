@@ -5,18 +5,31 @@ using System.Collections.Generic;
 [Tool]
 public partial class GlobalAnimation : Node
 {
-    public float global_scale = 1.0f;
+    [Signal] public delegate void time_scale_changedEventHandler(float value);
 
     long index = -1;
 
-    private Dictionary<long, AutoSprite> auto_sprites = new Dictionary<long, AutoSprite>();
+    private Dictionary<long, AutoSpriteComponent> components = new Dictionary<long, AutoSpriteComponent>();
 
-    public void add_sprite(AutoSprite auto_sprite)
+    public void add_component(AutoSpriteComponent component)
     {
         index += 1;
-        auto_sprite.set_id(index);
+        component.set_id(index);
 
-        auto_sprites.Add(index, auto_sprite);
+        components.Add(index, component);
     }
+
+    public bool remove_component(long index)
+    {
+        if (components.ContainsKey(index))
+        {
+            components.Remove(index);
+            return true;
+        }
+        GD.PrintErr($"GlobalAnimation => {index}는 존재하지 않습니다");
+        return false;
+    }
+
+    public void emit_time_scale_changed(float value) => EmitSignaltime_scale_changed(value);
 
 }

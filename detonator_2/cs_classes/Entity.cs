@@ -7,12 +7,12 @@ public partial class Entity : CharacterBody2D
 {
     private long eid = -1;
 
-    [Export] private bool _ghost { set => set_ghost(value); get => ghost; }
-    public bool ghost;
+    [Export] public bool eyes_only = false;
+    [Export] private bool ghost { set => setGhost(value); get => _ghost; }
+    public bool _ghost;
     [Export] public bool unique { get; set; }
     [Export] public String first_name { get; set; }
     [Export] public String last_name { get; set; }
-
 
     public override void _EnterTree()
     {
@@ -31,35 +31,16 @@ public partial class Entity : CharacterBody2D
 
         if (!Engine.IsEditorHint())
         {
-            ESystem sys = get_sys();
-            sys.entities.Remove(eid);
+            get_sys().entities.Remove(eid);
+            get_p_input().entity_exit(this);
         }
 
         eid = -1;
     }
 
-    public bool mns_with_global()
+    public void setGhost(bool toggle)
     {
-        Velocity *= get_g_anim().global_scale;
-
-        return MoveAndSlide();
-    }
-
-    public GlobalAnimation get_g_anim()
-    {
-        GlobalAnimation g_anim = GetNode<GlobalAnimation>("/root/GlobalAnimation");
-        return g_anim;
-    }
-
-    public ESystem get_sys()
-    {
-        var e_system = GetNode<ESystem>("/root/ESystem");
-        return e_system;
-    }
-
-    public void set_ghost(bool toggle)
-    {
-        ghost = toggle;
+        _ghost = toggle;
         this.Visible = (toggle) ? false : true;
     }
 
@@ -104,6 +85,18 @@ public partial class Entity : CharacterBody2D
 
         return new Dictionary<string, Variant>(); // Cannot get info
     }
+
+    public Node get_effect_bus()
+    {
+        Effect2DBus e2b = GetNode<Effect2DBus>("/root/Effect2DBus");
+        return e2b;
+    }
+
+    public GlobalAnimation get_g_anim() => GetNode<GlobalAnimation>("/root/GlobalAnimation");
+
+    public ESystem get_sys() => GetNode<ESystem>("/root/ESystem");
+
+    public PlayerInput get_p_input() => GetNode<PlayerInput>("/root/PlayerInput");
 
     public void set_eid(long eid)
     {

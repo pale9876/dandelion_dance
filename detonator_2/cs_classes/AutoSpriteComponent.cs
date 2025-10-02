@@ -7,6 +7,8 @@ using System;
 [GlobalClass]
 public partial class AutoSpriteComponent : Node2D
 {
+    private long id = -1;
+
     [Export] public Dictionary<String, AutoSprite> auto_sprites = new Dictionary<string, AutoSprite>();
     [Export] public Array<AutoSprite> index = new Array<AutoSprite>();
     [Export] public AutoSprite current_sprite { get => _current_sprite; set => change_current_sprite(value); }
@@ -22,6 +24,13 @@ public partial class AutoSpriteComponent : Node2D
         base._EnterTree();
 
         VisibilityChanged += on_visibility_changed;
+
+        if (!Engine.IsEditorHint())
+        {
+            var g_anim = get_g_anim();
+            g_anim.add_component(this);
+            g_anim.time_scale_changed += on_global_time_scale_changed;
+        }
     }
 
     public override void _ExitTree()
@@ -29,6 +38,13 @@ public partial class AutoSpriteComponent : Node2D
         base._ExitTree();
 
         VisibilityChanged -= on_visibility_changed;
+
+        if (!Engine.IsEditorHint())
+        {
+            var g_anim = get_g_anim();
+            g_anim.remove_component(this.id);
+            g_anim.time_scale_changed -= on_global_time_scale_changed;
+        }
     }
 
     public override void _Ready()
@@ -56,6 +72,10 @@ public partial class AutoSpriteComponent : Node2D
         }
     }
 
+    public virtual void on_global_time_scale_changed(float value)
+    {
+
+    }
 
     private void on_visibility_changed()
     {
@@ -107,6 +127,8 @@ public partial class AutoSpriteComponent : Node2D
         return false;
     }
 
-    public Array<AutoSprite> get_sprites() => auto_sprites.Values as Array<AutoSprite>;
+    public void set_id(long value) => this.id = value;
 
+    public Array<AutoSprite> get_sprites() => auto_sprites.Values as Array<AutoSprite>;
+    private GlobalAnimation get_g_anim() => GetNode<GlobalAnimation>("/root/GlobalAnimation");
 }

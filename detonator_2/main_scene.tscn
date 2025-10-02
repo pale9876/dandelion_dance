@@ -45,35 +45,39 @@ margin_area = NodePath("MarginArea")
 metadata/_custom_type_script = "uid://drj8e5ywasglc"
 
 [node name="MarginArea" type="Area2D" parent="Stage/Region" node_paths=PackedStringArray("collision")]
+visible = false
 script = ExtResource("5_7ycvg")
 collision = NodePath("CollisionPolygon2D")
 metadata/_custom_type_script = "uid://bwso8geusuowb"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/Region/MarginArea"]
 visible = false
-polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
+polygon = PackedVector2Array(-100, -100, 1100, -100, 1100, 400, -100, 400)
 
 [node name="Region2" type="Node2D" parent="Stage" node_paths=PackedStringArray("margin_area")]
 visible = false
 script = ExtResource("4_66tet")
 _pivot_point = Vector2(1000, 0)
+_margin = Vector2(100, 100)
 _size = Vector2(1000, 300)
 margin_area = NodePath("MarginArea")
 metadata/_custom_type_script = "uid://drj8e5ywasglc"
 
 [node name="MarginArea" type="Area2D" parent="Stage/Region2" node_paths=PackedStringArray("collision")]
+visible = false
 script = ExtResource("5_7ycvg")
 collision = NodePath("CollisionPolygon2D")
 metadata/_custom_type_script = "uid://bwso8geusuowb"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/Region2/MarginArea"]
 visible = false
-polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
+polygon = PackedVector2Array(900, -100, 2100, -100, 2100, 400, 900, 400)
 
 [node name="Region3" type="Node2D" parent="Stage" node_paths=PackedStringArray("margin_area")]
 visible = false
 script = ExtResource("4_66tet")
 _pivot_point = Vector2(2000, 0)
+_margin = Vector2(100, 100)
 _size = Vector2(1000, 300)
 margin_area = NodePath("MarginArea")
 metadata/_custom_type_script = "uid://drj8e5ywasglc"
@@ -85,7 +89,9 @@ metadata/_custom_type_script = "uid://bwso8geusuowb"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/Region3/MarginArea"]
 visible = false
-polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
+polygon = PackedVector2Array(1900, -100, 3100, -100, 3100, 400, 1900, 400)
+
+[node name="BackgroundEffectLayer" type="Node2D" parent="."]
 
 [node name="UnitLayer" type="Node2D" parent="."]
 
@@ -97,6 +103,8 @@ collisions = {
 "Slide": NodePath("Slide")
 }
 
+[node name="FowardEffectLayer" type="Node2D" parent="."]
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HUD" type="Control" parent="CanvasLayer"]
@@ -106,6 +114,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="PlayerProfile" parent="CanvasLayer/HUD" instance=ExtResource("6_hq1ik")]
 layout_mode = 1
+mouse_filter = 2

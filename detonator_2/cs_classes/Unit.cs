@@ -71,6 +71,9 @@ public partial class Unit : Entity
         base._EnterTree();
 
         ChildEnteredTree += on_child_entered;
+
+        if (!Engine.IsEditorHint())
+            MouseEntered += on_mouse_entered;
     }
 
     public override void _ExitTree()
@@ -78,6 +81,9 @@ public partial class Unit : Entity
         base._ExitTree();
 
         ChildEnteredTree -= on_child_entered;
+
+        if (!Engine.IsEditorHint())
+            MouseEntered -= on_mouse_entered;
     }
 
     public override void _Ready()
@@ -93,7 +99,7 @@ public partial class Unit : Entity
 
         if (Engine.IsEditorHint()) return;
 
-        if (!this.IsOnFloor())
+        if (!IsOnFloor())
         {
             airstate = (airstate == AirState.NONE) ? AirState.JUMPUP : AirState.DEFER;
 
@@ -107,12 +113,11 @@ public partial class Unit : Entity
                         )
                 };
             }
-
             airstate = (Velocity.Y > 0.0f) ? // Y축 운동량이 아래로
                 AirState.FALLDOWN : (Velocity.Y < 0.0f) ? // Y축 운동량이 위로
                 AirState.JUMPUP : AirState.DEFER;
         }
-        else
+        else if(IsOnFloor())
         {
             airstate = AirState.NONE;
         }
@@ -120,7 +125,8 @@ public partial class Unit : Entity
         switch (state)
         {
             case State.NORMAL:
-                mns_with_global();
+                // mns_with_global();
+                MoveAndSlide();
                 break;
             case State.GRABBED:
                 grabbed_event_handler();
@@ -131,14 +137,18 @@ public partial class Unit : Entity
 
     }
 
-    public void jump()
+    public void jump() {}
+
+    public void grabbed_event_handler() {}
+
+    public void on_mouse_entered()
     {
-        
+        get_p_input().mouse_pointing.Add(this);
     }
 
-    public void grabbed_event_handler()
+    public void on_mouse_exited()
     {
-
+        get_p_input().mouse_pointing.Remove(this);
     }
 
     public void on_child_entered(Node node)
@@ -197,10 +207,8 @@ public partial class Unit : Entity
     public void setThroughable(bool toggle)
     {
         _throughable = toggle;
-        if (toggle)
-        {
+        CollisionLayer = (uint)((toggle) ? 0 : 1);
 
-        }
     }
 
     private Array<UnitCollision> get_collisions() => collisions.Values as Array<UnitCollision>;

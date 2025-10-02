@@ -17,12 +17,12 @@ public partial class Executioner : Node
         index = -1;
     }
 
-    private HitEvent create_event(HitEvent.EventType type, Node from, Node to, Dictionary values = null)
+    private HitEvent create_event(HitEvent.EventType type, long from, long to, Dictionary values = null)
     {
         return new HitEvent(type, from, to, values);
     }
 
-    public void add_event(HitEvent.EventType type, Node from, Node to, Dictionary values = null)
+    public void add_event(HitEvent.EventType type, long from, long to, Dictionary values = null)
     {
         index += 1;
         var ev = create_event(type, from, to, values);
@@ -47,7 +47,7 @@ public partial class Executioner : Node
         }
     }
 
-    private void hit(Node from, Node to, Dictionary values)
+    private void hit(long from, long to, Dictionary values)
     {
         
     }

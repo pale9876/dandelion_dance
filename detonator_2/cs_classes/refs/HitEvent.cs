@@ -19,11 +19,11 @@ public partial class HitEvent : RefCounted
     }
 
     public EventType event_type = EventType.NONE;
-    public Node from;
-    public Node to;
+    public long from;
+    public long to;
     public Dictionary effects;
 
-    public HitEvent(EventType type, Node from, Node to, Dictionary values)
+    public HitEvent(EventType type, long from, long to, Dictionary values)
     {
         this.event_type = type;
         this.from = from;

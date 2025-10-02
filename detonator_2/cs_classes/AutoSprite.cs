@@ -40,8 +40,7 @@ public partial class AutoSprite : Sprite2D
 
         if (!Engine.IsEditorHint())
         {
-            GlobalAnimation g_animation = GetNode<GlobalAnimation>("/root/GlobalAnimation");
-            g_animation.add_sprite(this);
+
         }
 
         VisibilityChanged += on_visible_changed;
@@ -59,7 +58,7 @@ public partial class AutoSprite : Sprite2D
     {
         if (state == State.IDLE)
         {
-            if (playing) time -= (float)delta * time_scale * get_g_anim().global_scale;
+            if (playing) time -= (float)delta * time_scale;
             if (time == 0.0f)
             {
                 time = 1.0f / fps;
@@ -74,7 +73,7 @@ public partial class AutoSprite : Sprite2D
         {
             if (playing)
             {
-                time -= (float)delta * time_scale * get_g_anim().global_scale;
+                time -= (float)delta * time_scale;
                 if (time == 0.0f)
                 {
                     time = 1.0f / fps;
@@ -96,12 +95,6 @@ public partial class AutoSprite : Sprite2D
             }
             playing = this.Visible ? true : false;
         }
-    }
-
-    private GlobalAnimation get_g_anim()
-    {
-        GlobalAnimation g_anim = GetNode<GlobalAnimation>("/root/GlobalAnimation");
-        return g_anim;
     }
 
     public void next_frame()

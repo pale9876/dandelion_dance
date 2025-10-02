@@ -20,7 +20,6 @@ public partial class PoseComponent : Node2D
     private int current_index { get => _current_index; set => change_index(value); }
     private int _current_index = -1;
 
-
     [ExportToolButton("Update")] private Callable update => Callable.From(_update);
     [ExportToolButton("Go to Prev Pose")] private Callable p_idx => Callable.From(prev_pose);
     [ExportToolButton("Go to Next Pose")] private Callable n_idx => Callable.From(next_pose);

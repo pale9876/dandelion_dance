@@ -22,6 +22,8 @@ Executioner="*res://cs_classes/global/Executioner.cs"
 PlayDataManager="*res://cs_classes/global/PlayDataManager.cs"
 PlayerInput="*res://cs_classes/global/PlayerInput.cs"
 GlobalAnimation="*res://cs_classes/global/GlobalAnimation.cs"
+BulletTimeManager="*res://cs_classes/global/BulletTimeManager.cs"
+Effect2dBus="*res://cs_classes/global/Effect2DBus.cs"
 
 [display]
 
@@ -79,9 +81,14 @@ LShift={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Unit"
+
 [physics]
 
 2d/physics_engine="Rapier2D"
+2d/default_gravity=970.0
 
 [rendering]
 
