@@ -16,7 +16,6 @@ public partial class StageCamera : Camera2D
 
     private Stage stage = null;
 
-
     public override void _EnterTree()
     {
         base._EnterTree();
