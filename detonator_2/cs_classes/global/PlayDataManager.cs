@@ -11,7 +11,6 @@ public partial class PlayDataManager : Node
     private String _path { set => set_path(value); get => path; }
     private Resource current_data;
 
-    public void set_path(String value) { path = value; }
     public void save(int idx)
     {
         Error r_saver = ResourceSaver.Save(current_data, path + index.ToString(), ResourceSaver.SaverFlags.Compress);
@@ -40,6 +39,7 @@ public partial class PlayDataManager : Node
         return new string[0];
 
     }
+    public void set_path(String value) { path = value; }
 
     public partial class PlayerData : Resource
     {

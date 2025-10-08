@@ -7,7 +7,7 @@ using System;
 public partial class MarginArea : Area2D
 {
 
-    [Export] private CollisionPolygon2D collision;
+    [Export] public CollisionPolygon2D collision = null;
 
     public override void _EnterTree()
     {

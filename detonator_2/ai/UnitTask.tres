@@ -1,8 +1,15 @@
-[gd_resource type="BehaviorTree" load_steps=10 format=3 uid="uid://cyhr50o43d0mb"]
+[gd_resource type="BehaviorTree" load_steps=14 format=3 uid="uid://cyhr50o43d0mb"]
 
 [ext_resource type="Script" uid="uid://bmxe81pwj3hig" path="res://ai/tasks/ExtraComment.gd" id="1_bq2wm"]
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_rr2mj"]
+
+[sub_resource type="BTComment" id="BTComment_rr2mj"]
+custom_name = "타겟에 대한 설정이 필요."
+
+[sub_resource type="BTSequence" id="BTSequence_bq2wm"]
+custom_name = "SetTarget"
+children = [SubResource("BTComment_rr2mj")]
 
 [sub_resource type="BTComment" id="BTComment_ilp4o"]
 custom_name = "TODO :: Check Unit. PsychoModule 유닛의 심리모듈 (공격적 or 방어적 확인)"
@@ -12,8 +19,9 @@ text = "유닛이 피격 시 공격적 행동 점수 감소
 확률 = (각 행동) /방어적 + 공격적
 공격적과 방어적 모두 15% 이하와 85% 이상 값이 책정될 수 없음."
 
-[sub_resource type="BTComment" id="BTComment_rr2mj"]
-custom_name = "타겟에 대한 설정이 필요."
+[sub_resource type="BTSequence" id="BTSequence_1ganl"]
+custom_name = "Decide Defensive or Aggressive Next Action"
+children = [SubResource("BTComment_ilp4o")]
 
 [sub_resource type="BTComment" id="BTComment_bq2wm"]
 custom_name = "타겟이 같은 스테이지 위에 존재하는지 또는 스테이지 바깥에 있는지 확인:"
@@ -21,17 +29,28 @@ script = ExtResource("1_bq2wm")
 text = ""
 
 [sub_resource type="BTComment" id="BTComment_1ganl"]
+custom_name = "타겟이 활성화된 스테이지 안에 있다면"
+script = ExtResource("1_bq2wm")
 
-[sub_resource type="BTFail" id="BTFail_bq2wm"]
+[sub_resource type="BTSequence" id="BTSequence_ilp4o"]
+custom_name = "IF TRUE ( Not Ghost )"
+children = [SubResource("BTComment_1ganl")]
 
-[sub_resource type="BTSequence" id="BTSequence_1ganl"]
-custom_name = "Decide Defensive or Aggressive Next Action"
-children = [SubResource("BTComment_bq2wm"), SubResource("BTComment_1ganl"), SubResource("BTFail_bq2wm")]
+[sub_resource type="BTComment" id="BTComment_j05h3"]
+custom_name = "타겟이 비활성화된 영역에 나가거나 존재한다면"
 
-[sub_resource type="BTSelector" id="BTSelector_j05h3"]
+[sub_resource type="BTSequence" id="BTSequence_j05h3"]
+custom_name = "IF FALSE ( Ghost )"
+children = [SubResource("BTComment_j05h3")]
+
+[sub_resource type="BTSelector" id="BTSelector_bq2wm"]
+custom_name = "CheckTargetIsInStage"
+children = [SubResource("BTComment_bq2wm"), SubResource("BTSequence_ilp4o"), SubResource("BTSequence_j05h3")]
+
+[sub_resource type="BTSelector" id="BTSelector_1ganl"]
 custom_name = "UnitTask"
-children = [SubResource("BTComment_ilp4o"), SubResource("BTComment_rr2mj"), SubResource("BTSequence_1ganl")]
+children = [SubResource("BTSequence_bq2wm"), SubResource("BTSequence_1ganl"), SubResource("BTSelector_bq2wm")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_rr2mj")
-root_task = SubResource("BTSelector_j05h3")
+root_task = SubResource("BTSelector_1ganl")

@@ -6,6 +6,7 @@ using Godot.Collections;
 public partial class Entity : CharacterBody2D
 {
     private long eid = -1;
+    private ESystem esystem = null;
 
     [Export] public bool eyes_only = false;
     [Export] public bool ghost { set => setGhost(value); get => _ghost; }
@@ -20,8 +21,8 @@ public partial class Entity : CharacterBody2D
 
         if (!Engine.IsEditorHint())
         {
-            ESystem sys = get_sys();
-            sys.add_entity(this);
+            esystem = get_sys();
+            esystem.add_entity(this);
         }
     }
 
@@ -31,7 +32,7 @@ public partial class Entity : CharacterBody2D
 
         if (!Engine.IsEditorHint())
         {
-            get_sys().entities.Remove(eid);
+            esystem.entities.Remove(eid);
             get_p_input().entity_exit(this);
         }
 
@@ -57,18 +58,19 @@ public partial class Entity : CharacterBody2D
             //name
             //pos
             }*/
-        var system = get_sys();
-
-        if (system.entities.ContainsKey(eid))
+        if (esystem.entities.ContainsKey(eid))
         {
-            if (system.entities[eid].ContainsKey("pos"))
+            if (esystem.entities[eid].ContainsKey("pos"))
             {
-                system.entities[this.eid]["pos"] = this.GlobalPosition;
+                esystem.entities[this.eid]["pos"] = this.GlobalPosition;
+                // GC.Collect(0, GCCollectionMode.Optimized);
                 return true;
             }
             else
+            {
                 GD.PrintErr($"{this} => ");
                 return false;
+            }
         }
 
         GD.PrintErr($"{this} => ");

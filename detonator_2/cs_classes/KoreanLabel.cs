@@ -8,6 +8,8 @@ public partial class KoreanLabel : Label
 
     private KoreanTypingEffecter _effect;
 
+    [Export] public bool playing = false;
+
     public KoreanLabel()
     {
         this._effect = new KoreanTypingEffecter("");

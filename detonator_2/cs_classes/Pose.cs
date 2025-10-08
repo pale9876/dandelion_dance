@@ -8,8 +8,9 @@ public partial class Pose : Node2D
 {
 
     private int id = -1;
+    [Export] public bool filp_lock = false;
 
-    [Export] public Dictionary<StringName, AutoSpriteComponent> auto_sprite_components = new Dictionary<StringName, AutoSpriteComponent>();
+    [Export] public Dictionary<String, AutoSpriteComponent> auto_sprite_components = new Dictionary<String, AutoSpriteComponent>();
     [Export] public Dictionary<String, Hitbox> hitboxes = new Dictionary<String, Hitbox>();
     [Export] public Hurtbox hurtbox;
 
@@ -80,6 +81,24 @@ public partial class Pose : Node2D
             if (node is Node2D)
             {
                 (node as Node2D).Visible = this.Visible;
+            }
+        }
+    }
+
+    public void flip(bool toggle)
+    {
+        foreach (Hitbox hitbox in hitboxes.Values)
+        {
+            hitbox.Scale = hitbox.Scale with { X = (toggle) ? -1.0f : 1.0f };
+        }
+
+        hurtbox.Scale = hurtbox.Scale with { X = (toggle) ? -1.0f : 1.0f };
+
+        foreach (AutoSpriteComponent component in auto_sprite_components.Values)
+        {
+            foreach (AutoSprite sprite in component.get_sprites())
+            {
+                sprite.FlipH = (!filp_lock) ? toggle : false;
             }
         }
     }

@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Detonator_2 (4.4)"
 run/main_scene="uid://bmidfw1jvsepy"
-config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
+config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
@@ -24,6 +24,7 @@ PlayerInput="*res://cs_classes/global/PlayerInput.cs"
 GlobalAnimation="*res://cs_classes/global/GlobalAnimation.cs"
 BulletTimeManager="*res://cs_classes/global/BulletTimeManager.cs"
 Effect2dBus="*res://cs_classes/global/Effect2DBus.cs"
+CameraStatus="*res://cs_classes/global/CameraStatus.cs"
 
 [display]
 
@@ -36,7 +37,7 @@ project/assembly_name="Detonator_2"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/sample_plugin/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/pose_panel/plugin.cfg")
 
 [input]
 

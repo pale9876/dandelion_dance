@@ -1,102 +1,46 @@
-[gd_scene load_steps=9 format=3 uid="uid://bmidfw1jvsepy"]
+[gd_scene load_steps=11 format=3 uid="uid://bmidfw1jvsepy"]
 
-[ext_resource type="Script" uid="uid://d17j0um2nrj1u" path="res://main_scene.gd" id="1_0f027"]
-[ext_resource type="Script" uid="uid://dy5hus27swp2n" path="res://cs_classes/StageCamera.cs" id="2_66tet"]
-[ext_resource type="Script" uid="uid://bsflrngqxr2qd" path="res://cs_classes/StageRect.cs" id="4_7ycvg"]
-[ext_resource type="Script" uid="uid://drj8e5ywasglc" path="res://cs_classes/Region.cs" id="4_66tet"]
-[ext_resource type="Script" uid="uid://bwso8geusuowb" path="res://cs_classes/MarginArea.cs" id="5_7ycvg"]
+[ext_resource type="Script" uid="uid://b42jusjc7b2nd" path="res://cs_classes/MainScene.cs" id="1_wr18j"]
+[ext_resource type="PackedScene" uid="uid://bo3aeon06uepi" path="res://stage.tscn" id="2_hq1ik"]
+[ext_resource type="Script" uid="uid://dy5hus27swp2n" path="res://cs_classes/StageCamera.cs" id="2_nfk4m"]
+[ext_resource type="Script" uid="uid://dyutodlr4l6yv" path="res://cs_classes/FilterController.cs" id="6_7ycvg"]
 [ext_resource type="PackedScene" uid="uid://cv1kxqd5krltm" path="res://progress_ui.tscn" id="6_hq1ik"]
-[ext_resource type="Script" uid="uid://u58x005ikflf" path="res://cs_classes/Stage.cs" id="6_nfk4m"]
 [ext_resource type="PackedScene" uid="uid://dhlgdxnmpa7mu" path="res://sample_unit.tscn" id="7_66tet"]
+[ext_resource type="Shader" uid="uid://lwgbnxs162me" path="res://shaders/motion_blur.gdshader" id="7_qwutr"]
+[ext_resource type="Script" uid="uid://uiqco1jdo13f" path="res://screen_shutter.gd" id="7_wr18j"]
+[ext_resource type="Script" uid="uid://t3443oedt1h4" path="res://cs_classes/Hud.cs" id="8_qwutr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wr18j"]
+shader = ExtResource("7_qwutr")
+shader_parameter/alpha = 0.0
+shader_parameter/blur = 0.0
 
 [node name="MainScene" type="Node2D"]
-script = ExtResource("1_0f027")
+script = ExtResource("1_wr18j")
 
-[node name="Stage" type="Node2D" parent="." node_paths=PackedStringArray("idx_dict", "stage_rect")]
-script = ExtResource("6_nfk4m")
-_index = 2
+[node name="StageCamera" type="Camera2D" parent="."]
+script = ExtResource("2_nfk4m")
+metadata/_custom_type_script = "uid://dy5hus27swp2n"
+
+[node name="Stage" parent="." node_paths=PackedStringArray("regions", "idx_dict") instance=ExtResource("2_hq1ik")]
+regions = {
+"Region": NodePath("Region"),
+"Region2": NodePath("Region2"),
+"Region3": NodePath("Region3")
+}
 idx_dict = {
 0: NodePath("Region"),
 1: NodePath("Region2"),
 2: NodePath("Region3")
 }
-_current_index = 0
-stage_rect = NodePath("StageRect")
-metadata/_custom_type_script = "uid://u58x005ikflf"
-
-[node name="StageCamera" type="Camera2D" parent="Stage"]
-position = Vector2(584, 136)
-script = ExtResource("2_66tet")
-
-[node name="StageRect" type="StaticBody2D" parent="Stage" node_paths=PackedStringArray("collision")]
-script = ExtResource("4_7ycvg")
-collision = NodePath("CollisionPolygon2D")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/StageRect"]
-build_mode = 1
-polygon = PackedVector2Array(0, 0, 1000, 0, 1000, 300, 0, 300)
-
-[node name="Region" type="Node2D" parent="Stage" node_paths=PackedStringArray("margin_area")]
-script = ExtResource("4_66tet")
-_margin = Vector2(100, 100)
-_size = Vector2(1000, 300)
-alert_colour = Color(0.239216, 0.121569, 0.0941176, 0.380392)
-margin_area = NodePath("MarginArea")
-metadata/_custom_type_script = "uid://drj8e5ywasglc"
-
-[node name="MarginArea" type="Area2D" parent="Stage/Region" node_paths=PackedStringArray("collision")]
-visible = false
-script = ExtResource("5_7ycvg")
-collision = NodePath("CollisionPolygon2D")
-metadata/_custom_type_script = "uid://bwso8geusuowb"
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/Region/MarginArea"]
-visible = false
-polygon = PackedVector2Array(-100, -100, 1100, -100, 1100, 400, -100, 400)
-
-[node name="Region2" type="Node2D" parent="Stage" node_paths=PackedStringArray("margin_area")]
-visible = false
-script = ExtResource("4_66tet")
-_pivot_point = Vector2(1000, 0)
-_margin = Vector2(100, 100)
-_size = Vector2(1000, 300)
-margin_area = NodePath("MarginArea")
-metadata/_custom_type_script = "uid://drj8e5ywasglc"
-
-[node name="MarginArea" type="Area2D" parent="Stage/Region2" node_paths=PackedStringArray("collision")]
-visible = false
-script = ExtResource("5_7ycvg")
-collision = NodePath("CollisionPolygon2D")
-metadata/_custom_type_script = "uid://bwso8geusuowb"
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/Region2/MarginArea"]
-visible = false
-polygon = PackedVector2Array(900, -100, 2100, -100, 2100, 400, 900, 400)
-
-[node name="Region3" type="Node2D" parent="Stage" node_paths=PackedStringArray("margin_area")]
-visible = false
-script = ExtResource("4_66tet")
-_pivot_point = Vector2(2000, 0)
-_margin = Vector2(100, 100)
-_size = Vector2(1000, 300)
-margin_area = NodePath("MarginArea")
-metadata/_custom_type_script = "uid://drj8e5ywasglc"
-
-[node name="MarginArea" type="Area2D" parent="Stage/Region3" node_paths=PackedStringArray("collision")]
-script = ExtResource("5_7ycvg")
-collision = NodePath("CollisionPolygon2D")
-metadata/_custom_type_script = "uid://bwso8geusuowb"
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Stage/Region3/MarginArea"]
-visible = false
-polygon = PackedVector2Array(1900, -100, 3100, -100, 3100, 400, 1900, 400)
 
 [node name="BackgroundEffectLayer" type="Node2D" parent="."]
 
 [node name="UnitLayer" type="Node2D" parent="."]
 
 [node name="Unit" parent="UnitLayer" node_paths=PackedStringArray("collisions") instance=ExtResource("7_66tet")]
-position = Vector2(72, 272)
+position = Vector2(72, 288)
+hand_enable = true
 collisions = {
 "Crouch": NodePath("Crouch"),
 "Idle": NodePath("Idle"),
@@ -107,6 +51,29 @@ collisions = {
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
+[node name="FilterController" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_7ycvg")
+
+[node name="MotionBlur" type="ScreenShutter" parent="CanvasLayer/FilterController"]
+visible = false
+material = SubResource("ShaderMaterial_wr18j")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("7_wr18j")
+
 [node name="HUD" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
@@ -115,7 +82,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("8_qwutr")
 
 [node name="PlayerProfile" parent="CanvasLayer/HUD" instance=ExtResource("6_hq1ik")]
 layout_mode = 1
 mouse_filter = 2
+max_health_value = 9500.0
+current_health_value = 9500.0

@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using Godot;
 
 [Tool]
@@ -33,18 +32,20 @@ public partial class AutoSprite : Sprite2D
     private float _time = 0f;
     private float _time_scale = 1.0f;
 
+    private readonly Shader outline_shader = GD.Load<Shader>("res://shaders/outline.gdshader");
+
+    public AutoSprite()
+    {
+        ShaderMaterial sm = new ShaderMaterial();
+        sm.Shader = outline_shader;
+        this.Material = sm;
+    }
 
     public override void _EnterTree()
     {
         base._EnterTree();
 
-        if (!Engine.IsEditorHint())
-        {
-
-        }
-
         VisibilityChanged += on_visible_changed;
-
     }
 
     public override void _ExitTree()

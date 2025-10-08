@@ -31,10 +31,8 @@ public partial class ExtraProgressUI : TextureProgressBar
     private double purpose_value = INIT_VALUE;
     [Export(PropertyHint.Range, "1.0, 3.0, 0.001")] public double purpose_scale = 1.0;
 
-    public override void _EnterTree()
+    public ExtraProgressUI()
     {
-        base._EnterTree();
-        
         this.Step = 0.001;
         this.Value = .5;
         this.MaxValue = 1.0;

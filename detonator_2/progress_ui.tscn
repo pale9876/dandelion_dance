@@ -1,44 +1,107 @@
-[gd_scene load_steps=15 format=3 uid="uid://cv1kxqd5krltm"]
+[gd_scene load_steps=18 format=3 uid="uid://cv1kxqd5krltm"]
 
 [ext_resource type="Texture2D" uid="uid://bvxqtftn2q540" path="res://assets/aseprite/HPProgressOver.png" id="1_2ohdj"]
 [ext_resource type="Script" uid="uid://5pgswi3ilufv" path="res://cs_classes/unique/PlayerProfile.cs" id="1_3c0ln"]
-[ext_resource type="Shader" uid="uid://rurk7ukp5ar7" path="res://shaders/progress_skew.gdshader" id="1_yonyf"]
+[ext_resource type="Shader" uid="uid://rurk7ukp5ar7" path="res://shaders/progress_shader.gdshader" id="1_yonyf"]
 [ext_resource type="Texture2D" uid="uid://qgc3b3xb11e1" path="res://assets/aseprite/HPProgressValue.png" id="2_yonyf"]
 [ext_resource type="Script" uid="uid://s7fklj7c0vnh" path="res://cs_classes/ExtraProgressUI.cs" id="3_nx0ra"]
 [ext_resource type="Texture2D" uid="uid://dlsorhk6e3er" path="res://assets/aseprite/ProfileOveray.png" id="4_gojvy"]
-[ext_resource type="Texture2D" uid="uid://wyhy5roxkawc" path="res://assets/aseprite/StressProgressUIOver.png" id="4_xhu0u"]
-[ext_resource type="Texture2D" uid="uid://cc8wws685vouq" path="res://assets/aseprite/StressProgressUIValue.png" id="5_3c0ln"]
 [ext_resource type="Texture2D" uid="uid://d0q4053yn4l7v" path="res://assets/aseprite/ProfileUIUnder.png" id="5_6sy25"]
-[ext_resource type="Texture2D" uid="uid://dd8nbtwds84w2" path="res://assets/aseprite/hud/StressProgressUIValue.png" id="8_m04di"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6sy25"]
 shader = ExtResource("1_yonyf")
+shader_parameter/repeat = false
 shader_parameter/offset_0_0 = Vector2(23.5, 0)
 shader_parameter/offset_0_1 = Vector2(-23.5, 0)
 shader_parameter/offset_1_0 = Vector2(23.5, 0)
 shader_parameter/offset_1_1 = Vector2(-23.5, 0)
-shader_parameter/colour = Color(1, 1, 1, 1)
+shader_parameter/first_color = Color(0.79242, 0.0795302, 0.718243, 1)
+shader_parameter/second_color = Color(0.29, 0.1131, 0.1131, 1)
+shader_parameter/position = 0.5
+shader_parameter/stepIntensify = 5
+shader_parameter/time_scale = 1.0
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xhu0u"]
 load_path = "res://.godot/imported/HPProgressValue.png-859cc9449bfb71f3d59bf952ce73ce10.ctex"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gojvy"]
 shader = ExtResource("1_yonyf")
+shader_parameter/repeat = true
 shader_parameter/offset_0_0 = Vector2(23.5, 0)
 shader_parameter/offset_0_1 = Vector2(-23.5, 0)
 shader_parameter/offset_1_0 = Vector2(23.5, 0)
 shader_parameter/offset_1_1 = Vector2(-23.5, 0)
-shader_parameter/colour = Color(1, 1, 1, 1)
+shader_parameter/first_color = Color(0.262745, 0.698039, 0.968627, 1)
+shader_parameter/second_color = Color(6.35326e-06, 0.890927, 0.989905, 1)
+shader_parameter/position = 0.5
+shader_parameter/stepIntensify = 4
+shader_parameter/time_scale = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xhu0u"]
+resource_local_to_scene = true
 shader = ExtResource("1_yonyf")
+shader_parameter/repeat = false
 shader_parameter/offset_0_0 = Vector2(-14.5, 0)
 shader_parameter/offset_0_1 = Vector2(14.5, 0)
 shader_parameter/offset_1_0 = Vector2(-14.5, 0)
 shader_parameter/offset_1_1 = Vector2(14.5, 0)
-shader_parameter/colour = Color(1, 1, 1, 1)
+shader_parameter/first_color = Color(0.261362, 0.0423633, 0, 1)
+shader_parameter/second_color = Color(0.426399, 0.00692084, 0.0325297, 1)
+shader_parameter/position = 0.5
+shader_parameter/stepIntensify = 4
+shader_parameter/time_scale = 1.0
 
-[node name="PlayerProfile" type="Control"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3c0ln"]
+load_path = "res://.godot/imported/StressProgressUIValue.png-f9e02b67be2a2721129a70b14d7d5d92.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s8fwf"]
+resource_local_to_scene = true
+shader = ExtResource("1_yonyf")
+shader_parameter/repeat = false
+shader_parameter/offset_0_0 = Vector2(-14.5, 0)
+shader_parameter/offset_0_1 = Vector2(14.5, 0)
+shader_parameter/offset_1_0 = Vector2(-14.5, 0)
+shader_parameter/offset_1_1 = Vector2(14.5, 0)
+shader_parameter/first_color = Color(0.933333, 0, 0, 1)
+shader_parameter/second_color = Color(0.228978, 1.86507e-07, 6.61798e-08, 1)
+shader_parameter/position = 0.5
+shader_parameter/stepIntensify = 5
+shader_parameter/time_scale = 0.5
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_i7c31"]
+load_path = "res://.godot/imported/StressProgressUIValue.png-f9e02b67be2a2721129a70b14d7d5d92.ctex"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m04di"]
+shader = ExtResource("1_yonyf")
+shader_parameter/repeat = false
+shader_parameter/offset_0_0 = Vector2(23.5, 0)
+shader_parameter/offset_0_1 = Vector2(-23.5, 0)
+shader_parameter/offset_1_0 = Vector2(23.5, 0)
+shader_parameter/offset_1_1 = Vector2(-23.5, 0)
+shader_parameter/first_color = Color(1, 1, 1, 1)
+shader_parameter/second_color = Color(1, 1, 1, 1)
+shader_parameter/position = 0.5
+shader_parameter/stepIntensify = 5
+shader_parameter/time_scale = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8rdco"]
+resource_local_to_scene = true
+shader = ExtResource("1_yonyf")
+shader_parameter/repeat = false
+shader_parameter/offset_0_0 = Vector2(-14.5, 0)
+shader_parameter/offset_0_1 = Vector2(14.5, 0)
+shader_parameter/offset_1_0 = Vector2(-14.5, 0)
+shader_parameter/offset_1_1 = Vector2(14.5, 0)
+shader_parameter/first_color = Color(1, 1, 1, 1)
+shader_parameter/second_color = Color(1, 1, 1, 1)
+shader_parameter/position = 0.5
+shader_parameter/stepIntensify = 1
+shader_parameter/time_scale = 1.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_riwlj"]
+load_path = "res://.godot/imported/StressProgressUIOver.png-5aa00df03afa0a88d3054b17a8be5b41.ctex"
+
+[node name="PlayerProfile" type="Control" node_paths=PackedStringArray("health_trauma", "health_progress", "stress_trauma", "stress_progress", "profile_over", "profile_under")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -47,91 +110,167 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3c0ln")
 max_health_value = 10000.0
-current_health_value = 1200.0
+current_health_value = 10000.0
+max_stress_value = 10000.0
+current_stress_value = 10000.0
+health_trauma = NodePath("HealthTrauma")
+health_progress = NodePath("HealthProgress")
+stress_trauma = NodePath("StressTrauma")
+stress_progress = NodePath("StressProgress")
+profile_over = NodePath("ProfileOver")
+profile_under = NodePath("ProfileUnder")
 
 [node name="HealthTrauma" type="TextureProgressBar" parent="."]
 material = SubResource("ShaderMaterial_6sy25")
-layout_mode = 0
-offset_left = 116.0
-offset_top = 590.0
-offset_right = 562.0
-offset_bottom = 634.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.069
+anchor_top = 0.889
+anchor_right = 0.069
+anchor_bottom = 0.889
+offset_left = 31.68
+offset_top = -48.08
+offset_right = 477.68
+offset_bottom = -4.08002
 pivot_offset = Vector2(44, 7)
 max_value = 1.0
 step = 0.001
-value = 0.12
+value = 1.0
 texture_progress = SubResource("CompressedTexture2D_xhu0u")
-tint_progress = Color(0.286275, 0.0431373, 0, 1)
 script = ExtResource("3_nx0ra")
 apply_mode = 1
-real_value = 1200.0
+real_value = 10000.0
 real_max = 10000.0
 purpose_scale = 2.0
 
 [node name="HealthProgress" type="TextureProgressBar" parent="."]
 material = SubResource("ShaderMaterial_gojvy")
-layout_mode = 0
-offset_left = 116.0
-offset_top = 590.0
-offset_right = 562.0
-offset_bottom = 634.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.069
+anchor_top = 0.889
+anchor_right = 0.069
+anchor_bottom = 0.889
+offset_left = 31.68
+offset_top = -48.08
+offset_right = 477.68
+offset_bottom = -4.08002
 pivot_offset = Vector2(44, 7)
 max_value = 1.0
 step = 0.001
-value = 0.5
-texture_over = ExtResource("1_2ohdj")
+value = 1.0
 texture_progress = ExtResource("2_yonyf")
-tint_progress = Color(0.772549, 0.929412, 0.988235, 1)
 script = ExtResource("3_nx0ra")
-real_value = 1200.0
+real_value = 10000.0
 real_max = 10000.0
 
 [node name="StressTrauma" type="TextureProgressBar" parent="."]
 material = SubResource("ShaderMaterial_xhu0u")
-layout_mode = 0
-offset_left = 125.0
-offset_top = 640.0
-offset_right = 540.0
-offset_bottom = 671.0
-pivot_offset = Vector2(23, 7)
-max_value = 1.0
-step = 0.001
-value = 0.5
-texture_progress = ExtResource("5_3c0ln")
-tint_progress = Color(0.0858153, 0.196736, 0.353911, 1)
-script = ExtResource("3_nx0ra")
-
-[node name="StressProgress" type="TextureProgressBar" parent="."]
-material = SubResource("ShaderMaterial_xhu0u")
-layout_mode = 0
-offset_left = 125.0
-offset_top = 640.0
-offset_right = 540.0
-offset_bottom = 671.0
-pivot_offset = Vector2(23, 7)
-max_value = 1.0
-step = 0.001
-value = 0.5
-texture_over = ExtResource("4_xhu0u")
-texture_progress = ExtResource("8_m04di")
-tint_progress = Color(1, 0.137255, 0.34902, 1)
-script = ExtResource("3_nx0ra")
-
-[node name="ProfileOver" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
-offset_left = 37.0
-offset_top = 589.0
-offset_right = 136.0
-offset_bottom = 688.0
-pivot_offset = Vector2(60, 10)
-texture = ExtResource("4_gojvy")
+anchor_left = 0.069
+anchor_top = 0.889
+anchor_right = 0.069
+anchor_bottom = 0.889
+offset_left = 39.68
+offset_top = 7.91998
+offset_right = 454.68
+offset_bottom = 38.92
+pivot_offset = Vector2(23, 7)
+max_value = 1.0
+step = 0.001
+value = 1.0
+texture_progress = SubResource("CompressedTexture2D_3c0ln")
+script = ExtResource("3_nx0ra")
+apply_mode = 1
+real_value = 10000.0
+real_max = 10000.0
+purpose_scale = 3.0
+
+[node name="StressProgress" type="TextureProgressBar" parent="."]
+material = SubResource("ShaderMaterial_s8fwf")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.069
+anchor_top = 0.889
+anchor_right = 0.069
+anchor_bottom = 0.889
+offset_left = 39.68
+offset_top = 7.91998
+offset_right = 454.68
+offset_bottom = 38.92
+pivot_offset = Vector2(23, 7)
+max_value = 1.0
+step = 0.001
+value = 1.0
+texture_progress = SubResource("CompressedTexture2D_i7c31")
+script = ExtResource("3_nx0ra")
+real_value = 10000.0
+real_max = 10000.0
+
+[node name="HealthOver" type="TextureProgressBar" parent="."]
+material = SubResource("ShaderMaterial_m04di")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.069
+anchor_top = 0.889
+anchor_right = 0.069
+anchor_bottom = 0.889
+offset_left = 31.68
+offset_top = -48.08
+offset_right = 477.68
+offset_bottom = -4.08002
+pivot_offset = Vector2(44, 7)
+max_value = 1.0
+step = 0.001
+value = 0.12
+texture_over = ExtResource("1_2ohdj")
+script = ExtResource("3_nx0ra")
+real_value = 1200.0
+real_max = 10000.0
+
+[node name="StressOver" type="TextureProgressBar" parent="."]
+material = SubResource("ShaderMaterial_8rdco")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.069
+anchor_top = 0.889
+anchor_right = 0.069
+anchor_bottom = 0.889
+offset_left = 39.68
+offset_top = 7.91998
+offset_right = 454.68
+offset_bottom = 38.92
+pivot_offset = Vector2(23, 7)
+max_value = 1.0
+step = 0.001
+value = 0.5
+texture_over = SubResource("CompressedTexture2D_riwlj")
+script = ExtResource("3_nx0ra")
+metadata/_custom_type_script = "uid://s7fklj7c0vnh"
 
 [node name="ProfileUnder" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
-offset_left = 37.0
-offset_top = 589.0
-offset_right = 136.0
-offset_bottom = 688.0
+anchor_left = 0.069
+anchor_top = 0.889
+anchor_right = 0.069
+anchor_bottom = 0.889
+offset_left = -48.32
+offset_top = -48.08
+offset_right = 50.68
+offset_bottom = 50.92
 texture = ExtResource("5_6sy25")
+
+[node name="ProfileOver" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.069
+anchor_top = 0.889
+anchor_right = 0.069
+anchor_bottom = 0.889
+offset_left = -48.32
+offset_top = -48.08
+offset_right = 50.68
+offset_bottom = 50.92
+texture = ExtResource("4_gojvy")

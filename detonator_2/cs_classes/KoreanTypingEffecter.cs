@@ -93,7 +93,7 @@ public partial class KoreanTypingEffecter : RefCounted
     // static methods
     public static String get_typing(String str, int count)
     {
-        return stringExtensions.Typing(str, count);
+        return sex.Typing(str, count);
     }
 
     public Array<String> get_chars()

@@ -7,10 +7,11 @@ using Godot.Collections;
 public partial class PoseComponent : Node2D
 {
 
-    [Signal] public delegate void pose_changedEventHandler();
+    [Signal] public delegate void pose_changedEventHandler(String pose_name);
 
     private int id = -1;
-
+    [Export] public bool flip { get => _flip; set => setFlip(value); }
+    private bool _flip = false;
     [Export] Dictionary<StringName, Pose> poses = new Dictionary<StringName, Pose>();
     [Export] Dictionary<int, Pose> index = new Dictionary<int, Pose>();
     [Export] public Pose current_pose { get => _current_pose; set => change_pose(value); }
@@ -138,7 +139,7 @@ public partial class PoseComponent : Node2D
 
     private void change_index(int idx)
     {
-        _current_index = Math.Clamp(idx, (index.Count > 0) ? 0 : -1,index.Count - 1);
+        _current_index = Math.Clamp(idx, (index.Count > 0) ? 0 : -1, index.Count - 1);
 
         if (idx >= 0 && index.ContainsKey(idx))
         {
@@ -148,24 +149,47 @@ public partial class PoseComponent : Node2D
 
     public void change_pose(Pose pose)
     {
-        Pose old_pose = _current_pose == null ? null : _current_pose;
+        Pose old_pose = (_current_pose == null) ? null : _current_pose;
 
         _current_pose = pose;
-        
-        if (Engine.IsEditorHint()) return;
 
-        foreach (Pose p in poses.Values)
+        foreach (Pose p in index.Values)
             p.Visible = (p == pose) ? true : false;
 
+        if (Engine.IsEditorHint()) return;
 
-        if (pose != null && old_pose != null)
+        if (pose != null)
+        {
+            pose._pose_entered();
+            EmitSignalpose_changed(pose.Name);
+        }
+
+        if (old_pose != null)
         {
             old_pose._pose_exited();
-            pose._pose_entered();
-            EmitSignalpose_changed();
         }
     }
 
     public Array<Pose> get_poses() => poses.Values as Array<Pose>;
+    public void setFlip(bool toggle)
+    {
+        _flip = toggle;
 
+        foreach (Pose pose in poses.Values)
+        {
+            pose.flip(toggle);
+            // pose.hurtbox.Scale = new Vector2(
+            //     (toggle) ? -1.0f : 1.0f,
+            //     pose.hurtbox.Scale.Y
+            // );
+
+            // foreach (AutoSpriteComponent cp in pose.auto_sprite_components.Values)
+            // {
+            //     foreach (AutoSprite sprite in cp.get_sprites())
+            //     {
+            //         sprite.FlipH = toggle;
+            //     }
+            // }
+        }
+    }
 }

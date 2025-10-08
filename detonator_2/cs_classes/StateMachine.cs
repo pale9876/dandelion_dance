@@ -6,28 +6,51 @@ using System;
 [GlobalClass]
 public partial class StateMachine : LimboHsm
 {
+    public const String TO_MOVE = "to_move";
+    public const String TO_IDLE = "to_idle";
+    public const String JUMP_UP = "jump_up";
+    public const String FALL_DOWN = "fall_down";
+
+    public const String ALWAYS_IDLE = "always_idle";
+    public const String ALWAYS_MOVE = "always_move";
+    public const String ALWAYS_SHIFT = "always_shif";
 
     [Export] public Dictionary<String, UnitState> states = new Dictionary<string, UnitState>();
     [Export] public UnitState start_state = null;
+
+    [ExportToolButton("Update")] private Callable update => Callable.From(_update);
 
     public override void _Ready()
     {
         base._Ready();
 
-        Entity parent = GetParentOrNull<Entity>();
+        Unit parent = GetParentOrNull<Unit>();
 
         if (!Engine.IsEditorHint())
         {
-            if (parent != null)
+            if (parent == null)
             {
-                InitialState = start_state;
-                Initialize(parent);
-                SetActive(true);
+                GD.PrintErr($"{this} => Has no parent in this tree.");
+                return;
             }
-            else
-            {
-                GD.PrintErr($"{this} => Has no parent in this tree.");    
-            }
+
+            if (states.ContainsKey("Idle"))
+                this.AddTransition(ANYSTATE, states["Idle"], TO_IDLE);
+
+            InitialState = start_state as LimboState;
+            Initialize(parent);
+            SetActive(true);
+        }
+    }
+
+    public void _update()
+    {
+        if (states.Count > 0) states.Clear();
+
+        foreach (Node node in GetChildren())
+        {
+            if (node is UnitState)
+                states.Add(node.Name, node as UnitState);
         }
     }
 }

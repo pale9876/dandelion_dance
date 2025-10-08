@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://b3h24o7accosp"]
+
+[ext_resource type="Script" uid="uid://nty86admf01v" path="res://cs_classes/UnitCollision.cs" id="1_k4liu"]
+[ext_resource type="Script" uid="uid://bcbcxb3ia4soo" path="res://cs_classes/SampleScene.cs" id="1_ohetr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ohetr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0pueg"]
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_ohetr")
+
+[node name="UnitCollision" type="CollisionShape2D" parent="."]
+position = Vector2(176, 144)
+shape = SubResource("CircleShape2D_ohetr")
+script = ExtResource("1_k4liu")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="UnitCollision2" type="CollisionShape2D" parent="."]
+position = Vector2(168, 128)
+shape = SubResource("CircleShape2D_0pueg")
+script = ExtResource("1_k4liu")
+metadata/_custom_type_script = "uid://nty86admf01v"

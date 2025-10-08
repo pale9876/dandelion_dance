@@ -5,7 +5,6 @@ using System.Linq;
 
 public partial class PlayerInput : Node
 {
-
     public enum State
     {
         NONE,
@@ -17,15 +16,17 @@ public partial class PlayerInput : Node
 
     public Dictionary<int, Entity> index = new();
     private State state = State.NONE;
-    public Entity inControl { get; set; }
-    private Entity _inControl = null;
-    public Entity observe { get; set; }
-    private Entity _observe = null;
+    public Unit in_control { get => _in_control; set => setInControl(value); }
+    private Unit _in_control = null;
+    public Unit observe { get => _observe; set => setObserved(value); }
+    private Unit _observe = null;
     public bool shift = false;
     public Vector2 old_input_direction = Vector2.Zero;
     public Vector2 old_abs_input_direction = Vector2.Zero;
 
     public Array<Entity> mouse_pointing = new Array<Entity>();
+
+    private CommandProcessor command_processor = new CommandProcessor();
 
     public override void _PhysicsProcess(double delta)
     {
@@ -89,12 +90,30 @@ public partial class PlayerInput : Node
                 }
             }
         }
+        else if (@event is InputEventMouseButton)
+        {
+            if (mouse_pointing.Count > 0)
+            {
+                if (mouse_pointing[0] is Unit)
+                {
+                    Unit selected = mouse_pointing[0] as Unit;
+                    if (selected.hand_enable)
+                    {
+                        in_control = selected;
+                    }
+                    else
+                    {
+                        observe = selected;
+                    }
+                }
+            }
+        }
     }
 
     public void index_handler(int idx)
     {
-        if (inControl != null)
-            index.Add(idx, inControl);
+        if (in_control != null)
+            index.Add(idx, in_control);
     }
 
     public void edit_handler(int idx)
@@ -121,8 +140,32 @@ public partial class PlayerInput : Node
 
     public void entity_exit(Entity entity)
     {
-        if (inControl == entity) inControl = null;
+        if (in_control == entity) in_control = null;
         if (mouse_pointing.Contains(entity)) mouse_pointing.Remove(entity);
+    }
+
+    public void setInControl(Unit unit)
+    {
+        Unit previous_unit = _in_control;
+
+        if (previous_unit != unit)
+        {
+            if (previous_unit != null)
+            {
+                previous_unit.RemoveChild(command_processor);
+            }
+        }
+        else return;
+
+        _in_control = unit;
+
+        unit.AddChild(command_processor);
+        GD.Print($"SetControl => {unit}");
+    }
+
+    public void setObserved(Unit unit)
+    {
+        _observe = unit;
     }
 
 }

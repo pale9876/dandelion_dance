@@ -33,12 +33,11 @@ public partial class Stage : Node2D
     {
         index = -1;
         idx_dict.Clear();
-
-        var children = this.GetChildren();
+        regions.Clear();
 
         var next_pivot_point = Vector2.Zero;
 
-        foreach (Node node in children)
+        foreach (Node node in GetChildren())
         {
             if (node is Region)
             {
@@ -46,7 +45,9 @@ public partial class Stage : Node2D
                 Region region = node as Region;
                 region.pivot_point = next_pivot_point;
                 next_pivot_point = next_pivot_point with { X = next_pivot_point.X + region.size.X, Y = 0f };
+
                 idx_dict.Add(index, region);
+                regions.Add(region.Name, region);
             }
         }
     }
@@ -59,6 +60,32 @@ public partial class Stage : Node2D
     public void change_region(Region region)
     {
         current_region = region;
+    }
+
+    public Region create_region(Vector2 area, Vector2 margin)
+    {
+        //Create Classes
+        Region region = new Region();
+        MarginArea margin_area = new MarginArea();
+        CollisionPolygon2D margin_collision = new CollisionPolygon2D();
+
+        //Set Properties
+        region.size = area;
+        region.margin = margin;
+        margin_area.collision = margin_collision;
+
+        //Set Polygon
+        margin_area.set_collision(region.margin, Vector2.Zero, region.size);
+
+        // AddChild
+        margin_area.AddChild(margin_collision);
+        region.AddChild(margin_area);
+        this.AddChild(region);
+        region.Owner = this;
+
+        _update();
+
+        return region;
     }
 
     public void set_current_region(int idx)

@@ -6,18 +6,9 @@ using System;
 [GlobalClass]
 public partial class Unit : Entity
 {
-
-    public const String TO_MOVE = "to_move";
-    public const String TO_IDLE = "to_idle";
-    public const String JUMP_UP = "jump_up";
-    public const String FALL_DOWN = "fall_down";
-
-    public const String ALWAYS_IDLE = "always_idle";
-    public const String ALWAYS_MOVE = "always_move";
-    public const String ALWAYS_SHIFT = "always_shif";
-
     public const float DEFAULT_FRICTION = 2250.0f;
     public const float DEFAULT_ACCELERATION = 3350.0f;
+    public const float DEFAULT_JUMP_FORCE = -620.0f;
 
     private const float DEFAULT_GRAVITY = 970.0f;
     private const float MAX_GRAVITY = 3550.0f;
@@ -39,10 +30,11 @@ public partial class Unit : Entity
         DEAD = 3, // 죽음
     }
 
-
     [Signal] public delegate void health_changedEventHandler(int value);
     [Signal] public delegate void max_health_changedEventHandler(int value);
     [Signal] public delegate void collision_changedEventHandler();
+
+    [Export] public bool hand_enable = false;
 
     [Export] public Dictionary<String, UnitCollision> collisions = new Dictionary<string, UnitCollision>();
 
@@ -53,16 +45,20 @@ public partial class Unit : Entity
     [Export] public PsychoValuement psycho_valuement;
     [Export] public StateMachine state_machine = null;
 
+    [Export] public UnitInfo unit_info = null;
     [Export] public bool invincible = false;
     [Export] public bool throughable { get => _throughable; set => setThroughable(value); }
     private bool _throughable = false;
-
 
     private AirState airstate = AirState.NONE;
 
     private State state { get => _state; set => change_state(value); }
     private State _state = State.NORMAL;
-    public Dictionary abnormals;
+    public Dictionary<String, Variant> abnormals = new();
+
+    private bool pre_velocity_init = false;
+    private Vector2 pre_velocity { get => _pre_velocity; set=>setPreVelocity(value); }
+    private Vector2 _pre_velocity = Vector2.Zero;
 
     [ExportToolButton("Update")] private Callable update => Callable.From(_update);
 
@@ -73,7 +69,11 @@ public partial class Unit : Entity
         ChildEnteredTree += on_child_entered;
 
         if (!Engine.IsEditorHint())
-            MouseEntered += on_mouse_entered;
+        {
+            GD.Print("ADD Mouse Signals");
+            this.MouseEntered += on_mouse_entered;
+            this.MouseExited += on_mouse_exited;
+        }
     }
 
     public override void _ExitTree()
@@ -83,7 +83,10 @@ public partial class Unit : Entity
         ChildEnteredTree -= on_child_entered;
 
         if (!Engine.IsEditorHint())
-            MouseEntered -= on_mouse_entered;
+        {
+            this.MouseEntered -= on_mouse_entered;
+            this.MouseExited -= on_mouse_exited;
+        }
     }
 
     public override void _Ready()
@@ -98,6 +101,10 @@ public partial class Unit : Entity
         base._PhysicsProcess(delta);
 
         if (Engine.IsEditorHint()) return;
+
+        if (pre_velocity_init)
+            Velocity = pre_velocity;
+
 
         if (!IsOnFloor())
         {
@@ -117,7 +124,7 @@ public partial class Unit : Entity
                 AirState.FALLDOWN : (Velocity.Y < 0.0f) ? // Y축 운동량이 위로
                 AirState.JUMPUP : AirState.DEFER;
         }
-        else if(IsOnFloor())
+        else if (IsOnFloor())
         {
             airstate = AirState.NONE;
         }
@@ -137,18 +144,50 @@ public partial class Unit : Entity
 
     }
 
-    public void jump() {}
+    public void move(double delta)
+    {
+        Velocity = Velocity with
+        {
+            X = (float)Mathf.MoveToward(
+                Velocity.X,
+                (unit_info != null) ? unit_info.speed : 300.0 * get_p_input().get_current_direction().X,
+                delta * DEFAULT_ACCELERATION
+            )
+        };
+    }
+
+    public void idle(double delta)
+    {
+        if (Velocity.X != 0.0)
+        {
+            Velocity = Velocity with
+            {
+                X = (float)Mathf.MoveToward(
+                    Velocity.X,
+                    0.0,
+                    delta * DEFAULT_FRICTION
+                )
+            };
+        }
+    }
+
+    public void jump()
+    {
+        init_velocity(false, Velocity with { X = Velocity.X, Y = -DEFAULT_JUMP_FORCE });
+    }
 
     public void grabbed_event_handler() {}
 
-    public void on_mouse_entered()
+    private void on_mouse_entered()
     {
         get_p_input().mouse_pointing.Add(this);
+        GD.Print($"Add MousePointing => {this}");
     }
 
-    public void on_mouse_exited()
+    private void on_mouse_exited()
     {
         get_p_input().mouse_pointing.Remove(this);
+        GD.Print($"Exit MousePointing => {this}");
     }
 
     public void on_child_entered(Node node)
@@ -156,6 +195,7 @@ public partial class Unit : Entity
         if (node is UnitCollision)
         {
             if (collisions.ContainsKey(node.Name)) return;
+
             collisions.Add(node.Name, node as UnitCollision);
         }
     }
@@ -204,12 +244,20 @@ public partial class Unit : Entity
             collision.DebugColor = color;
     }
 
+    public void setPreVelocity(Vector2 value)
+    {
+        _pre_velocity = (pre_velocity_init) ? value : _pre_velocity + value;
+        pre_velocity_init = true;
+    }
+
     public void setThroughable(bool toggle)
     {
         _throughable = toggle;
         CollisionLayer = (uint)((toggle) ? 0 : 1);
 
     }
+
+    public Vector2 init_velocity(bool keep, Vector2 value) => pre_velocity = (keep) ? Velocity + value : value;
 
     private Array<UnitCollision> get_collisions() => collisions.Values as Array<UnitCollision>;
 
