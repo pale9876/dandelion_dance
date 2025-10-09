@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 [Tool]
@@ -12,10 +13,10 @@ public partial class AutoSprite : Sprite2D
 
     private long id = -1;
 
-    [Signal] public delegate void startEventHandler();
-    [Signal] public delegate void stoppedEventHandler();
-    [Signal] public delegate void finishedEventHandler();
-    [Signal] public delegate void roopedEventHandler();
+    [Signal] public delegate void startEventHandler(String sprite_name);
+    [Signal] public delegate void stoppedEventHandler(String sprite_name);
+    [Signal] public delegate void finishedEventHandler(String sprite_name);
+    [Signal] public delegate void loopedEventHandler(String sprite_name);
 
     [Export] public State state = State.PHYSICS;
     [Export] public bool playing { set => set_play(value); get => _playing; }
@@ -23,6 +24,7 @@ public partial class AutoSprite : Sprite2D
     [Export] public float fps { set => setFps(value); get => _fps; }
     [Export] public float time_scale { set => setTimeScale(value); get => _time_scale; }
     [Export] public bool paused { set; get; }
+
 
     private float time { set => setTime(value); get => _time; }
 
@@ -32,13 +34,10 @@ public partial class AutoSprite : Sprite2D
     private float _time = 0f;
     private float _time_scale = 1.0f;
 
-    private readonly Shader outline_shader = GD.Load<Shader>("res://shaders/outline.gdshader");
 
     public AutoSprite()
     {
-        ShaderMaterial sm = new ShaderMaterial();
-        sm.Shader = outline_shader;
-        this.Material = sm;
+
     }
 
     public override void _EnterTree()
@@ -46,6 +45,19 @@ public partial class AutoSprite : Sprite2D
         base._EnterTree();
 
         VisibilityChanged += on_visible_changed;
+
+        if (!Engine.IsEditorHint())
+        {
+            AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
+            if (parent != null)
+            {
+                start += parent.on_played;
+                stopped += parent.on_stopped;
+                looped += parent.on_looped;
+                finished += parent.on_finished;
+            }
+        }
+
     }
 
     public override void _ExitTree()
@@ -53,6 +65,19 @@ public partial class AutoSprite : Sprite2D
         base._ExitTree();
 
         VisibilityChanged -= on_visible_changed;
+
+        if (!Engine.IsEditorHint())
+        {
+            AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
+            if (parent != null)
+            {
+                start -= parent.on_played;
+                stopped -= parent.on_stopped;
+                looped -= parent.on_looped;
+                finished -= parent.on_finished;
+            }
+        }
+
     }
 
     public override void _Process(double delta)
@@ -113,12 +138,12 @@ public partial class AutoSprite : Sprite2D
             if (repeat)
             {
                 FrameCoords = FrameCoords with { X = 0 };
-                EmitSignalrooped();
+                EmitSignallooped(this.Name);
             }
             else
             {
                 playing = false;
-                EmitSignalfinished();
+                EmitSignalfinished(this.Name);
             }
         }
     }
@@ -159,13 +184,13 @@ public partial class AutoSprite : Sprite2D
         if (!paused)
         {
             FrameCoords = FrameCoords with { X = 0 };
-            EmitSignalstart();
+            EmitSignalstart(this.Name);
         }
     }
 
     public void stop()
     {
-        EmitSignalstopped();
+        EmitSignalstopped(this.Name);
     }
 
 }

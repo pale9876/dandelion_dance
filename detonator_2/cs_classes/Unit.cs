@@ -73,6 +73,7 @@ public partial class Unit : Entity
             GD.Print("ADD Mouse Signals");
             this.MouseEntered += on_mouse_entered;
             this.MouseExited += on_mouse_exited;
+            get_g_anim().time_scale_changed += on_global_time_scale_changed;
         }
     }
 
@@ -86,6 +87,7 @@ public partial class Unit : Entity
         {
             this.MouseEntered -= on_mouse_entered;
             this.MouseExited -= on_mouse_exited;
+            get_g_anim().time_scale_changed -= on_global_time_scale_changed;
         }
     }
 
@@ -176,7 +178,15 @@ public partial class Unit : Entity
         init_velocity(false, Velocity with { X = Velocity.X, Y = -DEFAULT_JUMP_FORCE });
     }
 
-    public void grabbed_event_handler() {}
+    public virtual void grabbed_event_handler()
+    {
+
+    }
+
+    public virtual void on_global_time_scale_changed(float value)
+    {
+
+    }
 
     private void on_mouse_entered()
     {
@@ -235,6 +245,7 @@ public partial class Unit : Entity
         state = State.GRABBED;
         abnormals.Add("grabbed_by", node);
     }
+
 
     public void change_debug_color(Color color)
     {

@@ -4,7 +4,7 @@ using Godot.Collections;
 
 [Tool]
 [GlobalClass]
-public partial class PoseComponent : Node2D
+public partial class PoseComponent : CanvasGroup
 {
 
     [Signal] public delegate void pose_changedEventHandler(String pose_name);
@@ -17,7 +17,7 @@ public partial class PoseComponent : Node2D
     [Export] public Pose current_pose { get => _current_pose; set => change_pose(value); }
     private Pose _current_pose = null;
     [Export] public Pose init_pose;
-
+    
     private int current_index { get => _current_index; set => change_index(value); }
     private int _current_index = -1;
 

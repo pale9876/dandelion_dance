@@ -7,8 +7,8 @@ public partial class TestKoreanString : Node
 
     public override void _EnterTree()
     {
-        KoreanTypingEffecter kte = new KoreanTypingEffecter(text);
-        GD.Print(kte.get_chars());
+        // KoreanTypingEffecter kte = new KoreanTypingEffecter(text);
+        // GD.Print(kte.get_chars());
     }
 
 

@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+CSTransceiver="*res://cs_classes/global/CSTransceiver.cs"
 ESystem="*res://cs_classes/global/ESystem.cs"
 Executioner="*res://cs_classes/global/Executioner.cs"
 PlayDataManager="*res://cs_classes/global/PlayDataManager.cs"
@@ -37,7 +38,7 @@ project/assembly_name="Detonator_2"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/pose_panel/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/pose_panel/plugin.cfg", "res://addons/rust_tools/plugin.cfg")
 
 [input]
 
@@ -99,3 +100,8 @@ renderer/rendering_method.mobile="gl_compatibility"
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 2d/snap/snap_2d_transforms_to_pixel=true
 2d/snap/snap_2d_vertices_to_pixel=true
+
+[rust_tools]
+
+config/build/cargo_package_directories=PackedStringArray("../avoidance_module")
+config/build/gdextension_files=PackedStringArray("uid://dnaagrewhiqth")

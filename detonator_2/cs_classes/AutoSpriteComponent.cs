@@ -27,9 +27,8 @@ public partial class AutoSpriteComponent : Node2D
 
         if (!Engine.IsEditorHint())
         {
-            var g_anim = get_g_anim();
+            GlobalAnimation g_anim = get_g_anim();
             g_anim.add_component(this);
-            g_anim.time_scale_changed += on_global_time_scale_changed;
         }
     }
 
@@ -41,9 +40,8 @@ public partial class AutoSpriteComponent : Node2D
 
         if (!Engine.IsEditorHint())
         {
-            var g_anim = get_g_anim();
+            GlobalAnimation g_anim = get_g_anim();
             g_anim.remove_component(this.id);
-            g_anim.time_scale_changed -= on_global_time_scale_changed;
         }
     }
 
@@ -72,11 +70,6 @@ public partial class AutoSpriteComponent : Node2D
         }
     }
 
-    public virtual void on_global_time_scale_changed(float value)
-    {
-
-    }
-
     private void on_visibility_changed()
     {
         foreach (AutoSprite sprite in get_sprites())
@@ -84,6 +77,11 @@ public partial class AutoSpriteComponent : Node2D
             sprite.Visible = this.Visible;
         }
     }
+
+    public virtual void on_stopped(String sprite_name){}
+    public virtual void on_played(String sprite_name){}
+    public virtual void on_looped(String sprite_name){}
+    public virtual void on_finished(String sprite_name){}
 
     private void _next()
     {
@@ -102,7 +100,6 @@ public partial class AutoSpriteComponent : Node2D
         {
             sprite.Visible = (sprite == auto_sprite) ? true : false;
         }
-
     }
 
     private void set_index(int idx)
@@ -127,8 +124,8 @@ public partial class AutoSpriteComponent : Node2D
         return false;
     }
 
+    
     public void set_id(long value) => this.id = value;
-
     public Array<AutoSprite> get_sprites() => auto_sprites.Values as Array<AutoSprite>;
     private GlobalAnimation get_g_anim() => GetNode<GlobalAnimation>("/root/GlobalAnimation");
 }

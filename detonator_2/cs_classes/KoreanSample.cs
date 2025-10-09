@@ -12,7 +12,7 @@ public partial class KoreanSample : Node
         String example = Smart.Format("{0:은} {1:을} 먹었다", "나오", "부엉이");
         GD.Print(example);
         GD.Print(Smart.Format("{0:은} {1:이다}", "안녕", "유예"));
-        GD.Print(KoreanTypingEffecter.get_typing(example, 5));
+        // GD.Print(KoreanTypingEffector.get_typing(example, 5));
     }
 
 }

@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Runtime.InteropServices;
 
 [Tool]
 public partial class PosePanel : Control
@@ -8,15 +7,22 @@ public partial class PosePanel : Control
 
     public enum EditMode
     {
-        POSE = 0,
-        COMPONENT = 1,
+        NONE = 0,
+        POSE = 1,
+        COMPONENT = 2,
     }
 
+    // Panel
     private Panel pose_panel = null;
     private Panel component_panel = null;
 
-    public EditMode edit_mode { get; set; }
-    public EditMode _edit_mode = EditMode.POSE;
+    // Attributes
+    private Label pose_name = null;
+    private AutoSprite sprite = null;
+
+    public EditMode edit_mode { get => _edit_mode; set => setEditMode(value); }
+    public EditMode _edit_mode = EditMode.NONE;
+
     public override void _EnterTree()
     {
         base._EnterTree();
@@ -43,10 +49,17 @@ public partial class PosePanel : Control
     {
         base._Ready();
 
+        // Get Panel
         pose_panel = GetNode<Panel>("PosePanel");
         component_panel = GetNode<Panel>("ComponentPanel");
 
-        edit_mode = EditMode.POSE;
+        // Get Attribute
+        pose_name = GetNode<Label>("%PoseName");
+        sprite = GetNode<AutoSprite>("%Sprite");
+
+        // Set Visible
+        pose_panel.Visible = false;
+        component_panel.Visible = false;
 
     }
 
@@ -56,12 +69,34 @@ public partial class PosePanel : Control
 
         if (obj is PoseComponent)
         {
+            EditMode old_mode = edit_mode;
             edit_mode = EditMode.COMPONENT;
+            if (old_mode != edit_mode)
+            {
+                GD.Print($"Pose Panel::EditMode => {edit_mode}");
+                component_selected_event_handler(obj as PoseComponent);
+            }
         }
         else if (obj is Pose)
         {
+            EditMode old_mode = edit_mode;
             edit_mode = EditMode.POSE;
+            if (old_mode != edit_mode)
+            {
+                GD.Print($"Pose Panel::EditMode => {edit_mode}");
+                pose_selected_event_handler(obj as Pose);
+            }
         }
+    }
+
+    private void pose_selected_event_handler(Pose pose)
+    {
+        pose_name.Text = pose.Name;
+    }
+
+    private void component_selected_event_handler(PoseComponent pose_component)
+    {
+
     }
 
     private void setEditMode(EditMode t)
@@ -70,14 +105,24 @@ public partial class PosePanel : Control
 
         if (t == EditMode.POSE)
         {
-            pose_panel.Visible = true;
-            component_panel.Visible = false;
+            pose_edit_entered();
         }
         else if (t == EditMode.COMPONENT)
         {
-            pose_panel.Visible = false;
-            component_panel.Visible = true;
+            component_edit_entered();
         }
+    }
+
+    private void pose_edit_entered()
+    {
+        if (pose_panel != null) pose_panel.Visible = true;
+        if (component_panel != null) component_panel.Visible = false;
+    }
+
+    private void component_edit_entered()
+    {
+        if (pose_panel != null) pose_panel.Visible = false;
+        if (component_panel != null) component_panel.Visible = true;
     }
 
     private EditorInspector get_inspector() => EditorInterface.Singleton.GetInspector();

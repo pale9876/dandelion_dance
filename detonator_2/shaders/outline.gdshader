@@ -1,5 +1,4 @@
 shader_type canvas_item;
-
 // === User Controls ===
 
 // Color of the outline

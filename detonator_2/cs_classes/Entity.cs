@@ -95,14 +95,8 @@ public partial class Entity : CharacterBody2D
     }
 
     public GlobalAnimation get_g_anim() => GetNode<GlobalAnimation>("/root/GlobalAnimation");
-
     public ESystem get_sys() => GetNode<ESystem>("/root/ESystem");
-
     public PlayerInput get_p_input() => GetNode<PlayerInput>("/root/PlayerInput");
-
-    public void set_eid(long eid)
-    {
-        this.eid = eid;
-    }
+    public void set_eid(long eid) => this.eid = eid;
 
 }

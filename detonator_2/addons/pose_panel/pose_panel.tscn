@@ -1,10 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxkne04vtr7p8"]
+[gd_scene load_steps=7 format=3 uid="uid://bxkne04vtr7p8"]
 
 [ext_resource type="Script" uid="uid://bvvlv6564i7bo" path="res://addons/pose_panel/PosePanel.cs" id="1_vxbfi"]
+[ext_resource type="Shader" uid="uid://xg50dnm4r78j" path="res://shaders/outline.gdshader" id="2_pa3lr"]
+[ext_resource type="Script" uid="uid://dduh83inwe77n" path="res://cs_classes/AutoSprite.cs" id="3_3bq4x"]
+[ext_resource type="Texture2D" uid="uid://ckwscnj70miri" path="res://2D-Pixel-Art-Character-Template/Dash/dash.png" id="3_yvm33"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_314d3"]
 font_size = 24
 outline_size = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3bq4x"]
+shader = ExtResource("2_pa3lr")
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/outline_size = 1.0
+shader_parameter/alpha_threshold = 0.0
+shader_parameter/outline_samples = 4
+shader_parameter/shade_color = Color(1, 1, 1, 0)
 
 [node name="PosePanel" type="Control"]
 layout_mode = 3
@@ -32,13 +43,50 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PoseName" type="Label" parent="PosePanel/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "PoseName"
 label_settings = SubResource("LabelSettings_314d3")
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PosePanel/VBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="PosePanel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 256)
 layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Control" type="Control" parent="PosePanel/VBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Sprite" type="Sprite2D" parent="PosePanel/VBoxContainer/CenterContainer/Control"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_3bq4x")
+texture = ExtResource("3_yvm33")
+hframes = 9
+frame = 8
+script = ExtResource("3_3bq4x")
+playing = true
+repeat = true
+metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="HSeparator" type="HSeparator" parent="PosePanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Attribute" type="HBoxContainer" parent="PosePanel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="PlayeCheck" type="CheckBox" parent="PosePanel/VBoxContainer/Attribute"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play"
+
+[node name="VSeparator" type="VSeparator" parent="PosePanel/VBoxContainer/Attribute"]
+layout_mode = 2
+
+[node name="RepeatCheck" type="CheckBox" parent="PosePanel/VBoxContainer/Attribute"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Repeat"
 
 [node name="ComponentPanel" type="Panel" parent="."]
 visible = false
@@ -48,3 +96,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ComponentPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ComponentName" type="Label" parent="ComponentPanel/VBoxContainer"]
+layout_mode = 2

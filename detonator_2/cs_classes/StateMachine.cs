@@ -34,10 +34,10 @@ public partial class StateMachine : LimboHsm
                 return;
             }
 
-            if (states.ContainsKey("Idle"))
+            if (states.ContainsKey("IdleState"))
                 this.AddTransition(ANYSTATE, states["Idle"], TO_IDLE);
 
-            InitialState = start_state as LimboState;
+            InitialState = start_state;
             Initialize(parent);
             SetActive(true);
         }

@@ -1,8 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqiuukyntykv7"]
+[gd_scene load_steps=4 format=3 uid="uid://dqiuukyntykv7"]
 
-[ext_resource type="Script" uid="uid://dp0ergxc16eo7" path="res://cs_classes/KoreanLabel.cs" id="1_8v6np"]
+[ext_resource type="Script" uid="uid://btd6yp0gf4ckc" path="res://cs_classes/KoreanRichTextLabel.cs" id="1_48pk4"]
+[ext_resource type="Script" uid="uid://da3woji4cd258" path="res://cs_classes/KoreanTypingEffector.cs" id="2_mle2t"]
 
-[node name="KoreanLabel" type="Label"]
-offset_right = 40.0
-offset_bottom = 23.0
-script = ExtResource("1_8v6np")
+[sub_resource type="Resource" id="Resource_mle2t"]
+script = ExtResource("2_mle2t")
+text = "나영이는 갈배를 마시고 매콤만두를 먹었다."
+
+[node name="KoreanRichTextLabel" type="RichTextLabel"]
+anchors_preset = -1
+anchor_right = 0.125
+anchor_bottom = 0.16700001
+offset_bottom = -0.2400055
+text = "나영이는 갈배를 마시고 매콤만두를 먹었다."
+script = ExtResource("1_48pk4")
+target_text = "{0:은} {1:을} 마시고 {2:을} 먹었다."
+dict = Dictionary[int, String]({
+0: "나영이",
+1: "갈배",
+2: "매콤만두"
+})
+effector = SubResource("Resource_mle2t")
+play_scale = 0.1
+progress = 1.0
+metadata/_custom_type_script = "uid://btd6yp0gf4ckc"

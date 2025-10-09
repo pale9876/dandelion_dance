@@ -8,6 +8,8 @@ public partial class Pose : Node2D
 {
 
     private int id = -1;
+    [Signal] public delegate void ActiveTriggerEventHandler();
+
     [Export] public bool filp_lock = false;
 
     [Export] public Dictionary<String, AutoSpriteComponent> auto_sprite_components = new Dictionary<String, AutoSpriteComponent>();
