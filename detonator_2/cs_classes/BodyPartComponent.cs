@@ -8,6 +8,27 @@ public partial class BodyPartComponent : Node2D
 {
     [Export] private Array<PackedScene> part_scenes = new Array<PackedScene>();
 
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+
+        Unit parent = GetParent<Unit>();
+
+        if (parent != null)
+            parent.body_part_component = this;
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+
+        Unit parent = GetParent<Unit>();
+
+        if (parent != null)
+            parent.body_part_component = null;
+
+    }
+
     public void spawn_body_parts(Vector2 min_force, Vector2 max_force)
     {
         foreach (PackedScene scene in part_scenes)

@@ -16,22 +16,24 @@ public partial class Hurtbox : Area2D
 
     private int index = -1;
 
-    [Export] private Array<UnitCollision> collisions = new Array<UnitCollision>();
+    [Export] public Array<UnitCollision> collisions = new Array<UnitCollision>();
     [Export] private Color debug_colour { get => _debug_color; set => set_debug_color(value); }
     private Color _debug_color = new Color();
 
     public State state = State.NORMAL;
 
-    [ExportToolButton("Update")] private Callable update => Callable.From(_update);
+    // [ExportToolButton("Update")] private Callable update => Callable.From(_update);
 
     public override void _EnterTree()
     {
         base._EnterTree();
+        // _update();
 
-        _update();
+        Pose parent = GetParentOrNull<Pose>();
+        if (parent != null)
+            parent.hurtbox = this;
 
         VisibilityChanged += on_visibility_changed;
-
     }
 
     public override void _ExitTree()
@@ -39,20 +41,12 @@ public partial class Hurtbox : Area2D
         base._ExitTree();
         index = -1;
 
+        Pose parent = GetParentOrNull<Pose>();
+        if (parent != null)
+            parent.hurtbox = null;
+        
         VisibilityChanged -= on_visibility_changed;
-    }
-
-    private void _update()
-    {
         collisions.Clear();
-
-        foreach (Node node in GetChildren())
-        {
-            if (node is UnitCollision)
-            {
-                collisions.Add(node as UnitCollision);
-            }
-        }
     }
 
     public void set_debug_color(Color color)

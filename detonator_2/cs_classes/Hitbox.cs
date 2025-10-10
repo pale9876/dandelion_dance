@@ -10,9 +10,9 @@ public partial class Hitbox : Area2D
     public bool execute = false;
     private int id = -1;
     
-    private Array<Hurtbox> entered_boxes = [];
-    [Export] private Array<UnitCollision> collisions = new Array<UnitCollision>();
+    [Export] public Array<UnitCollision> collisions = new Array<UnitCollision>();
     [Export] private Color debug_colour { get => _debug_color; set => set_debug_color(value); }
+    private Array<Hurtbox> entered_boxes = [];
     private Color _debug_color = new Color();
 
     public override void _EnterTree()
@@ -21,6 +21,12 @@ public partial class Hitbox : Area2D
 
         VisibilityChanged += on_visible_changed;
         ChildEnteredTree += on_child_entered;
+
+        var parent = GetParentOrNull<Pose>();
+        if (parent != null)
+        {
+            if(!parent.hitboxes.ContainsKey(this.Name)) parent.hitboxes.Add(this.Name, this);
+        }
 
         if (!Engine.IsEditorHint())
         {
@@ -31,13 +37,19 @@ public partial class Hitbox : Area2D
 
     public override void _ExitTree()
     {
-
         base._ExitTree();
 
         VisibilityChanged -= on_visible_changed;
         ChildEnteredTree -= on_child_entered;
-
+        
         id = -1;
+        collisions.Clear();
+        
+        var parent = GetParentOrNull<Pose>();
+        if (parent != null)
+        {
+            if (parent.hitboxes.ContainsKey(this.Name)) parent.hitboxes.Remove(this.Name);
+        }
         if (!Engine.IsEditorHint())
         {
             entered_boxes.Clear();

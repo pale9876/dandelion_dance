@@ -40,10 +40,12 @@ public partial class Unit : Entity
 
     [Export] private Color debug_colour { get => _debug_color; set => change_debug_color(value); }
     private Color _debug_color = new Color();
-    [Export] public PoseComponent pose_component;
+    [Export] public PoseComponent pose_component { get => _pose_component; set => setPoseComponent(value); }
+    private PoseComponent _pose_component = null;
     [Export] public BodyPartComponent body_part_component;
     [Export] public PsychoValuement psycho_valuement;
     [Export] public StateMachine state_machine = null;
+    [Export] public BTPlayer bt_player = null;
 
     [Export] public UnitInfo unit_info = null;
     [Export] public bool invincible = false;
@@ -57,10 +59,10 @@ public partial class Unit : Entity
     public Dictionary<String, Variant> abnormals = new();
 
     private bool pre_velocity_init = false;
-    private Vector2 pre_velocity { get => _pre_velocity; set=>setPreVelocity(value); }
+    private Vector2 pre_velocity { get => _pre_velocity; set => setPreVelocity(value); }
     private Vector2 _pre_velocity = Vector2.Zero;
 
-    [ExportToolButton("Update")] private Callable update => Callable.From(_update);
+    // [ExportToolButton("Update")] private Callable update => Callable.From(_update);
 
     public override void _EnterTree()
     {
@@ -81,6 +83,8 @@ public partial class Unit : Entity
     {
         base._ExitTree();
 
+        collisions.Clear();
+
         ChildEnteredTree -= on_child_entered;
 
         if (!Engine.IsEditorHint())
@@ -94,8 +98,7 @@ public partial class Unit : Entity
     public override void _Ready()
     {
         base._Ready();
-
-        _update();
+        // _update();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -210,18 +213,18 @@ public partial class Unit : Entity
         }
     }
 
-    public void _update()
-    {
-        collisions.Clear();
+    // public void _update()
+    // {
+    //     collisions.Clear();
 
-        foreach (Node node in GetChildren())
-        {
-            if (node is UnitCollision)
-            {
-                collisions.Add(node.Name, node as UnitCollision);
-            }
-        }
-    }
+    //     foreach (Node node in GetChildren())
+    //     {
+    //         if (node is UnitCollision)
+    //         {
+    //             collisions.Add(node.Name, node as UnitCollision);
+    //         }
+    //     }
+    // }
 
     private void change_state(State st)
     {
@@ -274,4 +277,10 @@ public partial class Unit : Entity
 
     private float get_gravity(double delta) => Velocity.Y + ((float)delta * DEFAULT_GRAVITY);
 
+    private void setPoseComponent(PoseComponent value)
+    {
+        _pose_component = value;
+        if (value != null)
+            value.Owner = this;
+    }
 }

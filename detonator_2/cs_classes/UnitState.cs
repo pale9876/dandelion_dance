@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 [Tool]
 [GlobalClass]
@@ -10,6 +11,27 @@ public partial class UnitState : LimboState
     [Export] public float initial_cooltime = 0.0f;
     private float cooltime { get => _cooltime; set => setCoolTime(value); }
     private float _cooltime = 0.0f;
+
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+
+        StateMachine parent = GetParent<StateMachine>();
+        if (parent != null)
+            if (!parent.states.ContainsKey(this.Name)) parent.states.Add(this.Name, this);
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+
+        StateMachine parent = GetParent<StateMachine>();
+        if (parent != null)
+        {
+            if (parent.states.ContainsKey(this.Name)) parent.states.Remove(this.Name);
+        }
+    }
+
 
     public override void _Enter()
     {

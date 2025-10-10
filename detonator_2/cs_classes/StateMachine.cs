@@ -20,11 +20,33 @@ public partial class StateMachine : LimboHsm
 
     [ExportToolButton("Update")] private Callable update => Callable.From(_update);
 
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+
+        var unit = GetParentOrNull<Unit>();
+        if (unit != null)
+            unit.state_machine = this;
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        
+        var unit = GetParentOrNull<Unit>();
+        if (unit != null)
+            unit.state_machine = null;
+        
+        states.Clear();
+
+    }
+
     public override void _Ready()
     {
         base._Ready();
 
         Unit parent = GetParentOrNull<Unit>();
+
 
         if (!Engine.IsEditorHint())
         {

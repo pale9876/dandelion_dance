@@ -25,6 +25,15 @@ public partial class AutoSpriteComponent : Node2D
 
         VisibilityChanged += on_visibility_changed;
 
+        var parent = GetParentOrNull<Pose>();
+        if (parent != null)
+        {
+            if (!parent.auto_sprite_components.ContainsKey(this.Name))
+            {
+                parent.auto_sprite_components.Add(this.Name, this);
+            }
+        }
+
         if (!Engine.IsEditorHint())
         {
             GlobalAnimation g_anim = get_g_anim();
@@ -37,6 +46,16 @@ public partial class AutoSpriteComponent : Node2D
         base._ExitTree();
 
         VisibilityChanged -= on_visibility_changed;
+
+        var parent = GetParentOrNull<Pose>();
+        if (parent != null)
+        {
+            if (parent.auto_sprite_components.ContainsKey(this.Name))
+            {
+                parent.auto_sprite_components.Remove(this.Name);
+            }
+        }
+
 
         if (!Engine.IsEditorHint())
         {

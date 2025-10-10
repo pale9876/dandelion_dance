@@ -40,7 +40,7 @@ public partial class CSTransceiver : Node
         {
             GD.Print($" GC => {System.GC.GetTotalMemory(false)}");
             GC.Collect(0, GCCollectionMode.Optimized);
-            GD.Print($"");
+            GD.Print("! => GC Collected");
         }
     }
 

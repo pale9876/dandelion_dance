@@ -1,0 +1,13 @@
+[configuration]
+
+entry_symbol = "pdje_wrapper_init"
+compatibility_minimum = "4.4"
+reloadable = true
+
+[libraries]
+linux.debug.x86_64 = "res://addons/Project_DJ_Godot/linux/debug/libPDJE_godot_wrapper.so"
+linux.release.x86_64 = "res://addons/Project_DJ_Godot/linux/release/libPDJE_godot_wrapper.so"
+windows.debug.x86_64 = "res://addons/Project_DJ_Godot/win/debug/PDJE_godot_wrapper.dll"
+windows.release.x86_64 = "res://addons/Project_DJ_Godot/win/release/PDJE_godot_wrapper.dll"
+macos.debug = "res://addons/Project_DJ_Godot/macos/release/libPDJE_godot_wrapper.dylib"
+macos.release = "res://addons/Project_DJ_Godot/macos/release/libPDJE_godot_wrapper.dylib"
