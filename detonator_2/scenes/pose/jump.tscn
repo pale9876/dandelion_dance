@@ -26,12 +26,11 @@ auto_sprites = {
 "JumpUp": NodePath("JumpUp")
 }
 index_list = [NodePath("JumpUp"), NodePath("JumpDown")]
-current_sprite = NodePath("JumpDown")
-index = 1
+current_sprite = NodePath("JumpUp")
+index = 0
 metadata/_custom_type_script = "uid://qsyfa6gtevhc"
 
 [node name="JumpUp" type="Sprite2D" parent="JumpSprites"]
-visible = false
 position = Vector2(0, -24)
 texture = ExtResource("3_qy0qm")
 hframes = 2
@@ -40,6 +39,7 @@ script = ExtResource("3_frgo6")
 metadata/_custom_type_script = "uid://dduh83inwe77n"
 
 [node name="JumpDown" type="Sprite2D" parent="JumpSprites"]
+visible = false
 position = Vector2(0, -24)
 texture = ExtResource("5_rf8oq")
 hframes = 4

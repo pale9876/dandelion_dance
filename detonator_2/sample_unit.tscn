@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dhlgdxnmpa7mu"]
+[gd_scene load_steps=20 format=3 uid="uid://dhlgdxnmpa7mu"]
 
 [ext_resource type="Script" uid="uid://crysbkqye74hu" path="res://cs_classes/Unit.cs" id="1_8e872"]
 [ext_resource type="Script" uid="uid://nty86admf01v" path="res://cs_classes/UnitCollision.cs" id="2_an3if"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://2wsc7pehfkxu" path="res://cs_classes/BodyPartComponent.cs" id="8_snrm1"]
 [ext_resource type="Shader" uid="uid://dvi4jhy1i1x0p" path="res://shaders/group_outline.gdshader" id="10_r7en3"]
 [ext_resource type="PackedScene" uid="uid://hvx6mwkcqf8r" path="res://default_pose_component.tscn" id="12_2iyrq"]
+[ext_resource type="Script" uid="uid://ck0kjkpwnpg5b" path="res://Lazor2D.cs" id="14_8d55t"]
 [ext_resource type="Script" uid="uid://y4opgum0640y" path="res://cs_classes/StateMachine.cs" id="15_i42ni"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_43cav"]
@@ -25,13 +26,13 @@ size = Vector2(48, 16)
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_i42ni"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2iyrq"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i42ni"]
 shader = ExtResource("10_r7en3")
 shader_parameter/line_colour = Color(0, 0, 0, 1)
 shader_parameter/line_thickness = 1.0
 shader_parameter/draw = false
 
-[node name="Unit" type="CharacterBody2D" node_paths=PackedStringArray("collisions", "pose_component", "body_part_component", "psycho_valuement", "state_machine", "bt_player", "trigger_map")]
+[node name="Unit" type="CharacterBody2D" node_paths=PackedStringArray("collisions", "body_part_component", "psycho_valuement", "state_machine", "bt_player", "trigger_map")]
 script = ExtResource("1_8e872")
 collisions = {
 "Crouch": NodePath("Crouch"),
@@ -39,7 +40,6 @@ collisions = {
 "Slide": NodePath("Slide")
 }
 debug_colour = Color(0, 0.360784, 0, 0.243137)
-pose_component = NodePath("PoseComponent")
 body_part_component = NodePath("BodyPartComponent")
 psycho_valuement = NodePath("PsychoValuement")
 state_machine = NodePath("StateMachine")
@@ -106,7 +106,7 @@ script = ExtResource("8_snrm1")
 metadata/_custom_type_script = "uid://2wsc7pehfkxu"
 
 [node name="PoseComponent" parent="." node_paths=PackedStringArray("poses") instance=ExtResource("12_2iyrq")]
-material = SubResource("ShaderMaterial_2iyrq")
+material = SubResource("ShaderMaterial_i42ni")
 poses = {
 &"Crouch": NodePath("Crouch"),
 &"Idle": NodePath("Idle"),
@@ -115,3 +115,7 @@ poses = {
 &"Shift": NodePath("Shift"),
 &"Slide": NodePath("Slide")
 }
+
+[node name="Lazor2D" type="Line2D" parent="."]
+script = ExtResource("14_8d55t")
+metadata/_custom_type_script = "uid://ck0kjkpwnpg5b"
