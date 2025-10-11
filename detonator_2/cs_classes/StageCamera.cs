@@ -43,7 +43,6 @@ public partial class StageCamera : Camera2D
 
     }
 
-
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -69,9 +68,6 @@ public partial class StageCamera : Camera2D
         old_pos = Position;
     }
 
-    public CameraStatus get_status()
-    {
-        return GetNode<CameraStatus>("/root/CameraStatus");
-    }
+    public CameraStatus get_status() => GetNode<CameraStatus>("/root/CameraStatus");
 
 }

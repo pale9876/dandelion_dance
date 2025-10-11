@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://cevpakpnv2do1"]
+
+[ext_resource type="Script" uid="uid://qb3oudupp276" path="res://cs_classes/Pose.cs" id="1_jpsos"]
+[ext_resource type="Script" uid="uid://qsyfa6gtevhc" path="res://cs_classes/AutoSpriteComponent.cs" id="2_yel8k"]
+[ext_resource type="Script" uid="uid://dduh83inwe77n" path="res://cs_classes/AutoSprite.cs" id="3_frgo6"]
+[ext_resource type="Texture2D" uid="uid://d0clwm722owwd" path="res://2D-Pixel-Art-Character-Template/Jump/player new jump up.png" id="3_qy0qm"]
+[ext_resource type="Texture2D" uid="uid://cri1pm32qfpcx" path="res://2D-Pixel-Art-Character-Template/Jump/player new jump down.png" id="5_rf8oq"]
+[ext_resource type="Script" uid="uid://de0oflltc34eb" path="res://cs_classes/Hurtbox.cs" id="6_rf8oq"]
+[ext_resource type="Script" uid="uid://nty86admf01v" path="res://cs_classes/UnitCollision.cs" id="7_yyq2d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sqpvn"]
+size = Vector2(16, 24)
+
+[node name="Jump" type="Node2D" node_paths=PackedStringArray("auto_sprite_components", "hurtbox")]
+script = ExtResource("1_jpsos")
+auto_sprite_components = {
+"JumpSprites": NodePath("JumpSprites")
+}
+hurtbox = NodePath("Hurtbox")
+metadata/_custom_type_script = "uid://qb3oudupp276"
+
+[node name="JumpSprites" type="Node2D" parent="." node_paths=PackedStringArray("auto_sprites", "index_list", "current_sprite")]
+script = ExtResource("2_yel8k")
+auto_sprites = {
+"JumpDown": NodePath("JumpDown"),
+"JumpUp": NodePath("JumpUp")
+}
+index_list = [NodePath("JumpUp"), NodePath("JumpDown")]
+current_sprite = NodePath("JumpDown")
+index = 1
+metadata/_custom_type_script = "uid://qsyfa6gtevhc"
+
+[node name="JumpUp" type="Sprite2D" parent="JumpSprites"]
+visible = false
+position = Vector2(0, -24)
+texture = ExtResource("3_qy0qm")
+hframes = 2
+frame = 1
+script = ExtResource("3_frgo6")
+metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="JumpDown" type="Sprite2D" parent="JumpSprites"]
+position = Vector2(0, -24)
+texture = ExtResource("5_rf8oq")
+hframes = 4
+frame = 3
+script = ExtResource("3_frgo6")
+metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("collisions")]
+script = ExtResource("6_rf8oq")
+collisions = [NodePath("UnitCollision")]
+debug_colour = Color(0.87058824, 0, 0, 0)
+metadata/_custom_type_script = "uid://de0oflltc34eb"
+
+[node name="UnitCollision" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_sqpvn")
+debug_color = Color(0.87058824, 0, 0, 0)
+script = ExtResource("7_yyq2d")
+metadata/_custom_type_script = "uid://nty86admf01v"

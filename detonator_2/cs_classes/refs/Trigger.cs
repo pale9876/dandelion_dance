@@ -5,6 +5,11 @@ using System;
 [GlobalClass]
 public partial class Trigger : Resource
 {
-
+    public virtual bool activate(Unit target)
+    {
+        if (target == null) return false;
+        
+        return true;
+    }
 
 }

@@ -1,15 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://bmidfw1jvsepy"]
+[gd_scene load_steps=11 format=3 uid="uid://bmidfw1jvsepy"]
 
 [ext_resource type="Script" uid="uid://b42jusjc7b2nd" path="res://cs_classes/MainScene.cs" id="1_wr18j"]
 [ext_resource type="PackedScene" uid="uid://bo3aeon06uepi" path="res://stage.tscn" id="2_hq1ik"]
 [ext_resource type="Script" uid="uid://dy5hus27swp2n" path="res://cs_classes/StageCamera.cs" id="2_nfk4m"]
+[ext_resource type="PackedScene" uid="uid://dhlgdxnmpa7mu" path="res://sample_unit.tscn" id="4_7ycvg"]
 [ext_resource type="Script" uid="uid://dyutodlr4l6yv" path="res://cs_classes/FilterController.cs" id="6_7ycvg"]
 [ext_resource type="PackedScene" uid="uid://cv1kxqd5krltm" path="res://progress_ui.tscn" id="6_hq1ik"]
 [ext_resource type="Shader" uid="uid://lwgbnxs162me" path="res://shaders/motion_blur.gdshader" id="7_qwutr"]
-[ext_resource type="Script" uid="uid://uiqco1jdo13f" path="res://screen_shutter.gd" id="7_wr18j"]
+[ext_resource type="Script" uid="uid://uiqco1jdo13f" path="res://motion_blur.gd" id="7_wr18j"]
 [ext_resource type="Script" uid="uid://t3443oedt1h4" path="res://cs_classes/Hud.cs" id="8_qwutr"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_66tet"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ycvg"]
 shader = ExtResource("7_qwutr")
 shader_parameter/alpha = 0.0
 shader_parameter/blur = 0.0
@@ -37,6 +38,14 @@ idx_dict = {
 
 [node name="UnitLayer" type="Node2D" parent="."]
 
+[node name="Unit" parent="UnitLayer" node_paths=PackedStringArray("collisions") instance=ExtResource("4_7ycvg")]
+position = Vector2(80, 224)
+collisions = {
+"Crouch": NodePath("Crouch"),
+"Idle": NodePath("Idle"),
+"Slide": NodePath("Slide")
+}
+
 [node name="ForeGroundEffectLayer" type="Node2D" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -53,7 +62,7 @@ script = ExtResource("6_7ycvg")
 
 [node name="MotionBlur" type="ScreenShutter" parent="CanvasLayer/FilterController"]
 visible = false
-material = SubResource("ShaderMaterial_66tet")
+material = SubResource("ShaderMaterial_7ycvg")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

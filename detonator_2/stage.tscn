@@ -5,9 +5,14 @@
 [ext_resource type="Script" uid="uid://drj8e5ywasglc" path="res://cs_classes/Region.cs" id="4_vsjsl"]
 [ext_resource type="Script" uid="uid://bwso8geusuowb" path="res://cs_classes/MarginArea.cs" id="5_jx6rg"]
 
-[node name="Stage" type="Node2D" node_paths=PackedStringArray("idx_dict")]
+[node name="Stage" type="Node2D" node_paths=PackedStringArray("regions", "idx_dict")]
 script = ExtResource("1_16g40")
 _index = 2
+regions = {
+"Region": NodePath("Region"),
+"Region2": NodePath("Region2"),
+"Region3": NodePath("Region3")
+}
 idx_dict = {
 0: NodePath("Region"),
 1: NodePath("Region2"),

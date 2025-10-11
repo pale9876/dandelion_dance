@@ -7,13 +7,11 @@ using Godot.Collections;
 public partial class PoseComponent : CanvasGroup
 {
 
-    [Signal] public delegate void pose_changedEventHandler(String pose_name);
-
     private int id = -1;
     [Export] public bool flip { get => _flip; set => setFlip(value); }
     private bool _flip = false;
     [Export] public Dictionary<StringName, Pose> poses = new Dictionary<StringName, Pose>();
-    [Export] public Dictionary<int, Pose> index_list = new Dictionary<int, Pose>();
+    [Export] public Array<Pose> index_list = new Array<Pose>();
     [Export] public Pose current_pose { get => _current_pose; set => change_pose(value); }
     private Pose _current_pose = null;
     [Export] public Pose init_pose;
@@ -37,16 +35,15 @@ public partial class PoseComponent : CanvasGroup
     {
         base._EnterTree();
 
-        //auto sprites update
-        // _update();
-
         Unit parent = GetParentOrNull<Unit>();
         if (parent != null)
+        {
+            Owner = parent;
             parent.pose_component = this;
+        }
 
-        // connect signals
-        // this.ChildEnteredTree += node_entered_event_handler;
-        this.VisibilityChanged += on_visibility_changed;
+        VisibilityChanged += on_visibility_changed;
+        ChildOrderChanged += on_child_order_changed;
     }
 
     public override void _ExitTree()
@@ -54,15 +51,17 @@ public partial class PoseComponent : CanvasGroup
         base._ExitTree();
 
         id = -1;
-        current_index = -1;
+
+        Unit parent = GetParentOrNull<Unit>();
+        if (parent != null)
+        {
+            parent.pose_component = null;
+        }
 
         poses.Clear();
-        index_list.Clear();
-        current_pose = null;
 
-        // disconnect
-        // this.ChildEnteredTree -= node_entered_event_handler;
-        this.VisibilityChanged -= on_visibility_changed;
+        VisibilityChanged -= on_visibility_changed;
+        ChildOrderChanged -= on_child_order_changed;
     }
 
     public override void _Ready()
@@ -84,33 +83,43 @@ public partial class PoseComponent : CanvasGroup
         }
     }
 
-    // public void _update()
-    // {
-    //     id = -1;
-    //     current_index = -1;
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
 
-    //     poses.Clear();
-    //     index_list.Clear();
+        if (Engine.IsEditorHint()) return;
 
-    //     Array<Node> children = GetChildren();
-    //     foreach (Node node in children)
-    //     {
-    //         if (node is Pose)
-    //         {
-    //             id += 1;
-    //             add_pose(id, node as Pose);
-    //         }
-    //     }
+        if (current_pose != null)
+        {
+            current_pose._pose_update(delta);
+        }
+    }
 
-    //     current_index = (index_list.Count > 0) ? 0 : -1;
+    public void child_renamed()
+    {
+        poses.Clear();
 
-    // }
+        foreach (Node node in GetChildren())
+        {
+            if (node is Pose)
+            {
+                poses.Add(node.Name, node as Pose);
+            }
+        }
+    }
 
-    // public void node_entered_event_handler(Node node)
-    // {
-    //     if (node is Pose)
-    //         _update();
-    // }
+    public void on_child_order_changed()
+    {
+        index_list.Clear();
+
+        foreach (Node node in GetChildren())
+        {
+            if (node is Pose)
+            {
+                index_list.Add(node as Pose);
+            }
+        }
+    }
 
     public void on_visibility_changed()
     {
@@ -132,20 +141,6 @@ public partial class PoseComponent : CanvasGroup
         }
     }
 
-    // public void add_pose(int idx, Pose pose)
-    // {
-    //     String pose_name = pose.Name;
-    //     if (!poses.ContainsKey(pose_name)) poses.Add(pose.Name, pose);
-    //     if (!index_list.ContainsKey(idx)) index_list.Add(idx, pose);
-    //     pose.set_id(idx);
-    // }
-
-    // public void remove_pose(Pose pose)
-    // {
-    //     if (poses.ContainsKey(pose.Name)) poses.Remove(pose.Name);
-    //     if (index_list.ContainsKey(pose.get_id())) index_list.Remove(pose.get_id());
-    // }
-
     private void next_pose()
     {
         current_index += 1;
@@ -160,9 +155,9 @@ public partial class PoseComponent : CanvasGroup
     {
         _current_index = Math.Clamp(idx, (index_list.Count > 0) ? 0 : -1, index_list.Count - 1);
 
-        if (idx >= 0 && index_list.ContainsKey(idx))
+        if (_current_index > -1)
         {
-            current_pose = index_list[idx];
+            current_pose = index_list[_current_index];
         }
     }
 
@@ -172,7 +167,7 @@ public partial class PoseComponent : CanvasGroup
 
         _current_pose = pose;
 
-        foreach (Pose p in index_list.Values)
+        foreach (Pose p in index_list)
             p.Visible = (p == pose) ? true : false;
 
         if (Engine.IsEditorHint()) return;
@@ -180,7 +175,7 @@ public partial class PoseComponent : CanvasGroup
         if (pose != null)
         {
             pose._pose_entered();
-            EmitSignalpose_changed(pose.Name);
+            // EmitSignalpose_changed();
         }
 
         if (old_pose != null)
@@ -193,13 +188,11 @@ public partial class PoseComponent : CanvasGroup
         if (!poses.ContainsKey(pose.Name)) poses.Add(pose.Name, pose);
         id += 1;
         pose.set_id(id);
-        if (!index_list.ContainsKey(id)) index_list.Add(pose.get_id(), pose);
     }
 
     public void delete_pose(Pose pose)
     {
         if (poses.ContainsKey(pose.Name)) poses.Remove(pose.Name);
-        if (index_list.ContainsKey(pose.get_id())) index_list.Remove(pose.get_id());
     }
 
     public Array<Pose> get_poses() => poses.Values as Array<Pose>;

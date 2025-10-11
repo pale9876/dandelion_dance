@@ -40,12 +40,13 @@ public partial class Unit : Entity
 
     [Export] private Color debug_colour { get => _debug_color; set => change_debug_color(value); }
     private Color _debug_color = new Color();
-    [Export] public PoseComponent pose_component { get => _pose_component; set => setPoseComponent(value); }
-    private PoseComponent _pose_component = null;
+    [Export] public PoseComponent pose_component = null;
     [Export] public BodyPartComponent body_part_component;
     [Export] public PsychoValuement psycho_valuement;
     [Export] public StateMachine state_machine = null;
     [Export] public BTPlayer bt_player = null;
+    [Export] public TriggerMap trigger_map = null;
+    private TriggerMap _trigger_map = null;
 
     [Export] public UnitInfo unit_info = null;
     [Export] public bool invincible = false;
@@ -101,11 +102,30 @@ public partial class Unit : Entity
         // _update();
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+
+        if (Engine.IsEditorHint()) return;
+
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
 
         if (Engine.IsEditorHint()) return;
+
+        Array<AutoSprite> current_sprites = pose_component.current_pose.get_current_sprites();
+
+        foreach (AutoSprite sprite in current_sprites)
+        {
+            var frame_coord_x = sprite.FrameCoords.X;
+            if (sprite.trigger_lines.ContainsKey(frame_coord_x))
+            {
+                trigger_map.activate_trigger(sprite.trigger_lines[frame_coord_x], this);
+            }
+        }
 
         if (pre_velocity_init)
             Velocity = pre_velocity;
@@ -213,18 +233,10 @@ public partial class Unit : Entity
         }
     }
 
-    // public void _update()
-    // {
-    //     collisions.Clear();
-
-    //     foreach (Node node in GetChildren())
-    //     {
-    //         if (node is UnitCollision)
-    //         {
-    //             collisions.Add(node.Name, node as UnitCollision);
-    //         }
-    //     }
-    // }
+    public void on_trigger_activate(Trigger trigger)
+    {
+        
+    }
 
     private void change_state(State st)
     {
@@ -277,10 +289,12 @@ public partial class Unit : Entity
 
     private float get_gravity(double delta) => Velocity.Y + ((float)delta * DEFAULT_GRAVITY);
 
-    private void setPoseComponent(PoseComponent value)
+    private void setTriggerMap(TriggerMap value)
     {
-        _pose_component = value;
+        _trigger_map = value;
         if (value != null)
-            value.Owner = this;
+        {
+            
+        }
     }
 }

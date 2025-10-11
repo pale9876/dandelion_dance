@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Godot.Collections;
 
 [Tool]
 [GlobalClass]
@@ -24,7 +25,7 @@ public partial class AutoSprite : Sprite2D
     [Export] public float fps { set => setFps(value); get => _fps; }
     [Export] public float time_scale { set => setTimeScale(value); get => _time_scale; }
     [Export] public bool paused { set; get; }
-
+    [Export] public Dictionary<int, String> trigger_lines = new();
 
     private float time { set => setTime(value); get => _time; }
 
@@ -33,7 +34,6 @@ public partial class AutoSprite : Sprite2D
     private float _fps = 10.0f;
     private float _time = 0f;
     private float _time_scale = 1.0f;
-
 
     public AutoSprite()
     {
@@ -46,9 +46,16 @@ public partial class AutoSprite : Sprite2D
 
         VisibilityChanged += on_visible_changed;
 
+        AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
+        if (parent != null)
+        {
+            if (!parent.Visible) Visible = false;
+            parent.add_sprite(this);
+            Renamed += parent.on_child_renamed;
+        }
+
         if (!Engine.IsEditorHint())
         {
-            AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
             if (parent != null)
             {
                 start += parent.on_played;
@@ -57,7 +64,6 @@ public partial class AutoSprite : Sprite2D
                 finished += parent.on_finished;
             }
         }
-
     }
 
     public override void _ExitTree()
@@ -66,9 +72,15 @@ public partial class AutoSprite : Sprite2D
 
         VisibilityChanged -= on_visible_changed;
 
+        AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
+        if (parent != null)
+        {
+            parent.remove_sprite(this);
+            Renamed -= parent.on_child_renamed;
+        }
+
         if (!Engine.IsEditorHint())
         {
-            AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
             if (parent != null)
             {
                 start -= parent.on_played;
@@ -86,11 +98,14 @@ public partial class AutoSprite : Sprite2D
 
         if (state == State.IDLE)
         {
-            if (playing) time -= (float)delta * time_scale;
-            if (time == 0.0f)
+            if (playing && !paused)
             {
-                time = 1.0f / fps;
-                next_frame();
+                time -= (float)delta * time_scale;
+                if (time == 0.0f)
+                {
+                    time = 1.0f / fps;
+                    next_frame();
+                }
             }
         }
     }
@@ -101,7 +116,7 @@ public partial class AutoSprite : Sprite2D
 
         if (state == State.PHYSICS)
         {
-            if (playing)
+            if (playing && !paused)
             {
                 time -= (float)delta * time_scale;
                 if (time == 0.0f)
@@ -115,16 +130,29 @@ public partial class AutoSprite : Sprite2D
 
     public void on_visible_changed()
     {
-        AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
-        if (parent != null)
+        AutoSpriteComponent component = GetParentOrNull<AutoSpriteComponent>();
+        if (component != null)
         {
-            if (parent.Visible != this.Visible)
+            if (!component.Visible)
             {
-                GD.PrintErr($"{this} => 이 노드는 상위 노드와 Visible이 상이할 수 없음.");
-                this.Visible = parent.Visible;
+                this.Visible = false;
+                return;
             }
-            playing = this.Visible ? true : false;
+            
+            if (Visible)
+            {
+                component.index = GetIndex();
+            }
+            else
+            {
+                if (component.current_sprite == this)
+                {
+                    component.index = -1;
+                }
+            }
         }
+
+        playing = Visible ? true : false;
     }
 
     public void next_frame()
@@ -178,6 +206,7 @@ public partial class AutoSprite : Sprite2D
     }
 
     public void set_id(long id) => this.id = id;
+    public long get_id() => id;
 
     public void play()
     {

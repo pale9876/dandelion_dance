@@ -1,28 +1,18 @@
-[gd_scene load_steps=35 format=3 uid="uid://dhlgdxnmpa7mu"]
+[gd_scene load_steps=19 format=3 uid="uid://dhlgdxnmpa7mu"]
 
 [ext_resource type="Script" uid="uid://crysbkqye74hu" path="res://cs_classes/Unit.cs" id="1_8e872"]
 [ext_resource type="Script" uid="uid://nty86admf01v" path="res://cs_classes/UnitCollision.cs" id="2_an3if"]
 [ext_resource type="Script" uid="uid://c336ivba2s3gs" path="res://cs_classes/PsychoValuement.cs" id="2_eoxxv"]
-[ext_resource type="Script" uid="uid://dyftpff5gcnl6" path="res://cs_classes/PoseComponent.cs" id="3_an3if"]
 [ext_resource type="BehaviorTree" uid="uid://cyhr50o43d0mb" path="res://ai/UnitTask.tres" id="4_8d55t"]
-[ext_resource type="Script" uid="uid://qb3oudupp276" path="res://cs_classes/Pose.cs" id="4_sene6"]
-[ext_resource type="Script" uid="uid://qsyfa6gtevhc" path="res://cs_classes/AutoSpriteComponent.cs" id="5_43cav"]
+[ext_resource type="Script" uid="uid://ctrd7unqsu3gd" path="res://cs_classes/TriggerMap.cs" id="4_537fj"]
 [ext_resource type="Script" uid="uid://d07huwljrfnwi" path="res://UnitBt.cs" id="5_msm5p"]
 [ext_resource type="Script" uid="uid://dofcd56w73xac" path="res://cs_classes/state/IdleState.cs" id="5_r7en3"]
-[ext_resource type="Script" uid="uid://dduh83inwe77n" path="res://cs_classes/AutoSprite.cs" id="5_s5161"]
 [ext_resource type="Script" uid="uid://by1auuekdosw0" path="res://cs_classes/state/MoveState.cs" id="6_msm5p"]
-[ext_resource type="Script" uid="uid://dggw50eje6730" path="res://cs_classes/Hitbox.cs" id="6_snrm1"]
-[ext_resource type="Script" uid="uid://de0oflltc34eb" path="res://cs_classes/Hurtbox.cs" id="7_43cav"]
 [ext_resource type="Script" uid="uid://bt3sa3opfhuwg" path="res://cs_classes/state/JumpState.cs" id="7_537fj"]
-[ext_resource type="Texture2D" uid="uid://ceiydcex10h64" path="res://2D-Pixel-Art-Character-Template/Idle/Player Idle 48x48.png" id="8_3ftq2"]
 [ext_resource type="Script" uid="uid://2wsc7pehfkxu" path="res://cs_classes/BodyPartComponent.cs" id="8_snrm1"]
 [ext_resource type="Shader" uid="uid://dvi4jhy1i1x0p" path="res://shaders/group_outline.gdshader" id="10_r7en3"]
-[ext_resource type="Texture2D" uid="uid://di4tayscfeqw0" path="res://2D-Pixel-Art-Character-Template/Crouch-Idle/Player Crouch-Idle 48x48.png" id="11_2iyrq"]
-[ext_resource type="Texture2D" uid="uid://ckwscnj70miri" path="res://2D-Pixel-Art-Character-Template/Dash/dash.png" id="11_ns0d8"]
-[ext_resource type="Texture2D" uid="uid://b7ch3gmqsi8lr" path="res://2D-Pixel-Art-Character-Template/Walk/PlayerWalk 48x48.png" id="14_4dos3"]
+[ext_resource type="PackedScene" uid="uid://hvx6mwkcqf8r" path="res://default_pose_component.tscn" id="12_2iyrq"]
 [ext_resource type="Script" uid="uid://y4opgum0640y" path="res://cs_classes/StateMachine.cs" id="15_i42ni"]
-[ext_resource type="Texture2D" uid="uid://edsx1oopwh0s" path="res://2D-Pixel-Art-Character-Template/Slide/Player Slide 48x48.png" id="17_kg4ha"]
-[ext_resource type="Script" uid="uid://cn6344euotvlt" path="res://Crouch.cs" id="17_r7en3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_43cav"]
 size = Vector2(16, 32)
@@ -35,30 +25,13 @@ size = Vector2(48, 16)
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_i42ni"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_msm5p"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2iyrq"]
 shader = ExtResource("10_r7en3")
 shader_parameter/line_colour = Color(0, 0, 0, 1)
 shader_parameter/line_thickness = 1.0
 shader_parameter/draw = false
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_537fj"]
-size = Vector2(16, 32)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2iyrq"]
-size = Vector2(16, 16)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4dos3"]
-size = Vector2(16, 32)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_msm5p"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_s5161"]
-size = Vector2(32, 16)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_snrm1"]
-size = Vector2(16, 32)
-
-[node name="Unit" type="CharacterBody2D" node_paths=PackedStringArray("collisions", "body_part_component", "psycho_valuement", "state_machine", "bt_player")]
+[node name="Unit" type="CharacterBody2D" node_paths=PackedStringArray("collisions", "pose_component", "body_part_component", "psycho_valuement", "state_machine", "bt_player", "trigger_map")]
 script = ExtResource("1_8e872")
 collisions = {
 "Crouch": NodePath("Crouch"),
@@ -66,10 +39,12 @@ collisions = {
 "Slide": NodePath("Slide")
 }
 debug_colour = Color(0, 0.360784, 0, 0.243137)
+pose_component = NodePath("PoseComponent")
 body_part_component = NodePath("BodyPartComponent")
 psycho_valuement = NodePath("PsychoValuement")
 state_machine = NodePath("StateMachine")
 bt_player = NodePath("UnitBT")
+trigger_map = NodePath("TriggerMap")
 metadata/_custom_type_script = "uid://crysbkqye74hu"
 
 [node name="Idle" type="CollisionShape2D" parent="."]
@@ -97,6 +72,9 @@ metadata/_custom_type_script = "uid://nty86admf01v"
 
 [node name="PsychoValuement" type="Node" parent="."]
 script = ExtResource("2_eoxxv")
+
+[node name="TriggerMap" type="Node" parent="."]
+script = ExtResource("4_537fj")
 
 [node name="UnitBT" type="BTPlayer" parent="."]
 behavior_tree = ExtResource("4_8d55t")
@@ -127,253 +105,13 @@ metadata/_custom_type_script = "uid://bv1nfq88fup3i"
 script = ExtResource("8_snrm1")
 metadata/_custom_type_script = "uid://2wsc7pehfkxu"
 
-[node name="PoseComponent" type="CanvasGroup" parent="." node_paths=PackedStringArray("poses", "index_list", "current_pose", "init_pose")]
-material = SubResource("ShaderMaterial_msm5p")
-script = ExtResource("3_an3if")
+[node name="PoseComponent" parent="." node_paths=PackedStringArray("poses") instance=ExtResource("12_2iyrq")]
+material = SubResource("ShaderMaterial_2iyrq")
 poses = {
 &"Crouch": NodePath("Crouch"),
 &"Idle": NodePath("Idle"),
+&"Jump": NodePath("Jump"),
 &"Move": NodePath("Move"),
 &"Shift": NodePath("Shift"),
 &"Slide": NodePath("Slide")
 }
-index_list = {
-0: NodePath("Idle"),
-1: NodePath("Crouch"),
-2: NodePath("Move"),
-3: NodePath("Shift"),
-4: NodePath("Slide")
-}
-current_pose = NodePath("Shift")
-init_pose = NodePath("Idle")
-metadata/_custom_type_script = "uid://dyftpff5gcnl6"
-
-[node name="Idle" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite_components", "hurtbox")]
-visible = false
-script = ExtResource("4_sene6")
-auto_sprite_components = {
-"IdleAnimation": NodePath("IdleAnimation")
-}
-hurtbox = NodePath("Hurtbox")
-metadata/_custom_type_script = "uid://qb3oudupp276"
-
-[node name="Hurtbox" type="Area2D" parent="PoseComponent/Idle" node_paths=PackedStringArray("collisions")]
-visible = false
-script = ExtResource("7_43cav")
-collisions = [NodePath("UnitCollision")]
-debug_colour = Color(1, 0, 0, 0)
-metadata/_custom_type_script = "uid://de0oflltc34eb"
-
-[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Idle/Hurtbox"]
-visible = false
-position = Vector2(0, -16)
-shape = SubResource("RectangleShape2D_537fj")
-disabled = true
-debug_color = Color(1, 0, 0, 0)
-script = ExtResource("2_an3if")
-metadata/_custom_type_script = "uid://nty86admf01v"
-
-[node name="IdleAnimation" type="Node2D" parent="PoseComponent/Idle" node_paths=PackedStringArray("auto_sprites", "index")]
-visible = false
-script = ExtResource("5_43cav")
-auto_sprites = {
-"Idle": NodePath("Idle")
-}
-index = [NodePath("Idle")]
-metadata/_custom_type_script = "uid://qsyfa6gtevhc"
-
-[node name="Idle" type="Sprite2D" parent="PoseComponent/Idle/IdleAnimation"]
-visible = false
-position = Vector2(0, -16)
-texture = ExtResource("8_3ftq2")
-hframes = 10
-frame = 4
-script = ExtResource("5_s5161")
-repeat = true
-metadata/_custom_type_script = "uid://dduh83inwe77n"
-
-[node name="Crouch" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite_components", "hurtbox")]
-visible = false
-script = ExtResource("17_r7en3")
-auto_sprite_components = {
-"AutoSpriteComponent": NodePath("AutoSpriteComponent")
-}
-hurtbox = NodePath("Hurtbox")
-metadata/_custom_type_script = "uid://qb3oudupp276"
-
-[node name="Hurtbox" type="Area2D" parent="PoseComponent/Crouch" node_paths=PackedStringArray("collisions")]
-visible = false
-script = ExtResource("7_43cav")
-collisions = [NodePath("UnitCollision")]
-debug_colour = Color(0.890196, 0, 0, 0)
-metadata/_custom_type_script = "uid://de0oflltc34eb"
-
-[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Crouch/Hurtbox"]
-visible = false
-position = Vector2(0, -8)
-shape = SubResource("RectangleShape2D_2iyrq")
-disabled = true
-debug_color = Color(0.890196, 0, 0, 0)
-script = ExtResource("2_an3if")
-metadata/_custom_type_script = "uid://nty86admf01v"
-
-[node name="AutoSpriteComponent" type="Node2D" parent="PoseComponent/Crouch" node_paths=PackedStringArray("auto_sprites", "index")]
-visible = false
-script = ExtResource("5_43cav")
-auto_sprites = {
-"Crouch": NodePath("Crouch")
-}
-index = [NodePath("Crouch")]
-metadata/_custom_type_script = "uid://qsyfa6gtevhc"
-
-[node name="Crouch" type="Sprite2D" parent="PoseComponent/Crouch/AutoSpriteComponent"]
-visible = false
-position = Vector2(0, -16)
-texture = ExtResource("11_2iyrq")
-hframes = 10
-frame = 5
-script = ExtResource("5_s5161")
-repeat = true
-metadata/_custom_type_script = "uid://dduh83inwe77n"
-
-[node name="Move" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite_components", "hurtbox")]
-visible = false
-script = ExtResource("4_sene6")
-auto_sprite_components = {
-"AutoSpriteComponent": NodePath("AutoSpriteComponent")
-}
-hurtbox = NodePath("Hurtbox")
-metadata/_custom_type_script = "uid://qb3oudupp276"
-
-[node name="Hurtbox" type="Area2D" parent="PoseComponent/Move" node_paths=PackedStringArray("collisions")]
-visible = false
-script = ExtResource("7_43cav")
-collisions = [NodePath("UnitCollision")]
-debug_colour = Color(0.554845, 0.243921, 0.247072, 0)
-metadata/_custom_type_script = "uid://de0oflltc34eb"
-
-[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Move/Hurtbox"]
-visible = false
-position = Vector2(0, -16)
-shape = SubResource("RectangleShape2D_4dos3")
-disabled = true
-debug_color = Color(0.554845, 0.243921, 0.247072, 0)
-script = ExtResource("2_an3if")
-metadata/_custom_type_script = "uid://nty86admf01v"
-
-[node name="AutoSpriteComponent" type="Node2D" parent="PoseComponent/Move" node_paths=PackedStringArray("auto_sprites", "index")]
-visible = false
-script = ExtResource("5_43cav")
-auto_sprites = {
-"Move": NodePath("Move")
-}
-index = [NodePath("Move")]
-metadata/_custom_type_script = "uid://qsyfa6gtevhc"
-
-[node name="Move" type="Sprite2D" parent="PoseComponent/Move/AutoSpriteComponent"]
-visible = false
-position = Vector2(0, -16)
-texture = ExtResource("14_4dos3")
-hframes = 8
-frame = 5
-script = ExtResource("5_s5161")
-repeat = true
-metadata/_custom_type_script = "uid://dduh83inwe77n"
-
-[node name="Shift" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite_components", "hurtbox")]
-script = ExtResource("4_sene6")
-auto_sprite_components = {
-"AutoSpriteComponent": NodePath("AutoSpriteComponent")
-}
-hurtbox = NodePath("Hurtbox")
-metadata/_custom_type_script = "uid://qb3oudupp276"
-
-[node name="AutoSpriteComponent" type="Node2D" parent="PoseComponent/Shift" node_paths=PackedStringArray("auto_sprites", "index")]
-script = ExtResource("5_43cav")
-auto_sprites = {
-"Shift": NodePath("Shift")
-}
-index = [NodePath("Shift")]
-metadata/_custom_type_script = "uid://qsyfa6gtevhc"
-
-[node name="Shift" type="Sprite2D" parent="PoseComponent/Shift/AutoSpriteComponent"]
-position = Vector2(0, -16)
-texture = ExtResource("11_ns0d8")
-hframes = 9
-frame = 6
-script = ExtResource("5_s5161")
-playing = true
-repeat = true
-metadata/_custom_type_script = "uid://dduh83inwe77n"
-
-[node name="Hurtbox" type="Area2D" parent="PoseComponent/Shift" node_paths=PackedStringArray("collisions")]
-script = ExtResource("7_43cav")
-collisions = [NodePath("UnitCollision")]
-metadata/_custom_type_script = "uid://de0oflltc34eb"
-
-[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Shift/Hurtbox"]
-shape = SubResource("RectangleShape2D_msm5p")
-script = ExtResource("2_an3if")
-metadata/_custom_type_script = "uid://nty86admf01v"
-
-[node name="Slide" type="Node2D" parent="PoseComponent" node_paths=PackedStringArray("auto_sprite_components", "hitboxes", "hurtbox")]
-visible = false
-script = ExtResource("4_sene6")
-auto_sprite_components = {
-"AutoSpriteComponent": NodePath("AutoSpriteComponent")
-}
-hitboxes = {
-"Hitbox": NodePath("Hitbox")
-}
-hurtbox = NodePath("Hurtbox")
-metadata/_custom_type_script = "uid://qb3oudupp276"
-
-[node name="Hitbox" type="Area2D" parent="PoseComponent/Slide" node_paths=PackedStringArray("collisions")]
-visible = false
-script = ExtResource("6_snrm1")
-collisions = [NodePath("UnitCollision")]
-debug_colour = Color(0.529412, 0.529412, 0, 0)
-metadata/_custom_type_script = "uid://dggw50eje6730"
-
-[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Slide/Hitbox"]
-visible = false
-position = Vector2(16, -8)
-shape = SubResource("RectangleShape2D_s5161")
-disabled = true
-debug_color = Color(0.529412, 0.529412, 0, 0)
-script = ExtResource("2_an3if")
-metadata/_custom_type_script = "uid://nty86admf01v"
-
-[node name="Hurtbox" type="Area2D" parent="PoseComponent/Slide" node_paths=PackedStringArray("collisions")]
-visible = false
-script = ExtResource("7_43cav")
-collisions = [NodePath("UnitCollision")]
-debug_colour = Color(0.827451, 0, 0, 0.145098)
-metadata/_custom_type_script = "uid://de0oflltc34eb"
-
-[node name="UnitCollision" type="CollisionShape2D" parent="PoseComponent/Slide/Hurtbox"]
-visible = false
-position = Vector2(0, -16)
-shape = SubResource("RectangleShape2D_snrm1")
-disabled = true
-debug_color = Color(0.827451, 0, 0, 0.145098)
-script = ExtResource("2_an3if")
-metadata/_custom_type_script = "uid://nty86admf01v"
-
-[node name="AutoSpriteComponent" type="Node2D" parent="PoseComponent/Slide" node_paths=PackedStringArray("auto_sprites", "index")]
-visible = false
-script = ExtResource("5_43cav")
-auto_sprites = {
-"Slide": NodePath("Slide")
-}
-index = [NodePath("Slide")]
-metadata/_custom_type_script = "uid://qsyfa6gtevhc"
-
-[node name="Slide" type="Sprite2D" parent="PoseComponent/Slide/AutoSpriteComponent"]
-visible = false
-position = Vector2(0, -16)
-texture = ExtResource("17_kg4ha")
-hframes = 8
-frame = 7
-script = ExtResource("5_s5161")
-metadata/_custom_type_script = "uid://dduh83inwe77n"

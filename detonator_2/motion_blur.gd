@@ -3,7 +3,7 @@ extends ScreenShutter
 
 const BLUR_SHADER: Shader = preload("res://shaders/motion_blur.gdshader")
 
-@export var active: bool = false
+var active: bool: get = is_activated
 var time: float = 0.0: get = get_time, set = set_active_time
 
 func _init() -> void:
@@ -36,5 +36,7 @@ func get_time() -> float:
 
 func set_active_time(value: float) -> void:
 	time = maxf(0.0, value)
-	active = false if time == 0.0 else true
 	visible = false if time == 0.0 else true
+
+func is_activated() -> bool:
+	return time > 0.

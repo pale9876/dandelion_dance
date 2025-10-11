@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://udtfxwd6u15x"]
+
+[ext_resource type="Script" uid="uid://qb3oudupp276" path="res://cs_classes/Pose.cs" id="1_kv5if"]
+[ext_resource type="Script" uid="uid://qsyfa6gtevhc" path="res://cs_classes/AutoSpriteComponent.cs" id="2_1ledd"]
+[ext_resource type="Texture2D" uid="uid://ckwscnj70miri" path="res://2D-Pixel-Art-Character-Template/Dash/dash.png" id="3_tivnv"]
+[ext_resource type="Script" uid="uid://dduh83inwe77n" path="res://cs_classes/AutoSprite.cs" id="4_2lu6w"]
+[ext_resource type="Script" uid="uid://de0oflltc34eb" path="res://cs_classes/Hurtbox.cs" id="5_s1owx"]
+[ext_resource type="Script" uid="uid://nty86admf01v" path="res://cs_classes/UnitCollision.cs" id="6_bjflq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_msm5p"]
+size = Vector2(16, 24)
+
+[node name="Shift" type="Node2D" node_paths=PackedStringArray("auto_sprite_components", "hurtbox")]
+script = ExtResource("1_kv5if")
+auto_sprite_components = {
+"ShiftAnimation": NodePath("ShiftAnimation")
+}
+hurtbox = NodePath("Hurtbox")
+metadata/_custom_type_script = "uid://qb3oudupp276"
+
+[node name="ShiftAnimation" type="Node2D" parent="." node_paths=PackedStringArray("auto_sprites", "index_list", "current_sprite")]
+script = ExtResource("2_1ledd")
+auto_sprites = {
+"Shift": NodePath("Shift")
+}
+index_list = [NodePath("Shift")]
+current_sprite = NodePath("Shift")
+index = 0
+metadata/_custom_type_script = "uid://qsyfa6gtevhc"
+
+[node name="Shift" type="Sprite2D" parent="ShiftAnimation"]
+position = Vector2(0, -16)
+texture = ExtResource("3_tivnv")
+hframes = 9
+frame = 8
+script = ExtResource("4_2lu6w")
+metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("collisions")]
+script = ExtResource("5_s1owx")
+collisions = [NodePath("UnitCollision")]
+debug_colour = Color(0.9019608, 0, 0, 0)
+metadata/_custom_type_script = "uid://de0oflltc34eb"
+
+[node name="UnitCollision" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -12)
+shape = SubResource("RectangleShape2D_msm5p")
+debug_color = Color(0.9019608, 0, 0, 0)
+script = ExtResource("6_bjflq")
+metadata/_custom_type_script = "uid://nty86admf01v"

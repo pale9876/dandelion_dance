@@ -2,32 +2,33 @@ using Godot;
 using Godot.Collections;
 using System;
 
-
 [Tool]
 [GlobalClass]
 public partial class AutoSpriteComponent : Node2D
 {
     private long id = -1;
 
-    [Export] public Dictionary<String, AutoSprite> auto_sprites = new Dictionary<string, AutoSprite>();
-    [Export] public Array<AutoSprite> index = new Array<AutoSprite>();
+    [Export] public Dictionary<String, AutoSprite> auto_sprites = new();
+    [Export] public Array<AutoSprite> index_list = new();
     [Export] public AutoSprite current_sprite { get => _current_sprite; set => change_current_sprite(value); }
     private AutoSprite _current_sprite = null;
-    [Export] public int currnet_index { get => _current_index; set => set_index(value); }
-    private int _current_index = -1;
+    [Export] public int index { get => _index; set => index_changed(value); }
+    private int _index = -1;
 
-    [ExportToolButton("Update")] private Callable update => Callable.From(_update);
-    [ExportToolButton("Next Sprite")] private Callable next => Callable.From(_next);
+    public AutoSpriteComponent()
+    {
+        
+    }
 
     public override void _EnterTree()
     {
         base._EnterTree();
 
-        VisibilityChanged += on_visibility_changed;
-
         var parent = GetParentOrNull<Pose>();
         if (parent != null)
         {
+            Renamed += parent.child_updated;
+            ChildOrderChanged += on_child_order_changed;
             if (!parent.auto_sprite_components.ContainsKey(this.Name))
             {
                 parent.auto_sprite_components.Add(this.Name, this);
@@ -39,96 +40,97 @@ public partial class AutoSpriteComponent : Node2D
             GlobalAnimation g_anim = get_g_anim();
             g_anim.add_component(this);
         }
+
+        VisibilityChanged += on_visibility_changed;
     }
 
     public override void _ExitTree()
     {
         base._ExitTree();
 
-        VisibilityChanged -= on_visibility_changed;
-
         var parent = GetParentOrNull<Pose>();
         if (parent != null)
         {
+            Renamed -= parent.child_updated;
+            ChildOrderChanged -= on_child_order_changed;
             if (parent.auto_sprite_components.ContainsKey(this.Name))
             {
                 parent.auto_sprite_components.Remove(this.Name);
             }
         }
 
-
         if (!Engine.IsEditorHint())
         {
             GlobalAnimation g_anim = get_g_anim();
             g_anim.remove_component(this.id);
         }
+
+        auto_sprites.Clear();
+        id = -1;
+
+        VisibilityChanged -= on_visibility_changed;
     }
 
-    public override void _Ready()
+    private void on_visibility_changed()
     {
-        base._Ready();
-
-        _update();
+        current_sprite.Visible = true;
     }
 
-    private void _update()
+    public void on_child_renamed()
     {
         auto_sprites.Clear();
-        index.Clear();
 
         foreach (Node node in GetChildren())
         {
             if (node is AutoSprite)
             {
-                if (!auto_sprites.ContainsKey(node.Name))
-                {
-                    auto_sprites.Add(node.Name, node as AutoSprite);
-                    index.Add(node as AutoSprite);
-                }
+                auto_sprites.Add(node.Name, node as AutoSprite);
             }
         }
     }
 
-    private void on_visibility_changed()
+    public void on_child_order_changed()
     {
-        foreach (AutoSprite sprite in get_sprites())
-        {
-            sprite.Visible = this.Visible;
-        }
-    }
+        index_list.Clear();
 
-    public virtual void on_stopped(String sprite_name){}
-    public virtual void on_played(String sprite_name){}
-    public virtual void on_looped(String sprite_name){}
-    public virtual void on_finished(String sprite_name){}
-
-    private void _next()
-    {
-        if (index.Count > 0)
+        foreach (Node node in GetChildren())
         {
-            if (currnet_index + 1 > index.Count - 1)
-                currnet_index = 0;
+            if (node is AutoSprite)
+            {
+                index_list.Add(node as AutoSprite);
+                if (index_list.Count > 0)
+                {
+                    index = 0;
+                }
+            }
         }
     }
 
     public void change_current_sprite(AutoSprite auto_sprite)
     {
         _current_sprite = auto_sprite;
-
-        foreach (AutoSprite sprite in auto_sprites.Values)
+        if (auto_sprite != null)
         {
-            sprite.Visible = (sprite == auto_sprite) ? true : false;
+            foreach (AutoSprite sprite in index_list)
+            {
+                sprite.Visible = (auto_sprite == sprite) ? true : false;
+            }
         }
     }
 
-    private void set_index(int idx)
+    public void add_sprite(AutoSprite sprite)
     {
-        int max_count = index.Count - 1;
-        _current_index = Math.Clamp(idx, -1, max_count);
-        if (idx < max_count && idx > -1)
+        if (!auto_sprites.ContainsKey(sprite.Name))
         {
-            change_current_sprite(index[idx]);
+            auto_sprites.Add(sprite.Name, sprite);
         }
+        id += 1;
+        sprite.set_id(id);
+    }
+
+    public void remove_sprite(AutoSprite sprite)
+    {
+        if (auto_sprites.ContainsKey(sprite.Name)) auto_sprites.Remove(sprite.Name);
     }
 
     public bool change_sprite(String sprite_name)
@@ -143,7 +145,25 @@ public partial class AutoSpriteComponent : Node2D
         return false;
     }
 
+    public void index_changed(int value)
+    {
+        _index = Mathf.Clamp(
+            value,
+            (index_list.Count == 0) ? -1 : 0,
+            index_list.Count - 1
+        );
+
+        if (_index != -1)
+        {
+            current_sprite = index_list[_index];
+        }
+    }
     
+    public virtual void on_stopped(String sprite_name) { }
+    public virtual void on_played(String sprite_name){}
+    public virtual void on_looped(String sprite_name){}
+    public virtual void on_finished(String sprite_name){}
+
     public void set_id(long value) => this.id = value;
     public Array<AutoSprite> get_sprites() => auto_sprites.Values as Array<AutoSprite>;
     private GlobalAnimation get_g_anim() => GetNode<GlobalAnimation>("/root/GlobalAnimation");

@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://dg8fxuqbd6rbu"]
+
+[ext_resource type="Script" uid="uid://cn6344euotvlt" path="res://cs_scripts/Crouch.cs" id="1_4hepq"]
+[ext_resource type="Script" uid="uid://de0oflltc34eb" path="res://cs_classes/Hurtbox.cs" id="2_lkn18"]
+[ext_resource type="Script" uid="uid://nty86admf01v" path="res://cs_classes/UnitCollision.cs" id="3_ug6b8"]
+[ext_resource type="Script" uid="uid://qsyfa6gtevhc" path="res://cs_classes/AutoSpriteComponent.cs" id="4_cr2si"]
+[ext_resource type="Texture2D" uid="uid://di4tayscfeqw0" path="res://2D-Pixel-Art-Character-Template/Crouch-Idle/Player Crouch-Idle 48x48.png" id="5_4hepq"]
+[ext_resource type="Script" uid="uid://dduh83inwe77n" path="res://cs_classes/AutoSprite.cs" id="6_khxlb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2iyrq"]
+size = Vector2(16, 16)
+
+[node name="Crouch" type="Node2D" node_paths=PackedStringArray("auto_sprite_components", "hurtbox")]
+script = ExtResource("1_4hepq")
+auto_sprite_components = {
+"AutoSpriteComponent": NodePath("AutoSpriteComponent")
+}
+hurtbox = NodePath("Hurtbox")
+metadata/_custom_type_script = "uid://qb3oudupp276"
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("collisions")]
+script = ExtResource("2_lkn18")
+collisions = [NodePath("UnitCollision")]
+debug_colour = Color(0.890196, 0, 0, 0)
+metadata/_custom_type_script = "uid://de0oflltc34eb"
+
+[node name="UnitCollision" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_2iyrq")
+debug_color = Color(0.890196, 0, 0, 0)
+script = ExtResource("3_ug6b8")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="AutoSpriteComponent" type="Node2D" parent="." node_paths=PackedStringArray("auto_sprites", "index_list", "current_sprite")]
+script = ExtResource("4_cr2si")
+auto_sprites = {
+"Crouch": NodePath("Crouch")
+}
+index_list = [NodePath("Crouch")]
+current_sprite = NodePath("Crouch")
+index = 0
+metadata/_custom_type_script = "uid://qsyfa6gtevhc"
+
+[node name="Crouch" type="Sprite2D" parent="AutoSpriteComponent"]
+position = Vector2(0, -16)
+texture = ExtResource("5_4hepq")
+hframes = 10
+script = ExtResource("6_khxlb")
+repeat = true
+metadata/_custom_type_script = "uid://dduh83inwe77n"

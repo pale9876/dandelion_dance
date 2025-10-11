@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://k6gpon4h5v05"]
+
+[ext_resource type="Script" uid="uid://qb3oudupp276" path="res://cs_classes/Pose.cs" id="1_v51wd"]
+[ext_resource type="Script" uid="uid://de0oflltc34eb" path="res://cs_classes/Hurtbox.cs" id="2_d1bhf"]
+[ext_resource type="Script" uid="uid://nty86admf01v" path="res://cs_classes/UnitCollision.cs" id="3_g1nli"]
+[ext_resource type="Script" uid="uid://qsyfa6gtevhc" path="res://cs_classes/AutoSpriteComponent.cs" id="4_xrakq"]
+[ext_resource type="Texture2D" uid="uid://ceiydcex10h64" path="res://2D-Pixel-Art-Character-Template/Idle/Player Idle 48x48.png" id="5_v51wd"]
+[ext_resource type="Script" uid="uid://dduh83inwe77n" path="res://cs_classes/AutoSprite.cs" id="6_d1bhf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_537fj"]
+size = Vector2(16, 32)
+
+[node name="Idle" type="Node2D" node_paths=PackedStringArray("auto_sprite_components", "hurtbox")]
+script = ExtResource("1_v51wd")
+auto_sprite_components = {
+"IdleAnimation": NodePath("IdleAnimation")
+}
+hurtbox = NodePath("Hurtbox")
+metadata/_custom_type_script = "uid://qb3oudupp276"
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("collisions")]
+script = ExtResource("2_d1bhf")
+collisions = [NodePath("UnitCollision")]
+debug_colour = Color(1, 0, 0, 0)
+metadata/_custom_type_script = "uid://de0oflltc34eb"
+
+[node name="UnitCollision" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_537fj")
+debug_color = Color(1, 0, 0, 0)
+script = ExtResource("3_g1nli")
+metadata/_custom_type_script = "uid://nty86admf01v"
+
+[node name="IdleAnimation" type="Node2D" parent="." node_paths=PackedStringArray("auto_sprites", "index_list", "current_sprite")]
+script = ExtResource("4_xrakq")
+auto_sprites = {
+"Idle": NodePath("Idle")
+}
+index_list = [NodePath("Idle")]
+current_sprite = NodePath("Idle")
+index = 0
+metadata/_custom_type_script = "uid://qsyfa6gtevhc"
+
+[node name="Idle" type="Sprite2D" parent="IdleAnimation"]
+position = Vector2(0, -16)
+texture = ExtResource("5_v51wd")
+hframes = 10
+frame = 2
+script = ExtResource("6_d1bhf")
+playing = true
+repeat = true
+metadata/_custom_type_script = "uid://dduh83inwe77n"
