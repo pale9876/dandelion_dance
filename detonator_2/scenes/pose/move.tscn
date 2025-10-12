@@ -38,15 +38,19 @@ auto_sprites = {
 }
 index_list = [NodePath("Move")]
 current_sprite = NodePath("Move")
-index = 0
 metadata/_custom_type_script = "uid://qsyfa6gtevhc"
 
 [node name="Move" type="Sprite2D" parent="AutoSpriteComponent"]
 position = Vector2(0, -16)
 texture = ExtResource("5_p72l4")
 hframes = 8
-frame = 3
+frame = 7
 script = ExtResource("6_rd88r")
-playing = true
 repeat = true
+trigger_lines = Dictionary[int, String]({
+2: "Step",
+6: "Step"
+})
 metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]

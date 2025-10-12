@@ -8,9 +8,12 @@ public partial class PoseComponent : CanvasGroup
 {
 
     private int id = -1;
+    [Export] public Unit root = null;
     [Export] public bool flip { get => _flip; set => setFlip(value); }
     private bool _flip = false;
-    [Export] public Dictionary<StringName, Pose> poses = new Dictionary<StringName, Pose>();
+    [Export] public TriggerMap trigger_map { get => _trigger_map; set => setTriggerMap(value); }
+    private TriggerMap _trigger_map = null;
+    [Export] public Dictionary<String, Pose> poses = new Dictionary<String, Pose>();
     [Export] public Array<Pose> index_list = new Array<Pose>();
     [Export] public Pose current_pose { get => _current_pose; set => change_pose(value); }
     private Pose _current_pose = null;
@@ -41,6 +44,7 @@ public partial class PoseComponent : CanvasGroup
         if (parent != null)
         {
             Owner = parent;
+            root = parent;
             parent.pose_component = this;
         }
 
@@ -206,5 +210,19 @@ public partial class PoseComponent : CanvasGroup
         {
             pose.flip(toggle);
         }
+    }
+
+    private void setTriggerMap(TriggerMap value)
+    {
+        _trigger_map = value;
+        if (value != null)
+        {
+            trigger_map_changed_event_handler();
+        }
+    }
+
+    public virtual void trigger_map_changed_event_handler()
+    {
+        
     }
 }

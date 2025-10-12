@@ -46,7 +46,6 @@ public partial class Unit : Entity
     [Export] public StateMachine state_machine = null;
     [Export] public BTPlayer bt_player = null;
     [Export] public TriggerMap trigger_map = null;
-    private TriggerMap _trigger_map = null;
 
     [Export] public UnitInfo unit_info = null;
     [Export] public bool invincible = false;
@@ -116,16 +115,16 @@ public partial class Unit : Entity
 
         if (Engine.IsEditorHint()) return;
 
-        Array<AutoSprite> current_sprites = pose_component.current_pose.get_current_sprites();
+        // Array<AutoSprite> current_sprites = pose_component.current_pose.get_current_sprites();
 
-        foreach (AutoSprite sprite in current_sprites)
-        {
-            var frame_coord_x = sprite.FrameCoords.X;
-            if (sprite.trigger_lines.ContainsKey(frame_coord_x))
-            {
-                trigger_map.activate_trigger(sprite.trigger_lines[frame_coord_x], this);
-            }
-        }
+        // foreach (AutoSprite sprite in current_sprites)
+        // {
+        //     var frame_coord_x = sprite.FrameCoords.X;
+        //     if (sprite.trigger_lines.ContainsKey(frame_coord_x))
+        //     {
+        //         trigger_map.activate_trigger(sprite.trigger_lines[frame_coord_x], this);
+        //     }
+        // }
 
         if (pre_velocity_init)
             Velocity = pre_velocity;
@@ -233,11 +232,6 @@ public partial class Unit : Entity
         }
     }
 
-    public void on_trigger_activate(Trigger trigger)
-    {
-        
-    }
-
     private void change_state(State st)
     {
         if (_state != st)
@@ -289,12 +283,5 @@ public partial class Unit : Entity
 
     private float get_gravity(double delta) => Velocity.Y + ((float)delta * DEFAULT_GRAVITY);
 
-    private void setTriggerMap(TriggerMap value)
-    {
-        _trigger_map = value;
-        if (value != null)
-        {
-            
-        }
-    }
+
 }

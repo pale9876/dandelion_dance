@@ -13,12 +13,12 @@
 [ext_resource type="Script" uid="uid://bh6k6yjmo2pwv" path="res://cs_scripts/CRTTurnOff.cs" id="8_wr18j"]
 [ext_resource type="Script" uid="uid://c104ngbiyvrpp" path="res://cs_scripts/CrtWarpFilter.cs" id="10_671wp"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qwutr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_671wp"]
 shader = ExtResource("7_qwutr")
 shader_parameter/alpha = 0.0
 shader_parameter/blur = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_671wp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mo76n"]
 shader = ExtResource("8_671wp")
 shader_parameter/turn_off = false
 shader_parameter/progress = 0.0
@@ -61,7 +61,7 @@ collisions = {
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="FilterController" type="Control" parent="CanvasLayer"]
+[node name="FilterController" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("filters")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -70,10 +70,13 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("6_7ycvg")
+filters = {
+"MotionBlur": NodePath("MotionBlur")
+}
 
 [node name="MotionBlur" type="ScreenShutter" parent="CanvasLayer/FilterController"]
 visible = false
-material = SubResource("ShaderMaterial_qwutr")
+material = SubResource("ShaderMaterial_671wp")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -85,13 +88,14 @@ color = Color(1, 1, 1, 0)
 script = ExtResource("7_wr18j")
 
 [node name="CRTTurnOff" type="ColorRect" parent="CanvasLayer/FilterController"]
-material = SubResource("ShaderMaterial_671wp")
+material = SubResource("ShaderMaterial_mo76n")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(1, 1, 1, 0)
 script = ExtResource("8_wr18j")
 

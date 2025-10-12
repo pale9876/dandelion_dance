@@ -9,6 +9,8 @@ public partial class TriggerMap : Node
     [Signal] public delegate void trigger_activatedEventHandler(String trigger_name, bool result);
 
     [Export] public Dictionary<String, Trigger> triggers = new();
+    [Export] public Trigger wheel = null;
+    [Export] public Trigger targeting = null;
 
     public TriggerMap()
     {
@@ -19,11 +21,11 @@ public partial class TriggerMap : Node
     {
         base._EnterTree();
 
-        Unit parent = GetParentOrNull<Unit>();
+        PoseComponent parent = GetParentOrNull<PoseComponent>();
 
         if (parent != null)
         {
-            parent.trigger_map = this;   
+            parent.trigger_map = this;
         }
     }
 
@@ -31,21 +33,39 @@ public partial class TriggerMap : Node
     {
         base._ExitTree();
 
-        Unit parent = GetParentOrNull<Unit>();
+        PoseComponent parent = GetParentOrNull<PoseComponent>();
 
         if (parent != null)
         {
             parent.trigger_map = null;
         }
+
+        wheel = null;
+        triggers.Clear();
     }
 
-    public void activate_trigger(String trigger_name, Unit target)
+    public override void _PhysicsProcess(double delta)
     {
-        if (triggers.ContainsKey(trigger_name))
+        base._PhysicsProcess(delta);
+
+        if (!Engine.IsEditorHint())
         {
-            bool result = triggers[trigger_name].activate(target);
-            EmitSignaltrigger_activated(trigger_name, result);
+            if (wheel != null)
+            {
+                // activate_trigger
+            }
         }
     }
 
+    public void activate_trigger(Trigger trigger, Unit target)
+    {
+        if (trigger.keep_activate)
+        {
+            wheel = trigger;
+                        
+        }
+        
+        bool result = trigger.activate(target);
+        EmitSignaltrigger_activated(trigger.trigger_name, result);
+    }
 }

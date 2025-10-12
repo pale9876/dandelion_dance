@@ -18,6 +18,7 @@ public partial class AutoSprite : Sprite2D
     [Signal] public delegate void stoppedEventHandler(String sprite_name);
     [Signal] public delegate void finishedEventHandler(String sprite_name);
     [Signal] public delegate void loopedEventHandler(String sprite_name);
+    [Signal] public delegate void reached_trigger_lineEventHandler(String trigger_name);
 
     [Export] public State state = State.PHYSICS;
     [Export] public bool auto_start = false;
@@ -50,21 +51,25 @@ public partial class AutoSprite : Sprite2D
         AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
         if (parent != null)
         {
-            if (!parent.Visible) Visible = false;
+            if (!parent.Visible) { Visible = false; }
             parent.add_sprite(this);
             Renamed += parent.on_child_renamed;
-        }
 
-        if (!Engine.IsEditorHint())
-        {
-            if (parent != null)
+            if (!Engine.IsEditorHint())
             {
                 start += parent.on_played;
                 stopped += parent.on_stopped;
                 looped += parent.on_looped;
                 finished += parent.on_finished;
             }
+            
+            Pose pose = parent.GetParentOrNull<Pose>();
+            if (pose != null)
+            {
+                reached_trigger_line += pose.on_reached_trigger_line;
+            }
         }
+
     }
 
     public override void _ExitTree()
@@ -78,17 +83,20 @@ public partial class AutoSprite : Sprite2D
         {
             parent.remove_sprite(this);
             Renamed -= parent.on_child_renamed;
-        }
 
-        if (!Engine.IsEditorHint())
-        {
-            if (parent != null)
+            if (!Engine.IsEditorHint())
             {
                 start -= parent.on_played;
                 stopped -= parent.on_stopped;
                 looped -= parent.on_looped;
                 finished -= parent.on_finished;
             }
+        }
+
+        Pose pose = parent.GetParentOrNull<Pose>();
+        if (pose != null)
+        {
+            reached_trigger_line -= pose.on_reached_trigger_line;
         }
 
     }
@@ -158,9 +166,11 @@ public partial class AutoSprite : Sprite2D
 
     public void next_frame()
     {
-        if (FrameCoords.X < Hframes - 1)
+        int current_frame_x = FrameCoords.X;
+
+        if (current_frame_x < Hframes - 1)
         {
-            FrameCoords = FrameCoords with { X = FrameCoords.X + 1 };
+            FrameCoords = FrameCoords with { X = current_frame_x + 1 };
         }
         else
         {
@@ -173,6 +183,14 @@ public partial class AutoSprite : Sprite2D
             {
                 playing = false;
                 EmitSignalfinished(this.Name);
+            }
+        }
+
+        if (!Engine.IsEditorHint())
+        {
+            if (trigger_lines.ContainsKey(FrameCoords.X))
+            {
+                EmitSignalreached_trigger_line(trigger_lines[FrameCoords.X]);
             }
         }
     }

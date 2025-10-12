@@ -7,9 +7,9 @@ using Godot.Collections;
 public partial class Pose : Node2D
 {
     private int id = -1;
-    [Signal] public delegate void reached_triggerEventHandler(String trigger_name);
 
     [Export] public bool filp_lock = false;
+    [Export] public Dictionary<String, Trigger> triggers = new();
     [Export] public Dictionary<String, AutoSpriteComponent> auto_sprite_components = new();
     [Export] public Dictionary<String, Hitbox> hitboxes = new();
     [Export] public Dictionary<String, GrabPoint> grab_points = new();
@@ -85,6 +85,19 @@ public partial class Pose : Node2D
     public virtual void on_animation_finished(StringName anim_name)
     {
 
+    }
+
+    public virtual void on_reached_trigger_line(String trigger_name)
+    {
+        if (triggers.ContainsKey(trigger_name))
+        {
+            Trigger trigger = triggers[trigger_name];
+            PoseComponent component = GetParent<PoseComponent>();
+            if (component.root != null)
+            {
+                component.trigger_map.activate_trigger(trigger, component.root);
+            }
+        }
     }
 
     public void on_visibility_changed()
