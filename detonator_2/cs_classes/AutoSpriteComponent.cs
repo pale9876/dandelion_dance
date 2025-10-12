@@ -7,7 +7,8 @@ using System;
 public partial class AutoSpriteComponent : Node2D
 {
     private long id = -1;
-
+    
+    [Export] public Pose root_pose = null;
     [Export] public Dictionary<String, AutoSprite> auto_sprites = new();
     [Export] public Array<AutoSprite> index_list = new();
     [Export] public AutoSprite current_sprite { get => _current_sprite; set => change_current_sprite(value); }
@@ -24,9 +25,11 @@ public partial class AutoSpriteComponent : Node2D
     {
         base._EnterTree();
 
-        var parent = GetParentOrNull<Pose>();
+        Pose parent = GetParentOrNull<Pose>();
+
         if (parent != null)
         {
+            root_pose = parent;
             Renamed += parent.auto_sprite_component_renamed;
             ChildOrderChanged += on_child_order_changed;
             if (!parent.auto_sprite_components.ContainsKey(this.Name))

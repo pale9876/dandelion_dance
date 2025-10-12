@@ -61,12 +61,10 @@ public partial class AutoSprite : Sprite2D
                 stopped += parent.on_stopped;
                 looped += parent.on_looped;
                 finished += parent.on_finished;
-            }
-            
-            Pose pose = parent.GetParentOrNull<Pose>();
-            if (pose != null)
-            {
-                reached_trigger_line += pose.on_reached_trigger_line;
+                if (parent.root_pose != null)
+                {
+                    reached_trigger_line -= parent.root_pose.on_reached_trigger_line;
+                }
             }
         }
 
@@ -79,6 +77,8 @@ public partial class AutoSprite : Sprite2D
         VisibilityChanged -= on_visible_changed;
 
         AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
+
+
         if (parent != null)
         {
             parent.remove_sprite(this);
@@ -90,15 +90,13 @@ public partial class AutoSprite : Sprite2D
                 stopped -= parent.on_stopped;
                 looped -= parent.on_looped;
                 finished -= parent.on_finished;
+                if (parent.root_pose != null)
+                {
+                    reached_trigger_line -= parent.root_pose.on_reached_trigger_line;
+                }
             }
         }
-
-        Pose pose = parent.GetParentOrNull<Pose>();
-        if (pose != null)
-        {
-            reached_trigger_line -= pose.on_reached_trigger_line;
-        }
-
+        
     }
 
     public override void _Process(double delta)

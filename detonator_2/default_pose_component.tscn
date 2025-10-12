@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cevpakpnv2do1" path="res://scenes/pose/jump.tscn" id="8_km7tr"]
 [ext_resource type="Script" uid="uid://tyvymh7mhad2" path="res://cs_scripts/JumpPose.cs" id="9_2bd4g"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_scvef"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hnkwr"]
 shader = ExtResource("1_5yelk")
 shader_parameter/line_colour = Color(0, 0, 0, 1)
 shader_parameter/line_thickness = 1.0
@@ -19,7 +19,7 @@ shader_parameter/draw = false
 
 [node name="PoseComponent" type="CanvasGroup" node_paths=PackedStringArray("trigger_map", "poses", "index_list", "current_pose", "init_pose")]
 clip_children = 2
-material = SubResource("ShaderMaterial_scvef")
+material = SubResource("ShaderMaterial_hnkwr")
 script = ExtResource("2_km7tr")
 trigger_map = NodePath("TriggerMap")
 poses = {
