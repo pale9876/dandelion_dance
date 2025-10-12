@@ -17,7 +17,7 @@ public partial class AutoSpriteComponent : Node2D
 
     public AutoSpriteComponent()
     {
-        
+
     }
 
     public override void _EnterTree()
@@ -27,7 +27,7 @@ public partial class AutoSpriteComponent : Node2D
         var parent = GetParentOrNull<Pose>();
         if (parent != null)
         {
-            Renamed += parent.child_updated;
+            Renamed += parent.auto_sprite_component_renamed;
             ChildOrderChanged += on_child_order_changed;
             if (!parent.auto_sprite_components.ContainsKey(this.Name))
             {
@@ -51,7 +51,7 @@ public partial class AutoSpriteComponent : Node2D
         var parent = GetParentOrNull<Pose>();
         if (parent != null)
         {
-            Renamed -= parent.child_updated;
+            Renamed -= parent.auto_sprite_component_renamed;
             ChildOrderChanged -= on_child_order_changed;
             if (parent.auto_sprite_components.ContainsKey(this.Name))
             {

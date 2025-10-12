@@ -10,6 +10,12 @@ func _init() -> void:
 	material = ShaderMaterial.new()
 	material.shader = BLUR_SHADER
 
+func _enter_tree() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var parent: FilterController = get_parent()
+	if parent is FilterController:
+		parent.filters[self.name] = self
+
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	

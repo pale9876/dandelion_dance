@@ -12,7 +12,9 @@ public partial class Pose : Node2D
     [Export] public bool filp_lock = false;
     [Export] public Dictionary<String, AutoSpriteComponent> auto_sprite_components = new();
     [Export] public Dictionary<String, Hitbox> hitboxes = new();
+    [Export] public Dictionary<String, GrabPoint> grab_points = new();
     [Export] public Hurtbox hurtbox = null;
+    [Export] public UnitAnimation animation_player = null;
 
     public override void _EnterTree()
     {
@@ -51,10 +53,14 @@ public partial class Pose : Node2D
         VisibilityChanged -= on_visibility_changed;
     }
 
-    public void child_updated()
+    public virtual void _pose_init() {}
+    public virtual void _pose_entered() {}
+    public virtual void _pose_update(double delta) {}
+    public virtual void _pose_exited() {}
+
+    public void auto_sprite_component_renamed()
     {
         auto_sprite_components.Clear();
-
         foreach (Node node in GetChildren())
         {
             if (node is AutoSpriteComponent)
@@ -64,10 +70,22 @@ public partial class Pose : Node2D
         }
     }
 
-    public virtual void _pose_init() {}
-    public virtual void _pose_entered() {}
-    public virtual void _pose_update(double delta) {}
-    public virtual void _pose_exited() {}
+    public void grab_point_renamed()
+    {
+        grab_points.Clear();
+        foreach (Node node in GetChildren())
+        {
+            if (node is GrabPoint)
+            {
+                grab_points.Add(node.Name, node as GrabPoint);
+            }
+        }
+    }
+
+    public virtual void on_animation_finished(StringName anim_name)
+    {
+
+    }
 
     public void on_visibility_changed()
     {
@@ -78,6 +96,19 @@ public partial class Pose : Node2D
                 (node as Node2D).Visible = this.Visible;
             }
         }
+
+        if (animation_player != null)
+        {
+            if (Visible)
+            {
+                animation_player.Play("Default");
+            }
+            else
+            {
+                animation_player.Play("RESET");
+            }
+        }
+
     }
 
     public void flip(bool toggle)
@@ -98,9 +129,6 @@ public partial class Pose : Node2D
         }
     }
 
-    public int get_id() => id;
-    public void set_id(int id) => this.id = id;
-
     public Array<AutoSprite> get_current_sprites()
     {
         Array<AutoSprite> result = new();
@@ -113,4 +141,6 @@ public partial class Pose : Node2D
         return result;
     }
 
+    public int get_id() => id;
+    public void set_id(int id) => this.id = id;
 }

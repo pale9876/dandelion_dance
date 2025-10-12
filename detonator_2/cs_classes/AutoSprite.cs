@@ -20,6 +20,7 @@ public partial class AutoSprite : Sprite2D
     [Signal] public delegate void loopedEventHandler(String sprite_name);
 
     [Export] public State state = State.PHYSICS;
+    [Export] public bool auto_start = false;
     [Export] public bool playing { set => set_play(value); get => _playing; }
     [Export] public bool repeat = false;
     [Export] public float fps { set => setFps(value); get => _fps; }
@@ -152,7 +153,7 @@ public partial class AutoSprite : Sprite2D
             }
         }
 
-        playing = Visible ? true : false;
+        playing = (Visible && auto_start) ? true : false;
     }
 
     public void next_frame()

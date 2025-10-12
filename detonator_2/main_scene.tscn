@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bmidfw1jvsepy"]
+[gd_scene load_steps=15 format=3 uid="uid://bmidfw1jvsepy"]
 
 [ext_resource type="Script" uid="uid://b42jusjc7b2nd" path="res://cs_classes/MainScene.cs" id="1_wr18j"]
 [ext_resource type="PackedScene" uid="uid://bo3aeon06uepi" path="res://stage.tscn" id="2_hq1ik"]
@@ -8,12 +8,23 @@
 [ext_resource type="PackedScene" uid="uid://cv1kxqd5krltm" path="res://progress_ui.tscn" id="6_hq1ik"]
 [ext_resource type="Shader" uid="uid://lwgbnxs162me" path="res://shaders/motion_blur.gdshader" id="7_qwutr"]
 [ext_resource type="Script" uid="uid://uiqco1jdo13f" path="res://motion_blur.gd" id="7_wr18j"]
+[ext_resource type="Shader" uid="uid://dj2oaonao6pl3" path="res://shaders/crt_turn_off.gdshader" id="8_671wp"]
 [ext_resource type="Script" uid="uid://t3443oedt1h4" path="res://cs_classes/Hud.cs" id="8_qwutr"]
+[ext_resource type="Script" uid="uid://bh6k6yjmo2pwv" path="res://cs_scripts/CRTTurnOff.cs" id="8_wr18j"]
+[ext_resource type="Script" uid="uid://c104ngbiyvrpp" path="res://cs_scripts/CrtWarpFilter.cs" id="10_671wp"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ycvg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qwutr"]
 shader = ExtResource("7_qwutr")
 shader_parameter/alpha = 0.0
 shader_parameter/blur = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_671wp"]
+shader = ExtResource("8_671wp")
+shader_parameter/turn_off = false
+shader_parameter/progress = 0.0
+shader_parameter/FADE_COLOR = Color(0.0859, 0.0937, 0.1328, 1)
+shader_parameter/BUFFER = 2.0
+shader_parameter/SCALE_SPEED = 1.5
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_wr18j")
@@ -62,7 +73,7 @@ script = ExtResource("6_7ycvg")
 
 [node name="MotionBlur" type="ScreenShutter" parent="CanvasLayer/FilterController"]
 visible = false
-material = SubResource("ShaderMaterial_7ycvg")
+material = SubResource("ShaderMaterial_qwutr")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -72,6 +83,27 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 1, 1, 0)
 script = ExtResource("7_wr18j")
+
+[node name="CRTTurnOff" type="ColorRect" parent="CanvasLayer/FilterController"]
+material = SubResource("ShaderMaterial_671wp")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+script = ExtResource("8_wr18j")
+
+[node name="CRTFilter" type="ColorRect" parent="CanvasLayer/FilterController"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("10_671wp")
 
 [node name="HUD" type="Control" parent="CanvasLayer"]
 layout_mode = 3

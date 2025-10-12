@@ -7,64 +7,49 @@ using Godot.Collections;
 public partial class FilterController : Control
 {
 
-    [Export] private Dictionary<String, Control> filters = new();
+	[Export] public Dictionary<String, Control> filters = new();
 
-    public FilterController()
-    {
-        this.MouseFilter = MouseFilterEnum.Ignore;
-    }
+	public FilterController()
+	{
+		this.MouseFilter = MouseFilterEnum.Ignore;
+	}
 
-    public override void _EnterTree()
-    {
-        base._EnterTree();
+	public override void _EnterTree()
+	{
+		base._EnterTree();
 
-        VisibilityChanged += on_visibility_changed;
-    }
+		VisibilityChanged += on_visibility_changed;
+	}
 
-    public override void _ExitTree()
-    {
-        base._ExitTree();
+	public override void _ExitTree()
+	{
+		base._ExitTree();
 
-        VisibilityChanged -= on_visibility_changed;
-    }
+		VisibilityChanged -= on_visibility_changed;
+	}
 
-    private void on_child_entered(Node node)
-    {
-        if (node is Control)
+	public void active_filter(String filter_name, float time)
+	{
+		if (filters.ContainsKey(filter_name))
         {
-            Control c = node as Control;
-            c.MouseFilter = MouseFilterEnum.Ignore;
-            c.SetAnchorsPreset(LayoutPreset.FullRect);
-            c.Visible = false;
-            filters.Add(c.Name, c);
+			filters[filter_name].Set("time", time);
         }
-    }
+	}
 
-    private void _update()
-    {
-        foreach (Node node in GetChildren())
-        {
-            if (node is Control)
-            {
-                Control c = node as Control;
-                c.MouseFilter = MouseFilterEnum.Ignore;
-                filters.Add(node.Name, node as Control);
-            }
-        }
-    }
-
-    public void active_filter(String filter_name, float time)
+	public void active_filter(String filter_name, bool toggle)
     {
         if (filters.ContainsKey(filter_name))
-            filters[filter_name].Set("time", time);
-    }
-
-    private void on_visibility_changed()
-    {
-        if (!Visible)
         {
-            foreach (Control filter in filters.Values)
-                filter.Visible = this.Visible;
+			filters[filter_name].Set("active", toggle);
         }
     }
+
+	private void on_visibility_changed()
+	{
+		if (!Visible)
+		{
+			foreach (Control filter in filters.Values)
+				filter.Visible = this.Visible;
+		}
+	}
 }

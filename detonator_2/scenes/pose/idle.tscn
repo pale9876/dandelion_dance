@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://k6gpon4h5v05"]
+[gd_scene load_steps=13 format=3 uid="uid://k6gpon4h5v05"]
 
 [ext_resource type="Script" uid="uid://qb3oudupp276" path="res://cs_classes/Pose.cs" id="1_v51wd"]
 [ext_resource type="Script" uid="uid://de0oflltc34eb" path="res://cs_classes/Hurtbox.cs" id="2_d1bhf"]
@@ -6,16 +6,69 @@
 [ext_resource type="Script" uid="uid://qsyfa6gtevhc" path="res://cs_classes/AutoSpriteComponent.cs" id="4_xrakq"]
 [ext_resource type="Texture2D" uid="uid://ceiydcex10h64" path="res://2D-Pixel-Art-Character-Template/Idle/Player Idle 48x48.png" id="5_v51wd"]
 [ext_resource type="Script" uid="uid://dduh83inwe77n" path="res://cs_classes/AutoSprite.cs" id="6_d1bhf"]
+[ext_resource type="Script" uid="uid://hjufhcfta5rq" path="res://cs_classes/UnitAnimation.cs" id="7_d1bhf"]
+[ext_resource type="Script" uid="uid://bbtxcpo0pwk3g" path="res://scenes/pose/GrabPoint.cs" id="7_g1nli"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_537fj"]
 size = Vector2(16, 32)
 
-[node name="Idle" type="Node2D" node_paths=PackedStringArray("auto_sprite_components", "hurtbox")]
+[sub_resource type="Animation" id="Animation_d1bhf"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("IdleAnimation/Idle:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_g1nli"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("IdleAnimation/Idle:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("GrabPoint:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -32)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_g1nli"]
+_data = {
+&"Default": SubResource("Animation_d1bhf"),
+&"RESET": SubResource("Animation_g1nli")
+}
+
+[node name="Idle" type="Node2D" node_paths=PackedStringArray("auto_sprite_components", "grab_points", "hurtbox", "animation_player")]
 script = ExtResource("1_v51wd")
 auto_sprite_components = {
 "IdleAnimation": NodePath("IdleAnimation")
 }
+grab_points = {
+"GrabPoint": NodePath("GrabPoint")
+}
 hurtbox = NodePath("Hurtbox")
+animation_player = NodePath("UnitAnimation")
 metadata/_custom_type_script = "uid://qb3oudupp276"
 
 [node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("collisions")]
@@ -45,8 +98,18 @@ metadata/_custom_type_script = "uid://qsyfa6gtevhc"
 position = Vector2(0, -16)
 texture = ExtResource("5_v51wd")
 hframes = 10
-frame = 2
+frame = 4
 script = ExtResource("6_d1bhf")
-playing = true
 repeat = true
 metadata/_custom_type_script = "uid://dduh83inwe77n"
+
+[node name="GrabPoint" type="Marker2D" parent="."]
+position = Vector2(0, -32)
+script = ExtResource("7_g1nli")
+
+[node name="UnitAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_g1nli")
+}
+script = ExtResource("7_d1bhf")
+metadata/_custom_type_script = "uid://hjufhcfta5rq"

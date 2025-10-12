@@ -12,11 +12,12 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2bd4g"]
 shader = ExtResource("1_5yelk")
-shader_parameter/line_colour = Color(0, 0, 0, 1)
+shader_parameter/line_colour = Color(0.96, 0.96, 0.96, 1)
 shader_parameter/line_thickness = 1.0
-shader_parameter/draw = false
+shader_parameter/draw = true
 
 [node name="PoseComponent" type="CanvasGroup" node_paths=PackedStringArray("poses", "index_list", "current_pose", "init_pose")]
+clip_children = 2
 material = SubResource("ShaderMaterial_2bd4g")
 script = ExtResource("2_km7tr")
 poses = {
@@ -32,9 +33,12 @@ current_pose = NodePath("Idle")
 init_pose = NodePath("Idle")
 metadata/_custom_type_script = "uid://dyftpff5gcnl6"
 
-[node name="Idle" parent="." node_paths=PackedStringArray("auto_sprite_components") instance=ExtResource("3_2bd4g")]
+[node name="Idle" parent="." node_paths=PackedStringArray("auto_sprite_components", "grab_points") instance=ExtResource("3_2bd4g")]
 auto_sprite_components = {
 "IdleAnimation": NodePath("IdleAnimation")
+}
+grab_points = {
+"GrabPoint": NodePath("GrabPoint")
 }
 
 [node name="Crouch" parent="." node_paths=PackedStringArray("auto_sprite_components") instance=ExtResource("4_hnkwr")]

@@ -15,6 +15,7 @@ public partial class PoseComponent : CanvasGroup
     [Export] public Pose current_pose { get => _current_pose; set => change_pose(value); }
     private Pose _current_pose = null;
     [Export] public Pose init_pose;
+    [Export] public Array<Sprite2D> effect_filters = new();
     
     private int current_index { get => _current_index; set => change_index(value); }
     private int _current_index = -1;
@@ -29,6 +30,7 @@ public partial class PoseComponent : CanvasGroup
         ShaderMaterial shader_material = new ShaderMaterial();
         shader_material.Shader = sd;
         Material = shader_material;
+        ClipChildren = ClipChildrenMode.AndDraw;
     }
 
     public override void _EnterTree()

@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Detonator_2"
+config/name="Detonator"
 run/main_scene="uid://bmidfw1jvsepy"
 config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -34,7 +34,7 @@ window/size/viewport_height=720
 
 [dotnet]
 
-project/assembly_name="Detonator_2"
+project/assembly_name="Detonator"
 
 [editor_plugins]
 
