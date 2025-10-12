@@ -147,6 +147,8 @@ public partial class PoseComponent : CanvasGroup
         }
     }
 
+    public virtual void trigger_map_changed_event_handler() { }
+
     private void next_pose()
     {
         current_index += 1;
@@ -221,8 +223,5 @@ public partial class PoseComponent : CanvasGroup
         }
     }
 
-    public virtual void trigger_map_changed_event_handler()
-    {
-        
-    }
+
 }

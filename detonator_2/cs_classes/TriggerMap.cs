@@ -10,7 +10,7 @@ public partial class TriggerMap : Node
 
     [Export] public Dictionary<String, Trigger> triggers = new();
     [Export] public Trigger wheel = null;
-    [Export] public Trigger targeting = null;
+    [Export] public Node2D targeting = null;
 
     public TriggerMap()
     {
@@ -52,20 +52,23 @@ public partial class TriggerMap : Node
         {
             if (wheel != null)
             {
-                // activate_trigger
+                bool result = wheel.activate(targeting);
+                EmitSignaltrigger_activated(wheel.trigger_name, result);
             }
         }
     }
 
-    public void activate_trigger(Trigger trigger, Unit target)
+    public void activate_trigger(Trigger trigger, Node2D target)
     {
         if (trigger.keep_activate)
         {
             wheel = trigger;
-                        
+            targeting = target;
         }
-        
-        bool result = trigger.activate(target);
-        EmitSignaltrigger_activated(trigger.trigger_name, result);
+        else
+        {
+            bool result = trigger.activate(target);
+            EmitSignaltrigger_activated(trigger.trigger_name, result);
+        }
     }
 }
