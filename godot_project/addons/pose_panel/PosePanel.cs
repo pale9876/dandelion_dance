@@ -43,6 +43,25 @@ public partial class PosePanel : Control
             var inspector = get_inspector();
             inspector.EditedObjectChanged -= on_edited_object_changed;
         }
+
+
+
+    }
+
+    public override void _Notification(int what)
+    {
+        base._Notification(what);
+
+        switch (what)
+        {
+            case (int)NotificationExitTree:
+                edit_mode = EditMode.NONE; 
+                pose_panel = null;
+                component_panel = null;
+                sprite = null;
+                pose_name = null;
+                break;
+        }
     }
 
     public override void _Ready()

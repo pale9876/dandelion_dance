@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Detonator"
+config/name="Dandelion Dance"
+config/version="127.0.0.1"
 run/main_scene="uid://bmidfw1jvsepy"
 config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -24,8 +25,8 @@ PlayDataManager="*res://cs_classes/global/PlayDataManager.cs"
 PlayerInput="*res://cs_classes/global/PlayerInput.cs"
 GlobalAnimation="*res://cs_classes/global/GlobalAnimation.cs"
 BulletTimeManager="*res://cs_classes/global/BulletTimeManager.cs"
-Effect2dBus="*res://cs_classes/global/Effect2DBus.cs"
 CameraStatus="*res://cs_classes/global/CameraStatus.cs"
+EffectBus2d="*res://cs_classes/global/EffectBus2D.cs"
 
 [display]
 
@@ -38,7 +39,7 @@ project/assembly_name="Detonator"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/pose_panel/plugin.cfg", "res://addons/rust_tools/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-sqlite/plugin.cfg", "res://addons/plan_board/plugin.cfg", "res://addons/pose_panel/plugin.cfg", "res://addons/rust_tools/plugin.cfg")
 
 [input]
 

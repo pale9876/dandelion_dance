@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://ooir788iob6p"]
+
+[ext_resource type="Script" uid="uid://bcydw208oom6k" path="res://graph_ui.gd" id="1_h6hu5"]
+
+[node name="GraphUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_h6hu5")
+
+[node name="VBoxContainer" type="VSplitContainer" parent="."]
+custom_minimum_size = Vector2(1000, 600)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GraphEdit" type="GraphEdit" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+scroll_offset = Vector2(-0.034992218, 0)
+
+[node name="Panel" type="Panel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="HFlowContainer" type="HFlowContainer" parent="VBoxContainer/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="VBoxContainer/Panel/HFlowContainer"]
+layout_mode = 2
+text = "Add Panel"

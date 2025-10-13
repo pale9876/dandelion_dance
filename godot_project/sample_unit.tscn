@@ -87,6 +87,7 @@ poses = {
 
 [node name="StateMachine" parent="." node_paths=PackedStringArray("states") instance=ExtResource("8_43cav")]
 states = {
+"Fall": NodePath("Fall"),
 "Idle": NodePath("Idle"),
 "Jump": NodePath("Jump"),
 "Move": NodePath("Move")

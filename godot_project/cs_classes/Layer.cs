@@ -27,7 +27,7 @@ public partial class Layer : Node2D
     private void setLayerType(LayerType type)
     {
         _layer_type = type;
-        Effect2DBus e2b = get_e2b();
+        EffectBus2D e2b = get_e2b();
 
         switch (type)
         {
@@ -47,6 +47,6 @@ public partial class Layer : Node2D
         }
     }
     
-    private Effect2DBus get_e2b() => GetNode<Effect2DBus>("/root/Effect2DBus");
+    private EffectBus2D get_e2b() => GetNode<EffectBus2D>("/root/EffectBus2D");
 
 }

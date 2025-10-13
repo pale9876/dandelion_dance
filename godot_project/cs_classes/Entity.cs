@@ -90,7 +90,7 @@ public partial class Entity : CharacterBody2D
 
     public Node get_effect_bus()
     {
-        Effect2DBus e2b = GetNode<Effect2DBus>("/root/Effect2DBus");
+        EffectBus2D e2b = GetNode<EffectBus2D>("/root/EffectBus2D");
         return e2b;
     }
 

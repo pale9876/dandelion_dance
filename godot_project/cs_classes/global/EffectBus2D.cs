@@ -3,7 +3,7 @@ using Godot.Collections;
 using System;
 
 [Tool]
-public partial class Effect2DBus : Node
+public partial class EffectBus2D : Node
 {
     private ulong index = 0;
 

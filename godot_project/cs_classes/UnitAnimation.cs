@@ -8,13 +8,7 @@ public partial class UnitAnimation : AnimationPlayer
 {
 	public UnitAnimation()
 	{
-		if (!HasAnimation("Default"))
-        {
-			AnimationLibrary default_library = new AnimationLibrary();
-			Animation default_anim = new Animation();
-			default_library.AddAnimation("Default", default_anim);
-			AddAnimationLibrary("", default_library);
-        }
+
 	}
 
 	public override void _EnterTree()
@@ -28,6 +22,15 @@ public partial class UnitAnimation : AnimationPlayer
 			AnimationFinished += pose.on_animation_finished;
 			RootNode = this.GetPathTo(pose);
 		}
+		
+		if (!HasAnimation("Default"))
+        {
+			AnimationLibrary default_library = new AnimationLibrary();
+			Animation default_anim = new Animation();
+			default_library.AddAnimation("Default", default_anim);
+			AddAnimationLibrary("", default_library);
+        }
+
 	}
 
 	public override void _ExitTree()

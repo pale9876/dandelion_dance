@@ -1,4 +1,4 @@
-[gd_resource type="BehaviorTree" load_steps=14 format=3 uid="uid://cyhr50o43d0mb"]
+[gd_resource type="BehaviorTree" load_steps=15 format=3 uid="uid://cyhr50o43d0mb"]
 
 [ext_resource type="Script" uid="uid://bmxe81pwj3hig" path="res://ai/tasks/ExtraComment.gd" id="1_bq2wm"]
 
@@ -47,9 +47,11 @@ children = [SubResource("BTComment_j05h3")]
 custom_name = "CheckTargetIsInStage"
 children = [SubResource("BTComment_bq2wm"), SubResource("BTSequence_ilp4o"), SubResource("BTSequence_j05h3")]
 
+[sub_resource type="BTSelector" id="BTSelector_rr2mj"]
+
 [sub_resource type="BTSelector" id="BTSelector_1ganl"]
 custom_name = "UnitTask"
-children = [SubResource("BTSequence_bq2wm"), SubResource("BTSequence_1ganl"), SubResource("BTSelector_bq2wm")]
+children = [SubResource("BTSequence_bq2wm"), SubResource("BTSequence_1ganl"), SubResource("BTSelector_bq2wm"), SubResource("BTSelector_rr2mj")]
 
 [resource]
 blackboard_plan = SubResource("BlackboardPlan_rr2mj")
