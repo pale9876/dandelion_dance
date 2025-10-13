@@ -3,7 +3,6 @@ using Godot.Collections;
 using System;
 
 [Tool]
-[GlobalClass]
 public partial class StateMachine : LimboHsm
 {
     public const String TO_MOVE = "to_move";
@@ -12,13 +11,11 @@ public partial class StateMachine : LimboHsm
     public const String FALL_DOWN = "fall_down";
 
     public const String ALWAYS_IDLE = "always_idle";
-    public const String ALWAYS_MOVE = "always_move";
     public const String ALWAYS_SHIFT = "always_shif";
+
 
     [Export] public Dictionary<String, UnitState> states = new Dictionary<string, UnitState>();
     [Export] public UnitState start_state = null;
-
-    [ExportToolButton("Update")] private Callable update => Callable.From(_update);
 
     public override void _EnterTree()
     {
@@ -26,7 +23,9 @@ public partial class StateMachine : LimboHsm
 
         var unit = GetParentOrNull<Unit>();
         if (unit != null)
+        {
             unit.state_machine = this;
+        }
     }
 
     public override void _ExitTree()
@@ -35,10 +34,11 @@ public partial class StateMachine : LimboHsm
         
         var unit = GetParentOrNull<Unit>();
         if (unit != null)
+        {
             unit.state_machine = null;
+        }
         
         states.Clear();
-
     }
 
     public override void _Ready()
@@ -46,8 +46,7 @@ public partial class StateMachine : LimboHsm
         base._Ready();
 
         Unit parent = GetParentOrNull<Unit>();
-
-
+        
         if (!Engine.IsEditorHint())
         {
             if (parent == null)
@@ -56,8 +55,11 @@ public partial class StateMachine : LimboHsm
                 return;
             }
 
-            if (states.ContainsKey("IdleState"))
-                this.AddTransition(ANYSTATE, states["Idle"], TO_IDLE);
+            AddTransition(ANYSTATE, states["Idle"], ALWAYS_IDLE);
+            AddTransition(states["Idle"], states["Move"], TO_MOVE);
+            AddTransition(states["Move"], states["Idle"], TO_IDLE);
+            AddTransition(states["Move"], states["Jump"], JUMP_UP);
+            AddTransition(states["Jump"], states["Fall"], FALL_DOWN);
 
             InitialState = start_state;
             Initialize(parent);
@@ -65,14 +67,4 @@ public partial class StateMachine : LimboHsm
         }
     }
 
-    public void _update()
-    {
-        if (states.Count > 0) states.Clear();
-
-        foreach (Node node in GetChildren())
-        {
-            if (node is UnitState)
-                states.Add(node.Name, node as UnitState);
-        }
-    }
 }

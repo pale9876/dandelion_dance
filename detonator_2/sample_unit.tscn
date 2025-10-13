@@ -1,17 +1,14 @@
-[gd_scene load_steps=18 format=3 uid="uid://dhlgdxnmpa7mu"]
+[gd_scene load_steps=15 format=3 uid="uid://dhlgdxnmpa7mu"]
 
 [ext_resource type="Script" uid="uid://crysbkqye74hu" path="res://cs_classes/Unit.cs" id="1_8e872"]
 [ext_resource type="Script" uid="uid://nty86admf01v" path="res://cs_classes/UnitCollision.cs" id="2_an3if"]
 [ext_resource type="Script" uid="uid://c336ivba2s3gs" path="res://cs_classes/PsychoValuement.cs" id="2_eoxxv"]
 [ext_resource type="BehaviorTree" uid="uid://cyhr50o43d0mb" path="res://ai/UnitTask.tres" id="4_8d55t"]
 [ext_resource type="Script" uid="uid://d07huwljrfnwi" path="res://cs_classes/UnitBt.cs" id="5_msm5p"]
-[ext_resource type="Script" uid="uid://dofcd56w73xac" path="res://cs_scripts/state/IdleState.cs" id="5_r7en3"]
-[ext_resource type="Script" uid="uid://by1auuekdosw0" path="res://cs_scripts/state/MoveState.cs" id="6_msm5p"]
-[ext_resource type="Script" uid="uid://bt3sa3opfhuwg" path="res://cs_scripts/state/JumpState.cs" id="7_537fj"]
+[ext_resource type="PackedScene" uid="uid://cgwff6ga0rflw" path="res://default_state_machine.tscn" id="8_43cav"]
 [ext_resource type="Script" uid="uid://2wsc7pehfkxu" path="res://cs_classes/BodyPartComponent.cs" id="8_snrm1"]
 [ext_resource type="Shader" uid="uid://dvi4jhy1i1x0p" path="res://shaders/group_outline.gdshader" id="10_r7en3"]
 [ext_resource type="PackedScene" uid="uid://hvx6mwkcqf8r" path="res://default_pose_component.tscn" id="12_2iyrq"]
-[ext_resource type="Script" uid="uid://y4opgum0640y" path="res://cs_classes/StateMachine.cs" id="15_i42ni"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_43cav"]
 size = Vector2(16, 32)
@@ -22,13 +19,13 @@ size = Vector2(32, 32)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r7en3"]
 size = Vector2(48, 16)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2iyrq"]
-shader = ExtResource("10_r7en3")
-shader_parameter/line_colour = Color(0.99, 0.99, 0.99, 1)
-shader_parameter/line_thickness = 1.0
-shader_parameter/draw = true
-
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_i42ni"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_43cav"]
+shader = ExtResource("10_r7en3")
+shader_parameter/line_colour = Color(0, 0, 0, 1)
+shader_parameter/line_thickness = 1.0
+shader_parameter/draw = false
 
 [node name="Unit" type="CharacterBody2D" node_paths=PackedStringArray("collisions", "pose_component", "body_part_component", "psycho_valuement", "state_machine", "bt_player")]
 script = ExtResource("1_8e872")
@@ -71,41 +68,29 @@ metadata/_custom_type_script = "uid://nty86admf01v"
 [node name="PsychoValuement" type="Node" parent="."]
 script = ExtResource("2_eoxxv")
 
-[node name="PoseComponent" parent="." node_paths=PackedStringArray("poses") instance=ExtResource("12_2iyrq")]
-material = SubResource("ShaderMaterial_2iyrq")
-poses = {
-&"Crouch": NodePath("Crouch"),
-&"Idle": NodePath("Idle"),
-&"Jump": NodePath("Jump"),
-&"Move": NodePath("Move"),
-&"Shift": NodePath("Shift"),
-&"Slide": NodePath("Slide")
-}
-
 [node name="UnitBT" type="BTPlayer" parent="."]
 behavior_tree = ExtResource("4_8d55t")
 blackboard_plan = SubResource("BlackboardPlan_i42ni")
 script = ExtResource("5_msm5p")
 
-[node name="StateMachine" type="LimboHSM" parent="." node_paths=PackedStringArray("states")]
-script = ExtResource("15_i42ni")
+[node name="PoseComponent" parent="." node_paths=PackedStringArray("root", "poses") instance=ExtResource("12_2iyrq")]
+material = SubResource("ShaderMaterial_43cav")
+root = NodePath("..")
+poses = {
+"Crouch": NodePath("Crouch"),
+"Idle": NodePath("Idle"),
+"Jump": NodePath("Jump"),
+"Move": NodePath("Move"),
+"Shift": NodePath("Shift"),
+"Slide": NodePath("Slide")
+}
+
+[node name="StateMachine" parent="." node_paths=PackedStringArray("states") instance=ExtResource("8_43cav")]
 states = {
 "Idle": NodePath("Idle"),
 "Jump": NodePath("Jump"),
 "Move": NodePath("Move")
 }
-
-[node name="Idle" type="LimboState" parent="StateMachine"]
-script = ExtResource("5_r7en3")
-metadata/_custom_type_script = "uid://bv1nfq88fup3i"
-
-[node name="Move" type="LimboState" parent="StateMachine"]
-script = ExtResource("6_msm5p")
-metadata/_custom_type_script = "uid://bv1nfq88fup3i"
-
-[node name="Jump" type="LimboState" parent="StateMachine"]
-script = ExtResource("7_537fj")
-metadata/_custom_type_script = "uid://bv1nfq88fup3i"
 
 [node name="BodyPartComponent" type="Node2D" parent="."]
 script = ExtResource("8_snrm1")

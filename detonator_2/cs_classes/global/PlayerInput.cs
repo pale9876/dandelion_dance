@@ -100,11 +100,16 @@ public partial class PlayerInput : Node
                     if (selected.hand_enable)
                     {
                         in_control = selected;
+                        get_cam_status().change_current_camera_target(selected);
                     }
                     else
                     {
                         observe = selected;
                     }
+                }
+                else
+                {
+                    // TODO ??
                 }
             }
         }
@@ -163,9 +168,6 @@ public partial class PlayerInput : Node
         GD.Print($"SetControl => {unit}");
     }
 
-    public void setObserved(Unit unit)
-    {
-        _observe = unit;
-    }
-
+    public void setObserved(Unit unit) => _observe = unit;
+    private CameraStatus get_cam_status() => GetNode<CameraStatus>("/root/CameraStatus");
 }

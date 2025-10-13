@@ -31,8 +31,9 @@ debug_color = Color(0.554845, 0.243921, 0.247072, 0)
 script = ExtResource("3_l63ia")
 metadata/_custom_type_script = "uid://nty86admf01v"
 
-[node name="AutoSpriteComponent" type="Node2D" parent="." node_paths=PackedStringArray("auto_sprites", "index_list", "current_sprite")]
+[node name="AutoSpriteComponent" type="Node2D" parent="." node_paths=PackedStringArray("root_pose", "auto_sprites", "index_list", "current_sprite")]
 script = ExtResource("4_h15st")
+root_pose = NodePath("..")
 auto_sprites = {
 "Move": NodePath("Move")
 }
@@ -46,6 +47,7 @@ texture = ExtResource("5_p72l4")
 hframes = 8
 frame = 7
 script = ExtResource("6_rd88r")
+auto_start = true
 repeat = true
 trigger_lines = Dictionary[int, String]({
 2: "Step",

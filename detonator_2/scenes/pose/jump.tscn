@@ -19,13 +19,14 @@ auto_sprite_components = {
 hurtbox = NodePath("Hurtbox")
 metadata/_custom_type_script = "uid://qb3oudupp276"
 
-[node name="JumpSprites" type="Node2D" parent="." node_paths=PackedStringArray("auto_sprites", "index_list", "current_sprite")]
+[node name="JumpSprites" type="Node2D" parent="." node_paths=PackedStringArray("root_pose", "auto_sprites", "index_list", "current_sprite")]
 script = ExtResource("2_yel8k")
+root_pose = NodePath("..")
 auto_sprites = {
-"JumpDown": NodePath("JumpDown"),
+"FallDown": NodePath("FallDown"),
 "JumpUp": NodePath("JumpUp")
 }
-index_list = [NodePath("JumpUp"), NodePath("JumpDown")]
+index_list = [NodePath("JumpUp"), NodePath("FallDown")]
 current_sprite = NodePath("JumpUp")
 index = 0
 metadata/_custom_type_script = "uid://qsyfa6gtevhc"
@@ -36,15 +37,17 @@ texture = ExtResource("3_qy0qm")
 hframes = 2
 frame = 1
 script = ExtResource("3_frgo6")
+auto_start = true
 metadata/_custom_type_script = "uid://dduh83inwe77n"
 
-[node name="JumpDown" type="Sprite2D" parent="JumpSprites"]
+[node name="FallDown" type="Sprite2D" parent="JumpSprites"]
 visible = false
 position = Vector2(0, -24)
 texture = ExtResource("5_rf8oq")
 hframes = 4
 frame = 3
 script = ExtResource("3_frgo6")
+auto_start = true
 metadata/_custom_type_script = "uid://dduh83inwe77n"
 
 [node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("collisions")]

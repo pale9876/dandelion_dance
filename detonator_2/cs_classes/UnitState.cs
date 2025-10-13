@@ -3,10 +3,8 @@ using System;
 using System.Linq;
 
 [Tool]
-[GlobalClass]
 public partial class UnitState : LimboState
 {
-
     public bool cooldown { get => _cooltime > 0.0; }
     [Export] public float initial_cooltime = 0.0f;
     private float cooltime { get => _cooltime; set => setCoolTime(value); }
@@ -18,7 +16,16 @@ public partial class UnitState : LimboState
 
         StateMachine parent = GetParent<StateMachine>();
         if (parent != null)
-            if (!parent.states.ContainsKey(this.Name)) parent.states.Add(this.Name, this);
+        {
+            if (!parent.states.ContainsKey(this.Name))
+            {
+                parent.states.Add(this.Name, this);
+                if (parent.states.Count == 1)
+                {
+                    parent.start_state = this;
+                }
+            }
+        }
     }
 
     public override void _ExitTree()
@@ -28,10 +35,26 @@ public partial class UnitState : LimboState
         StateMachine parent = GetParent<StateMachine>();
         if (parent != null)
         {
-            if (parent.states.ContainsKey(this.Name)) parent.states.Remove(this.Name);
+            if (parent.states.ContainsKey(this.Name))
+            {
+                parent.states.Remove(this.Name);
+                if (parent.start_state == this)
+                {
+                    parent.start_state = null;
+                }
+            }
         }
     }
 
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+
+        if (_cooltime > 0.0)
+        {
+            _cooltime -= (float)delta;
+        }
+    }
 
     public override void _Enter()
     {
@@ -49,9 +72,15 @@ public partial class UnitState : LimboState
 
         if (Engine.IsEditorHint()) return;
 
-        if (_cooltime > 0.0)
+    }
+
+    public override void _Exit()
+    {
+        base._Exit();
+
+        if (initial_cooltime > 0.0f)
         {
-            _cooltime -= (float)delta;
+            cooltime = initial_cooltime;
         }
     }
 
@@ -59,4 +88,11 @@ public partial class UnitState : LimboState
     {
         _cooltime = (float)Mathf.Max(value, 0.0);
     }
+
+    public Vector2 get_direction() => (get_unit().get_p_input().in_control == get_unit()) ?
+        get_unit().get_p_input().get_current_direction() : get_state_machine().Blackboard.GetVar("PurposeDirection").As<Vector2>();
+
+    public Unit get_unit() => Agent as Unit;
+
+    public StateMachine get_state_machine() => GetRoot() as StateMachine;
 }

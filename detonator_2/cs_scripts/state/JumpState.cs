@@ -9,15 +9,12 @@ public partial class JumpState : UnitState
     {
         base._Enter();
 
-        (Agent as Unit).jump();
-
+        (Agent as Unit).pose_component.change_to("Jump");
     }
 
     public override void _Update(double delta)
     {
         base._Update(delta);
-
-        (Agent as Unit).move(delta);
     }
 
 }

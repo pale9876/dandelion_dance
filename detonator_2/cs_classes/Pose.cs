@@ -15,6 +15,7 @@ public partial class Pose : Node2D
     [Export] public Dictionary<String, GrabPoint> grab_points = new();
     [Export] public Hurtbox hurtbox = null;
     [Export] public UnitAnimation animation_player = null;
+    public PoseComponent _component = null;
 
     public override void _EnterTree()
     {
@@ -25,6 +26,7 @@ public partial class Pose : Node2D
         {
             Renamed += parent.child_renamed;
             parent.insert_pose(this);
+            _component = parent;
             Visible = (this != parent.current_pose) ? false : true;
         }
 
@@ -48,6 +50,7 @@ public partial class Pose : Node2D
         {
             Renamed -= parent.child_renamed;
             parent.delete_pose(this);
+            _component = null;
         }
 
         VisibilityChanged -= on_visibility_changed;
@@ -102,26 +105,31 @@ public partial class Pose : Node2D
 
     public void on_visibility_changed()
     {
-        foreach (Node node in GetChildren())
+        if (Visible)
         {
-            if (node is Node2D)
-            {
-                (node as Node2D).Visible = this.Visible;
-            }
-        }
-
-        if (animation_player != null)
-        {
-            if (Visible)
+            PoseComponent parent = GetParentOrNull<PoseComponent>();
+            
+            parent.change_pose(this);
+            if (animation_player != null)
             {
                 animation_player.Play("Default");
             }
-            else
+
+            foreach (Node node in GetChildren())
+            {
+                if (node is Node2D)
+                {
+                    (node as Node2D).Visible = this.Visible;
+                }
+            }
+        }
+        else
+        {
+            if (animation_player != null)
             {
                 animation_player.Play("RESET");
             }
         }
-
     }
 
     public void flip(bool toggle)
@@ -156,4 +164,6 @@ public partial class Pose : Node2D
 
     public int get_id() => id;
     public void set_id(int id) => this.id = id;
+
+    public Unit get_root() => (_component != null) ? _component.root : null;
 }

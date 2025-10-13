@@ -13,7 +13,7 @@ public partial class Unit : Entity
     private const float DEFAULT_GRAVITY = 970.0f;
     private const float MAX_GRAVITY = 3550.0f;
 
-    public enum AirState
+    public enum AerialState
     {
         NONE = 0,
         JUMPUP = 1, // 상승
@@ -45,24 +45,21 @@ public partial class Unit : Entity
     [Export] public PsychoValuement psycho_valuement;
     [Export] public StateMachine state_machine = null;
     [Export] public BTPlayer bt_player = null;
-    [Export] public TriggerMap trigger_map = null;
 
     [Export] public UnitInfo unit_info = null;
     [Export] public bool invincible = false;
     [Export] public bool throughable { get => _throughable; set => setThroughable(value); }
     private bool _throughable = false;
 
-    private AirState airstate = AirState.NONE;
+    public AerialState aerial_state = AerialState.NONE;
 
     private State state { get => _state; set => change_state(value); }
     private State _state = State.NORMAL;
     public Dictionary<String, Variant> abnormals = new();
 
-    private bool pre_velocity_init = false;
+    private bool pre_velocity_init { get => pre_velocity_inited(); }
     private Vector2 pre_velocity { get => _pre_velocity; set => setPreVelocity(value); }
     private Vector2 _pre_velocity = Vector2.Zero;
-
-    // [ExportToolButton("Update")] private Callable update => Callable.From(_update);
 
     public override void _EnterTree()
     {
@@ -115,26 +112,16 @@ public partial class Unit : Entity
 
         if (Engine.IsEditorHint()) return;
 
-        // Array<AutoSprite> current_sprites = pose_component.current_pose.get_current_sprites();
-
-        // foreach (AutoSprite sprite in current_sprites)
-        // {
-        //     var frame_coord_x = sprite.FrameCoords.X;
-        //     if (sprite.trigger_lines.ContainsKey(frame_coord_x))
-        //     {
-        //         trigger_map.activate_trigger(sprite.trigger_lines[frame_coord_x], this);
-        //     }
-        // }
-
         if (pre_velocity_init)
+        {
             Velocity = pre_velocity;
-
+        }
 
         if (!IsOnFloor())
         {
-            airstate = (airstate == AirState.NONE) ? AirState.JUMPUP : AirState.DEFER;
+            aerial_state = (aerial_state == AerialState.NONE) ? AerialState.JUMPUP : AerialState.DEFER;
 
-            if (!(airstate == AirState.AIRBORN))
+            if (!(aerial_state == AerialState.AIRBORN))
             {
                 Velocity = Velocity with
                 {
@@ -144,19 +131,18 @@ public partial class Unit : Entity
                         )
                 };
             }
-            airstate = (Velocity.Y > 0.0f) ? // Y축 운동량이 아래로
-                AirState.FALLDOWN : (Velocity.Y < 0.0f) ? // Y축 운동량이 위로
-                AirState.JUMPUP : AirState.DEFER;
+            aerial_state = (Velocity.Y > 0.0f) ? // Y축 운동량이 아래로
+                AerialState.FALLDOWN : (Velocity.Y < 0.0f) ? // Y축 운동량이 위로
+                AerialState.JUMPUP : AerialState.DEFER;
         }
         else if (IsOnFloor())
         {
-            airstate = AirState.NONE;
+            aerial_state = AerialState.NONE;
         }
 
         switch (state)
         {
             case State.NORMAL:
-                // mns_with_global();
                 MoveAndSlide();
                 break;
             case State.GRABBED:
@@ -180,7 +166,7 @@ public partial class Unit : Entity
         };
     }
 
-    public void idle(double delta)
+    public void apply_friction(double delta)
     {
         if (Velocity.X != 0.0)
         {
@@ -239,7 +225,6 @@ public partial class Unit : Entity
             switch (st)
             {
                 case State.GRABBED:
-
                     break;
                 case State.NORMAL:
                     break;
@@ -255,6 +240,7 @@ public partial class Unit : Entity
         abnormals.Add("grabbed_by", node);
     }
 
+    private bool pre_velocity_inited() => this._pre_velocity != Vector2.Zero;
 
     public void change_debug_color(Color color)
     {
@@ -267,14 +253,12 @@ public partial class Unit : Entity
     public void setPreVelocity(Vector2 value)
     {
         _pre_velocity = (pre_velocity_init) ? value : _pre_velocity + value;
-        pre_velocity_init = true;
     }
 
     public void setThroughable(bool toggle)
     {
         _throughable = toggle;
-        CollisionLayer = (uint)((toggle) ? 0 : 1);
-
+        // CollisionLayer = (uint)((toggle) ? 0 : 1);
     }
 
     public Vector2 init_velocity(bool keep, Vector2 value) => pre_velocity = (keep) ? Velocity + value : value;
@@ -282,6 +266,5 @@ public partial class Unit : Entity
     private Array<UnitCollision> get_collisions() => collisions.Values as Array<UnitCollision>;
 
     private float get_gravity(double delta) => Velocity.Y + ((float)delta * DEFAULT_GRAVITY);
-
 
 }

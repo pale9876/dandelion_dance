@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://cgwff6ga0rflw"]
+
+[ext_resource type="Script" uid="uid://y4opgum0640y" path="res://cs_classes/StateMachine.cs" id="1_kmmo8"]
+[ext_resource type="Script" uid="uid://dofcd56w73xac" path="res://cs_scripts/state/IdleState.cs" id="2_puth3"]
+[ext_resource type="Script" uid="uid://by1auuekdosw0" path="res://cs_scripts/state/MoveState.cs" id="3_dctph"]
+[ext_resource type="Script" uid="uid://bt3sa3opfhuwg" path="res://cs_scripts/state/JumpState.cs" id="4_xyy5p"]
+[ext_resource type="Script" uid="uid://dsw8wq8elxykh" path="res://FallState.cs" id="5_ljvem"]
+
+[sub_resource type="BlackboardPlan" id="BlackboardPlan_kmmo8"]
+var/PurposeDirection/name = &"PurposeDirection"
+var/PurposeDirection/type = 5
+var/PurposeDirection/value = Vector2(0, 0)
+var/PurposeDirection/hint = 0
+var/PurposeDirection/hint_string = "purpose_direction"
+
+[node name="StateMachine" type="LimboHSM" node_paths=PackedStringArray("states", "start_state")]
+blackboard_plan = SubResource("BlackboardPlan_kmmo8")
+script = ExtResource("1_kmmo8")
+states = {
+"Fall": NodePath("Fall"),
+"Idle": NodePath("Idle"),
+"Jump": NodePath("Jump"),
+"Move": NodePath("Move")
+}
+start_state = NodePath("Idle")
+
+[node name="Idle" type="LimboState" parent="."]
+script = ExtResource("2_puth3")
+metadata/_custom_type_script = "uid://bv1nfq88fup3i"
+
+[node name="Move" type="LimboState" parent="."]
+script = ExtResource("3_dctph")
+metadata/_custom_type_script = "uid://bv1nfq88fup3i"
+
+[node name="Jump" type="LimboState" parent="."]
+script = ExtResource("4_xyy5p")
+metadata/_custom_type_script = "uid://bv1nfq88fup3i"
+
+[node name="Fall" type="LimboState" parent="."]
+script = ExtResource("5_ljvem")
+metadata/_custom_type_script = "uid://bv1nfq88fup3i"

@@ -33,13 +33,20 @@ public partial class StageCamera : Camera2D
     public override void _EnterTree()
     {
         base._EnterTree();
-
-
+        if (!Engine.IsEditorHint())
+        {
+            get_status().insert_camera(this);
+        }
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _ExitTree()
     {
-        base._PhysicsProcess(delta);
+        base._ExitTree();
+        
+        if (!Engine.IsEditorHint())
+        {
+            // get_status().insert_camera(this);
+        }
 
     }
 
@@ -59,10 +66,9 @@ public partial class StageCamera : Camera2D
         {
             time -= delta;
         }
-
     }
 
-    public void _shake_start(double t)
+    private void _shake_start(double t)
     {
         _time = Mathf.Max(t, 0.0);
         old_pos = Position;

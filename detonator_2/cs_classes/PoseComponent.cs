@@ -75,17 +75,17 @@ public partial class PoseComponent : CanvasGroup
         base._Ready();
 
         Unit parent = GetParentOrNull<Unit>();
-        if (parent != null)
-            parent.pose_component = null;
 
         if (Engine.IsEditorHint())
         {
             if (index_list.Count > 0)
+            {
                 current_index = 0;
+            }
         }
         else
         {
-            current_index = init_pose.get_id();
+            change_pose(init_pose);
         }
     }
 
@@ -152,11 +152,13 @@ public partial class PoseComponent : CanvasGroup
     private void next_pose()
     {
         current_index += 1;
+        GD.Print($"{this.Name} :: current_index => {current_index}");
     }
 
     private void prev_pose()
     {
         current_index -= 1;
+        GD.Print($"{this.Name} :: current_index => {current_index}");
     }
 
     private void change_index(int idx)
@@ -176,7 +178,9 @@ public partial class PoseComponent : CanvasGroup
         _current_pose = pose;
 
         foreach (Pose p in index_list)
+        {
             p.Visible = (p == pose) ? true : false;
+        }
 
         if (Engine.IsEditorHint()) return;
 
@@ -191,9 +195,23 @@ public partial class PoseComponent : CanvasGroup
             old_pose._pose_exited();
         }
     }
+
+    public bool change_to(String pose_name)
+    {
+        if (poses.ContainsKey(pose_name))
+        {
+            change_pose(poses[pose_name]);
+            return true;
+        }
+        
+        return false;
+
+    }
+
     public void insert_pose(Pose pose)
     {
         if (!poses.ContainsKey(pose.Name)) poses.Add(pose.Name, pose);
+        if (!index_list.Contains(pose)) index_list.Add(pose);
         id += 1;
         pose.set_id(id);
     }
@@ -201,6 +219,7 @@ public partial class PoseComponent : CanvasGroup
     public void delete_pose(Pose pose)
     {
         if (poses.ContainsKey(pose.Name)) poses.Remove(pose.Name);
+        if (index_list.Contains(pose)) index_list.Remove(pose);
     }
 
     public Array<Pose> get_poses() => poses.Values as Array<Pose>;
@@ -222,6 +241,5 @@ public partial class PoseComponent : CanvasGroup
             trigger_map_changed_event_handler();
         }
     }
-
 
 }

@@ -51,6 +51,7 @@ idx_dict = {
 
 [node name="Unit" parent="UnitLayer" node_paths=PackedStringArray("collisions") instance=ExtResource("4_7ycvg")]
 position = Vector2(80, 224)
+hand_enable = true
 collisions = {
 "Crouch": NodePath("Crouch"),
 "Idle": NodePath("Idle"),

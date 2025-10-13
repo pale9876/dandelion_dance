@@ -141,6 +141,7 @@ public partial class AutoSpriteComponent : Node2D
         if (auto_sprites.ContainsKey(sprite_name))
         {
             AutoSprite next_sprite = auto_sprites[sprite_name];
+            if (current_sprite == next_sprite) { return false; }
             current_sprite = next_sprite;
             return true;
         }
