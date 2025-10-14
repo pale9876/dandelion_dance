@@ -1,13 +1,12 @@
 [gd_scene load_steps=18 format=3 uid="uid://cv1kxqd5krltm"]
 
-[ext_resource type="Texture2D" uid="uid://bvxqtftn2q540" path="res://assets/aseprite/HPProgressOver.png" id="1_2ohdj"]
+[ext_resource type="Texture2D" uid="uid://m7unke8gdn5c" path="res://assets/aseprite/hud/HPProgressOver.png" id="1_2ohdj"]
 [ext_resource type="Script" uid="uid://5pgswi3ilufv" path="res://cs_scripts/unique/PlayerProfile.cs" id="1_3c0ln"]
 [ext_resource type="Shader" uid="uid://rurk7ukp5ar7" path="res://shaders/progress_shader.gdshader" id="1_yonyf"]
-[ext_resource type="Texture2D" uid="uid://qgc3b3xb11e1" path="res://assets/aseprite/HPProgressValue.png" id="2_yonyf"]
+[ext_resource type="Texture2D" uid="uid://b362k77gtm7f4" path="res://assets/aseprite/hud/HPProgressValue.png" id="2_yonyf"]
 [ext_resource type="Script" uid="uid://s7fklj7c0vnh" path="res://cs_classes/ExtraProgressUI.cs" id="3_nx0ra"]
-[ext_resource type="Texture2D" uid="uid://dlsorhk6e3er" path="res://assets/aseprite/ProfileOveray.png" id="4_gojvy"]
-[ext_resource type="Texture2D" uid="uid://d0q4053yn4l7v" path="res://assets/aseprite/ProfileUIUnder.png" id="5_6sy25"]
-
+[ext_resource type="Texture2D" uid="uid://cr6wuimarjfrp" path="res://assets/aseprite/hud/ProfileOveray.png" id="4_gojvy"]
+[ext_resource type="Texture2D" uid="uid://b7ngaqytdrib4" path="res://assets/aseprite/hud/ProfileUIUnder.png" id="5_6sy25"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6sy25"]
 shader = ExtResource("1_yonyf")
@@ -23,7 +22,6 @@ shader_parameter/stepIntensify = 5
 shader_parameter/time_scale = 1.0
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xhu0u"]
-load_path = "res://.godot/imported/HPProgressValue.png-859cc9449bfb71f3d59bf952ce73ce10.ctex"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gojvy"]
 shader = ExtResource("1_yonyf")
