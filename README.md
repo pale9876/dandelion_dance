@@ -7,6 +7,7 @@
 # Project Dandelion Dance
 리드미를 수정 중에 있으니, 먼저 열람하시고 싶으신 분들은 Obsidian을 이용하여 PROJECT_DANDELION_DANCE를 열람해주세요.
 
-## 프로젝트 목표
-Pose와 PoseComponent를 이용한 캐릭터 동작 정의
-Limbo AI를 활용하여 AI Task및 
+## 우선 목표
+Pose와 PoseComponent를 이용한 캐릭터 기본 동작들 정의
+Limbo AI를 활용하여 AI Task 및 NPC 기본동작 구축
+
