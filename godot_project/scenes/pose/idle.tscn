@@ -43,13 +43,13 @@ auto_sprites = {
 }
 index_list = [NodePath("Idle")]
 current_sprite = NodePath("Idle")
-index = 0
 metadata/_custom_type_script = "uid://qsyfa6gtevhc"
 
 [node name="Idle" type="Sprite2D" parent="IdleAnimation"]
 position = Vector2(0, -16)
 texture = ExtResource("5_v51wd")
 hframes = 10
+frame = 7
 script = ExtResource("6_d1bhf")
 auto_start = true
 playing = true
