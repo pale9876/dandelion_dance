@@ -4,17 +4,16 @@ using System;
 
 public partial class Executioner : Node
 {
-    private long index = -1;
-    [Export] private Dictionary<long, HitEvent> events = new Dictionary<long, HitEvent>();
+    private Array<HitEvent> events = new Array<HitEvent>();
 
     public override void _PhysicsProcess(double _delta)
     {
         base._PhysicsProcess(_delta);
 
-        foreach (HitEvent ev in events.Values)
+        foreach (HitEvent ev in events)
+        {
             hit_event_handler(ev);
-
-        index = -1;
+        }
     }
 
     private HitEvent create_event(HitEvent.EventType type, long from, long to, Dictionary values = null)
@@ -24,9 +23,8 @@ public partial class Executioner : Node
 
     public void add_event(HitEvent.EventType type, long from, long to, Dictionary values = null)
     {
-        index += 1;
         var ev = create_event(type, from, to, values);
-        events.Add(index, ev);
+        events.Add(ev);
     }
 
     public void hit_event_handler(HitEvent ev)

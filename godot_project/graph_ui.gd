@@ -1,11 +1,15 @@
 extends Control
 
+@onready var graph_edit: GraphEdit = $VBoxContainer/GraphEdit
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	graph_edit.gui_input.connect(_on_panel_gui_input)
 
+func _on_panel_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			mouse_right_clicked_event_handler()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+func mouse_right_clicked_event_handler() -> void:
+	var c = Control.new()
+	graph_edit.add_child(c)

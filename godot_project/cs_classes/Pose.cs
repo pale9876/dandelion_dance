@@ -85,10 +85,7 @@ public partial class Pose : Node2D
         }
     }
 
-    public virtual void on_animation_finished(StringName anim_name)
-    {
-
-    }
+    public virtual void on_animation_finished(StringName anim_name) {}
 
     public virtual void on_reached_trigger_line(String trigger_name)
     {

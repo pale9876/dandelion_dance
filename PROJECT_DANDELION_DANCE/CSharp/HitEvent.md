@@ -3,7 +3,6 @@
 
 HitBox객체가 HurtBox를 감지할 때 생성하는 이벤트입니다.
 
-
 ``` C#
 using Godot;
 using Godot.Collections;
