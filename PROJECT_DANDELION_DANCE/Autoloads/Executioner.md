@@ -1,4 +1,4 @@
-
+##### Extends Node
 ---
 
 ##### Hitbox에서 발생된 HitEvent들을 처리하는 객체입니다.

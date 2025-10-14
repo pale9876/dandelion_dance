@@ -1,0 +1,21 @@
+{
+	"nodes":[
+		{"id":"19c4097f2d7d3f7a","x":40,"y":-200,"width":250,"height":60,"type":"text","text":"Executioner"},
+		{"id":"cfdc597801255c8a","x":-20,"y":-45,"width":250,"height":60,"type":"text","text":"Hitbox"},
+		{"id":"208ba6f797d46ff0","x":-420,"y":-200,"width":250,"height":60,"type":"text","text":"ESystem"},
+		{"id":"e77ef3b0bd78b828","x":-420,"y":-45,"width":250,"height":60,"type":"text","text":"Entity"},
+		{"id":"f536ce30101af853","x":-507,"y":122,"width":250,"height":60,"type":"text","text":"GlobalAnimation"},
+		{"id":"9b3b7dfb4c00de6c","x":-212,"y":124,"width":250,"height":60,"type":"text","text":"CameraStatus"},
+		{"id":"da642884d5ed2908","x":-507,"y":220,"width":250,"height":60,"type":"text","text":"BulletTimeManager"},
+		{"id":"7895958a31ee3194","x":-212,"y":250,"width":250,"height":60,"type":"text","text":"StageCamera"},
+		{"id":"236f4b48869b7886","x":180,"y":62,"width":250,"height":60,"type":"text","text":"Hurtbox"}
+	],
+	"edges":[
+		{"id":"fa0461fd098cb195","fromNode":"e77ef3b0bd78b828","fromSide":"top","toNode":"208ba6f797d46ff0","toSide":"bottom"},
+		{"id":"3b845e0ab14c4b65","fromNode":"19c4097f2d7d3f7a","fromSide":"left","toNode":"208ba6f797d46ff0","toSide":"right","label":"Send HitEvent"},
+		{"id":"90dfbca19bd05bc6","fromNode":"208ba6f797d46ff0","fromSide":"right","toNode":"e77ef3b0bd78b828","toSide":"right"},
+		{"id":"76eaa71e75025f6f","fromNode":"cfdc597801255c8a","fromSide":"top","toNode":"19c4097f2d7d3f7a","toSide":"bottom","label":"피격 판정 전송"},
+		{"id":"43052c70a02d1a88","fromNode":"7895958a31ee3194","fromSide":"top","toNode":"9b3b7dfb4c00de6c","toSide":"bottom"},
+		{"id":"084d38fb62c733e6","fromNode":"236f4b48869b7886","fromSide":"left","toNode":"cfdc597801255c8a","toSide":"bottom","label":"Intersect"}
+	]
+}

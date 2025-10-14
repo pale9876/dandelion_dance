@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3ohka8uqyf7u"]
+
+[ext_resource type="Script" uid="uid://c6qe088acx4oa" path="res://test_hsm.gd" id="1_ieckp"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_ieckp")
+
+[node name="LimboHSM" type="LimboHSM" parent="."]
+
+[node name="LimboState" type="LimboState" parent="LimboHSM"]
+
+[node name="Node" type="Node" parent="."]
+
+[node name="LimboState" type="LimboState" parent="Node"]

@@ -1,10 +1,13 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Threading;
 
 public partial class Executioner : Node
 {
     private Array<HitEvent> events = new Array<HitEvent>();
+
+    uint count = 0;
 
     public override void _PhysicsProcess(double _delta)
     {
@@ -13,7 +16,14 @@ public partial class Executioner : Node
         foreach (HitEvent ev in events)
         {
             hit_event_handler(ev);
+            count += 1;
         }
+
+        if (count > 10000)
+        {
+            Callable.From(exec_collect).CallDeferred();
+        }
+
     }
 
     private HitEvent create_event(HitEvent.EventType type, long from, long to, Dictionary values = null)
@@ -47,7 +57,12 @@ public partial class Executioner : Node
 
     private void hit(long from, long to, Dictionary values)
     {
-        
+
+    }
+
+    private void exec_collect()
+    {
+        GC.Collect(0, GCCollectionMode.Optimized);
     }
 
 }
