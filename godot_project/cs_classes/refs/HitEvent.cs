@@ -12,10 +12,11 @@ public partial class HitEvent : RefCounted
     {
         NONE = -1,
         HIT = 0,
-        SHIELD = 1,
-        PARRY = 2,
-        EVADE = 3,
-        GRABBED = 4,
+        COUNTER = 1,
+        SHIELD = 2,
+        PARRY = 3,
+        EVADE = 4,
+        GRABBED = 5,
     }
 
     public EventType event_type = EventType.NONE;
