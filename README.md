@@ -5,7 +5,7 @@
 따라서 잔혹한 표현에 대해 거부감을 느끼시는 분은 열람을 삼가해주세요.**
 
 # Project Dandelion Dance
-리드미를 수정 중에 있으니, 먼저 열람하시고 싶으신 분들은 Obsidian을 이용하여 PROJECT_DANDELION_DANCE를 열람해주세요.
+리드미를 수정 중에 있으니, 프로젝트 설명에 대하여 열람하고 싶으신 분들은 Obsidian을 이용하여 PROJECT_DANDELION_DANCE를 열람해주세요.
 
 ## 우선 목표
 Pose와 PoseComponent를 이용한 캐릭터 기본 동작들 정의
