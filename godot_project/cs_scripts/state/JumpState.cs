@@ -15,6 +15,12 @@ public partial class JumpState : UnitState
     public override void _Update(double delta)
     {
         base._Update(delta);
+
+        if (get_unit().Velocity.Y > 0.0)
+        {
+            get_state_machine().Dispatch(StateMachine.FALL_DOWN);
+        }
+
     }
 
 }

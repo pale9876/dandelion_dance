@@ -30,7 +30,6 @@ public partial class UnitAnimation : AnimationPlayer
 			default_library.AddAnimation("Default", default_anim);
 			AddAnimationLibrary("", default_library);
         }
-
 	}
 
 	public override void _ExitTree()
@@ -43,7 +42,6 @@ public partial class UnitAnimation : AnimationPlayer
 			AnimationFinished -= pose.on_animation_finished;
 		}
 
+		RemoveAnimationLibrary("");
 	}
-
-
 }
