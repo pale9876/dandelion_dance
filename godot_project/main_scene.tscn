@@ -30,6 +30,7 @@ shader_parameter/SCALE_SPEED = 1.5
 script = ExtResource("1_wr18j")
 
 [node name="StageCamera" type="Camera2D" parent="."]
+offset = Vector2(0, -200)
 script = ExtResource("2_nfk4m")
 metadata/_custom_type_script = "uid://dy5hus27swp2n"
 
@@ -49,7 +50,7 @@ idx_dict = {
 
 [node name="UnitLayer" type="Node2D" parent="."]
 
-[node name="Unit" parent="UnitLayer" node_paths=PackedStringArray("collisions") instance=ExtResource("4_7ycvg")]
+[node name="Unit" parent="UnitLayer" node_paths=PackedStringArray("collisions", "pose_component", "body_part_component", "psycho_valuement", "state_machine", "bt_player") instance=ExtResource("4_7ycvg")]
 position = Vector2(80, 224)
 hand_enable = true
 collisions = {
@@ -57,12 +58,17 @@ collisions = {
 "Idle": NodePath("Idle"),
 "Slide": NodePath("Slide")
 }
+pose_component = NodePath("PoseComponent")
+body_part_component = NodePath("BodyPartComponent")
+psycho_valuement = NodePath("PsychoValuement")
+state_machine = NodePath("StateMachine")
+bt_player = NodePath("UnitBT")
 
 [node name="ForeGroundEffectLayer" type="Node2D" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="FilterController" type="Control" parent="CanvasLayer"]
+[node name="FilterController" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("filters")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,6 +77,9 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("6_7ycvg")
+filters = {
+"MotionBlur": NodePath("MotionBlur")
+}
 
 [node name="MotionBlur" type="ScreenShutter" parent="CanvasLayer/FilterController"]
 visible = false

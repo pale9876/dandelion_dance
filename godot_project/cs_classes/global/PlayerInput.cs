@@ -12,7 +12,8 @@ public partial class PlayerInput : Node
         EDIT,
     }
 
-    const float MARGIN_TIME = 0.35f;
+    private const float MARGIN_TIME = 0.35f;
+    private readonly MouseButton[] WHEEL_BTNS = [MouseButton.WheelDown, MouseButton.WheelUp];
 
     public Dictionary<int, Entity> index = new();
     private State state = State.NONE;
@@ -43,54 +44,29 @@ public partial class PlayerInput : Node
         if (@event is InputEventKey)
         {
             InputEventKey key_ev = (@event as InputEventKey);
-            if (key_ev.IsEcho())
-            {
-                if (key_ev.IsPressed())
-                {
-                    String key_text = key_ev.AsText();
-                    String[] arr = ["1", "2", "3", "4", "5", "6"];
-
-                    if (arr.Contains(key_text))
-                    {
-                        int key_int = key_text.ToInt();
-                        if (state == State.INDEX)
-                        {
-                            index_handler(key_int);
-                        }
-                        else if (state == State.EDIT)
-                        {
-                            edit_handler(key_int);
-                        }
-                    }
-
-                    if (key_ev.IsActionPressed("LControl"))
-                    {
-                        state = State.INDEX;
-                    }
-                    else if (key_ev.IsActionPressed("LAlt"))
-                    {
-                        state = State.EDIT;
-                    }
-                    else if (key_ev.IsActionPressed("LShift"))
-                    {
-                        shift = true;
-                    }
-
-                }
-                else if (key_ev.IsReleased())
-                {
-                    if (key_ev.IsActionReleased("LControl") || key_ev.IsActionReleased("LAlt"))
-                    {
-                        state = State.NONE;
-                    }
-                    else if (key_ev.IsActionReleased("LShift"))
-                    {
-                        shift = false;
-                    }
-                }
-            }
+            key_input_event_handler(key_ev);
         }
         else if (@event is InputEventMouseButton)
+        {
+            var mouse_ev = @event as InputEventMouseButton;
+            if (WHEEL_BTNS.Contains(mouse_ev.ButtonIndex))
+            {
+                mouse_scroll_event_handler(mouse_ev);
+            }
+            else
+            {
+                mouse_button_event_handler(@event as InputEventMouseButton);
+            }
+        }
+        else if (@event is InputEventMouseMotion)
+        {
+            mouse_drag_event_handler(@event as InputEventMouseMotion);
+        }
+    }
+
+    public void mouse_button_event_handler(InputEventMouseButton ev)
+    {
+        if (ev.ButtonIndex == MouseButton.Left)
         {
             if (mouse_pointing.Count > 0)
             {
@@ -110,6 +86,86 @@ public partial class PlayerInput : Node
                 else
                 {
                     // TODO ??
+                }
+            }
+        }
+    }
+
+    public void mouse_scroll_event_handler(InputEventMouseButton ev) // Camera Zooming
+    {
+        CameraStatus camera_status = get_cam_status();
+
+        if (camera_status.current_camera != null && camera_status.pos_mode == CameraStatus.PosMode.FREECAM)
+        {
+            Vector2 currnet_zoom = camera_status.current_camera.Zoom;
+            camera_status.current_camera.Zoom = currnet_zoom with
+            {
+                X = (ev.ButtonIndex == MouseButton.WheelDown) ?
+                    (float)Mathf.Clamp(currnet_zoom.X - 0.1, 0.01, 5.0) : (float)Mathf.Clamp(currnet_zoom.X + 0.1, 0.1, 5.0),
+                Y = (ev.ButtonIndex == MouseButton.WheelDown) ?
+                    (float)Mathf.Clamp(currnet_zoom.Y - 0.1, 0.01, 5.0) : (float)Mathf.Clamp(currnet_zoom.Y + 0.1, 0.1, 5.0)
+            };
+        }
+    }
+
+    public void mouse_drag_event_handler(InputEventMouseMotion ev)
+    {
+        if (ev.ButtonMask == MouseButtonMask.Left)
+        {
+            var camera_status = get_cam_status();
+
+            if (camera_status.current_camera != null && camera_status.pos_mode == CameraStatus.PosMode.FREECAM)
+            {
+                camera_status.current_camera.GlobalPosition -= ev.ScreenRelative;
+            }
+        }
+    }
+
+    public void key_input_event_handler(InputEventKey ev)
+    {
+        if (ev.IsEcho())
+        {
+            if (ev.IsPressed())
+            {
+                String key_text = ev.AsText();
+                String[] arr = ["1", "2", "3", "4", "5", "6"];
+
+                if (arr.Contains(key_text))
+                {
+                    int key_int = key_text.ToInt();
+                    if (state == State.INDEX)
+                    {
+                        index_handler(key_int);
+                    }
+                    else if (state == State.EDIT)
+                    {
+                        edit_handler(key_int);
+                    }
+                }
+
+                if (ev.IsActionPressed("LControl"))
+                {
+                    state = State.INDEX;
+                }
+                else if (ev.IsActionPressed("LAlt"))
+                {
+                    state = State.EDIT;
+                }
+                else if (ev.IsActionPressed("LShift"))
+                {
+                    shift = true;
+                }
+
+            }
+            else if (ev.IsReleased())
+            {
+                if (ev.IsActionReleased("LControl") || ev.IsActionReleased("LAlt"))
+                {
+                    state = State.NONE;
+                }
+                else if (ev.IsActionReleased("LShift"))
+                {
+                    shift = false;
                 }
             }
         }

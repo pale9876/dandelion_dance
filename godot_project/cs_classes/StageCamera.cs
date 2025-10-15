@@ -75,5 +75,5 @@ public partial class StageCamera : Camera2D
     }
 
     public CameraStatus get_status() => GetNode<CameraStatus>("/root/CameraStatus");
-
+    
 }
