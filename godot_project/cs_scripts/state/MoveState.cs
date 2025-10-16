@@ -4,7 +4,6 @@ using System;
 [Tool]
 public partial class MoveState : UnitState
 {
-
     public override void _Enter()
     {
         base._Enter();
@@ -16,9 +15,24 @@ public partial class MoveState : UnitState
     {
         base._Update(delta);
 
-        if (get_direction().X == 0.0f)
+        var dir = get_direction();
+        var sm = get_state_machine();
+
+        if (dir.X == 0.0f)
         {
-            (GetRoot() as StateMachine).Dispatch(StateMachine.TO_IDLE);
+            sm.ChangeActiveState(sm.states["Idle"]);
+        }
+        else
+        {
+            if (dir.Y < 0.0f)
+            {
+                get_unit().pose_component.change_to("Jump");
+            }
+            
+            if (get_unit().aerial_state == Unit.AerialState.JUMPUP)
+            {
+                sm.ChangeActiveState(sm.states["Jump"]);
+            }
         }
     }
 }

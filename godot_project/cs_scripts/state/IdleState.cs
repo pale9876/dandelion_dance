@@ -9,17 +9,31 @@ public partial class IdleState : UnitState
     {
         base._Enter();
 
-        (Agent as Unit).pose_component.change_to("Idle");
+        get_unit().pose_component.change_to("Idle");
     }
 
     public override void _Update(double delta)
     {
         base._Update(delta);
 
-        if (get_direction().X != 0.0f)
+        var dir = get_direction();
+        var sm = get_state_machine();
+
+        if (dir.X != 0.0f)
         {
-            GetRoot().Dispatch(StateMachine.TO_MOVE);
+            sm.ChangeActiveState(sm.states["Move"]);
+        }
+        else
+        {
+            if (dir.Y < 0.0f)
+            {
+                get_unit().pose_component.change_to("Jump");
+            }
+            
+            if (get_unit().aerial_state == Unit.AerialState.JUMPUP)
+            {
+                sm.ChangeActiveState(sm.states["Jump"]);
+            }
         }
     }
-
 }

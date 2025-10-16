@@ -20,14 +20,11 @@ public partial class Hurtbox : Area2D
     [Export] private Color debug_colour { get => _debug_color; set => set_debug_color(value); }
     private Color _debug_color = new Color();
 
-    public State state = State.NORMAL;
-
-    // [ExportToolButton("Update")] private Callable update => Callable.From(_update);
+    [Export] public State state = State.NORMAL;
 
     public override void _EnterTree()
     {
         base._EnterTree();
-        // _update();
 
         Pose parent = GetParentOrNull<Pose>();
         if (parent != null)

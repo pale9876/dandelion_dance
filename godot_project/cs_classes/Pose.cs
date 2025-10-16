@@ -15,6 +15,7 @@ public partial class Pose : Node2D
     [Export] public Dictionary<String, GrabPoint> grab_points = new();
     [Export] public Hurtbox hurtbox = null;
     [Export] public UnitAnimation animation_player = null;
+    [Export] public UnitSoundEffect unit_sound_effect = null;
     public PoseComponent _component = null;
 
     public override void _EnterTree()

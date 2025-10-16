@@ -1,14 +1,18 @@
 using Godot;
 using System;
-using System.Linq;
 
 [Tool]
 public partial class UnitState : LimboState
 {
+
+    public const String PURPOSE_DIR_VAR = "PurposeDirection";
+
     public bool cooldown { get => _cooltime > 0.0; }
     [Export] public float initial_cooltime = 0.0f;
     private float cooltime { get => _cooltime; set => setCoolTime(value); }
     private float _cooltime = 0.0f;
+
+    public bool abort = false;
 
     public override void _EnterTree()
     {
@@ -77,6 +81,8 @@ public partial class UnitState : LimboState
     public override void _Exit()
     {
         base._Exit();
+
+        if (Engine.IsEditorHint()) return;
 
         if (initial_cooltime > 0.0f)
         {

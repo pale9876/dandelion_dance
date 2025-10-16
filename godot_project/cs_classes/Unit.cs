@@ -8,7 +8,7 @@ public partial class Unit : Entity
 {
     public const float DEFAULT_FRICTION = 2250.0f;
     public const float DEFAULT_ACCELERATION = 3350.0f;
-    public const float DEFAULT_JUMP_FORCE = -620.0f;
+    public const float DEFAULT_JUMP_FORCE = 330.0f;
 
     private const float DEFAULT_GRAVITY = 970.0f;
     private const float MAX_GRAVITY = 3550.0f;
@@ -51,7 +51,9 @@ public partial class Unit : Entity
     [Export] public bool throughable { get => _throughable; set => setThroughable(value); }
     private bool _throughable = false;
 
-    public AerialState aerial_state = AerialState.NONE;
+
+    public AerialState aerial_state { get => _aerial_state; set=>aerial_state_changed(value); }
+    private AerialState _aerial_state = AerialState.NONE;
 
     private State state { get => _state; set => change_state(value); }
     private State _state = State.NORMAL;
@@ -92,20 +94,6 @@ public partial class Unit : Entity
         }
     }
 
-    public override void _Ready()
-    {
-        base._Ready();
-        // _update();
-    }
-
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-
-        if (Engine.IsEditorHint()) return;
-
-    }
-
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
@@ -115,29 +103,34 @@ public partial class Unit : Entity
         if (pre_velocity_init)
         {
             Velocity = pre_velocity;
+            pre_velocity = Vector2.Zero;
         }
 
         if (!IsOnFloor())
         {
-            aerial_state = (aerial_state == AerialState.NONE) ? AerialState.JUMPUP : AerialState.DEFER;
+            aerial_state = (Velocity.Y > 0.0 && aerial_state != AerialState.AIRBORN) ?
+                AerialState.FALLDOWN : AerialState.JUMPUP;
 
-            if (!(aerial_state == AerialState.AIRBORN))
+            if (aerial_state != AerialState.AIRBORN)
             {
                 Velocity = Velocity with
                 {
-                    X = Velocity.X,
-                    Y = Mathf.Min(
-                            get_gravity(delta), MAX_GRAVITY
-                        )
+                    Y = (float) (Velocity.Y + (DEFAULT_GRAVITY * delta))
                 };
             }
-            aerial_state = (Velocity.Y > 0.0f) ? // Y축 운동량이 아래로
-                AerialState.FALLDOWN : (Velocity.Y < 0.0f) ? // Y축 운동량이 위로
-                AerialState.JUMPUP : AerialState.DEFER;
         }
-        else if (IsOnFloor())
+        else if (IsOnFloor())// IsOnFloor()
         {
+            // aerial_state = (Velocity.Y > 0.0f) ? // Y축 운동량이 아래로
+            //     AerialState.FALLDOWN : (Velocity.Y < 0.0f) ? // Y축 운동량이 위로
+            //     AerialState.JUMPUP : AerialState.DEFER;
             aerial_state = AerialState.NONE;
+
+            Velocity = Velocity with
+            {
+                X = Velocity.X,
+                Y = (Velocity.Y > 0.0) ? 0.0f : Velocity.Y
+            };
         }
 
         switch (state)
@@ -151,7 +144,6 @@ public partial class Unit : Entity
         }
 
         _update_info();
-
     }
 
     public void move(double delta)
@@ -160,7 +152,7 @@ public partial class Unit : Entity
         {
             X = (float)Mathf.MoveToward(
                 Velocity.X,
-                (unit_info != null) ? unit_info.speed : 300.0 * get_p_input().get_current_direction().X,
+                (unit_info != null) ? unit_info.speed * get_p_input().get_current_direction().X : 300.0 * get_p_input().get_current_direction().X,
                 delta * DEFAULT_ACCELERATION
             )
         };
@@ -183,7 +175,15 @@ public partial class Unit : Entity
 
     public void jump()
     {
-        init_velocity(false, Velocity with { X = Velocity.X, Y = -DEFAULT_JUMP_FORCE });
+        init_velocity(false, Velocity with {Y = - DEFAULT_JUMP_FORCE });
+    }
+
+    public void aerial_state_changed(AerialState state)
+    {
+        var pre_state = _aerial_state;
+        _aerial_state = state;
+        if (pre_state == _aerial_state) return;
+        GD.Print($"{this.Name} aerial_state_changed: {pre_state} => {state}");
     }
 
     public virtual void grabbed_event_handler()
@@ -258,7 +258,6 @@ public partial class Unit : Entity
     public void setThroughable(bool toggle)
     {
         _throughable = toggle;
-        // CollisionLayer = (uint)((toggle) ? 0 : 1);
     }
 
     public Vector2 init_velocity(bool keep, Vector2 value) => pre_velocity = (keep) ? Velocity + value : value;

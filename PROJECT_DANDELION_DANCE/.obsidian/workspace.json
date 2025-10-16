@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "1.Introduce/2. Demo Concept.md",
+                "file": "1.Introduce/1. About Project.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2. Demo Concept"
+              "title": "1. About Project"
             }
           }
         ]
@@ -171,24 +171,25 @@
   },
   "active": "d573f26bd4409558",
   "lastOpenFiles": [
+    "1.Introduce/3. Contact.md",
+    "1.Introduce/2. Demo Concept.md",
+    "Autoloads/2. Structure.canvas",
+    "CSharp/Unit.md",
+    "1.Introduce/1. About Project.md",
+    "2.Get Started/1. Setup.md",
+    "2.Get Started/2. Tutorial.md",
     "GameConcept.png",
     "singleton.webp",
     "182333c08ae33ff71ac55164c6ecc127e46439f1c5b5b64ac5d7fb5cb0badc2e_product_card_v2_mobile_slider_639.jpg",
     "58c66a0b1cd81-800x450.jpg",
     "화면 캡처 2025-10-14 160037.png",
-    "1.Introduce/2. Demo Concept.md",
-    "1.Introduce/1. About Project.md",
     "Rust/1. Introduce/2. Avoidance Module.md",
-    "2.Get Started/2. Tutorial.md",
     "Autoloads/1. About Autoload.md",
-    "Autoloads/2. Structure.canvas",
-    "2.Get Started/1. Setup.md",
     "CSharp/AutoSprite.md",
     "Autoloads/Executioner.md",
     "CSharp/1. Introduce/2. 컴포넌트와 자식 노드의 차이.md",
     "Rust/1. Introduce/1. Why I Used 'Rust'.md",
     "CSharp/Pose.md",
-    "CSharp/Unit.md",
     "Rust/ScreenShutter.md",
     "Autoloads/ESystem.md",
     "Autoloads/CSTransceiver.md",

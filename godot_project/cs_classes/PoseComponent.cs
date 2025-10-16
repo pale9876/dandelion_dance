@@ -175,6 +175,8 @@ public partial class PoseComponent : CanvasGroup
     {
         Pose old_pose = (_current_pose == null) ? null : _current_pose;
 
+        if (pose == current_pose) return;
+        
         _current_pose = pose;
 
         foreach (Pose p in index_list)

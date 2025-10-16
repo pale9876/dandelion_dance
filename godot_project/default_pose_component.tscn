@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://hvx6mwkcqf8r"]
+[gd_scene load_steps=13 format=3 uid="uid://hvx6mwkcqf8r"]
 
 [ext_resource type="Shader" uid="uid://dvi4jhy1i1x0p" path="res://shaders/group_outline.gdshader" id="1_5yelk"]
 [ext_resource type="Script" uid="uid://dyftpff5gcnl6" path="res://cs_classes/PoseComponent.cs" id="2_km7tr"]
@@ -10,10 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://udtfxwd6u15x" path="res://scenes/pose/shift.tscn" id="6_rprud"]
 [ext_resource type="PackedScene" uid="uid://ciyufwsr22rj0" path="res://scenes/pose/slide.tscn" id="7_p16p7"]
 [ext_resource type="PackedScene" uid="uid://cevpakpnv2do1" path="res://scenes/pose/jump.tscn" id="8_km7tr"]
-[ext_resource type="Script" uid="uid://cos45614u3t1a" path="res://scenes/pose/MovePose.cs" id="8_p16p7"]
 [ext_resource type="Script" uid="uid://tyvymh7mhad2" path="res://cs_scripts/JumpPose.cs" id="9_2bd4g"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rprud"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_scvef"]
 shader = ExtResource("1_5yelk")
 shader_parameter/line_colour = Color(0, 0, 0, 1)
 shader_parameter/line_thickness = 1.0
@@ -21,7 +20,7 @@ shader_parameter/draw = false
 
 [node name="PoseComponent" type="CanvasGroup" node_paths=PackedStringArray("trigger_map", "poses", "index_list", "current_pose", "init_pose")]
 clip_children = 2
-material = SubResource("ShaderMaterial_rprud")
+material = SubResource("ShaderMaterial_scvef")
 script = ExtResource("2_km7tr")
 trigger_map = NodePath("TriggerMap")
 poses = {
@@ -50,12 +49,12 @@ grab_points = {
 "GrabPoint": NodePath("GrabPoint")
 }
 
-[node name="Move" parent="." node_paths=PackedStringArray("auto_sprite_components") instance=ExtResource("5_scvef")]
+[node name="Move" parent="." node_paths=PackedStringArray("auto_sprite_components", "unit_sound_effect") instance=ExtResource("5_scvef")]
 visible = false
-script = ExtResource("8_p16p7")
 auto_sprite_components = {
 "AutoSpriteComponent": NodePath("AutoSpriteComponent")
 }
+unit_sound_effect = NodePath("Step")
 
 [node name="Jump" parent="." node_paths=PackedStringArray("auto_sprite_components") instance=ExtResource("8_km7tr")]
 visible = false

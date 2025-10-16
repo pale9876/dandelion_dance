@@ -17,7 +17,6 @@ var/PurposeDirection/hint_string = "purpose_direction"
 blackboard_plan = SubResource("BlackboardPlan_kmmo8")
 script = ExtResource("1_kmmo8")
 states = {
-"Fall": NodePath("Fall"),
 "Idle": NodePath("Idle"),
 "Jump": NodePath("Jump"),
 "Move": NodePath("Move")
@@ -38,4 +37,3 @@ metadata/_custom_type_script = "uid://bv1nfq88fup3i"
 
 [node name="Fall" type="LimboState" parent="."]
 script = ExtResource("5_ljvem")
-metadata/_custom_type_script = "uid://bv1nfq88fup3i"

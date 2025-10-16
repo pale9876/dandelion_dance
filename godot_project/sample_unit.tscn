@@ -1,14 +1,20 @@
-[gd_scene load_steps=15 format=3 uid="uid://dhlgdxnmpa7mu"]
+[gd_scene load_steps=18 format=3 uid="uid://dhlgdxnmpa7mu"]
 
 [ext_resource type="Script" uid="uid://crysbkqye74hu" path="res://cs_classes/Unit.cs" id="1_8e872"]
 [ext_resource type="Script" uid="uid://nty86admf01v" path="res://cs_classes/UnitCollision.cs" id="2_an3if"]
 [ext_resource type="Script" uid="uid://c336ivba2s3gs" path="res://cs_classes/PsychoValuement.cs" id="2_eoxxv"]
+[ext_resource type="Script" uid="uid://clr824rxr4tnl" path="res://cs_classes/refs/UnitInfo.cs" id="2_ns0d8"]
 [ext_resource type="BehaviorTree" uid="uid://cyhr50o43d0mb" path="res://ai/UnitTask.tres" id="4_8d55t"]
 [ext_resource type="Script" uid="uid://d07huwljrfnwi" path="res://cs_classes/UnitBt.cs" id="5_msm5p"]
 [ext_resource type="PackedScene" uid="uid://cgwff6ga0rflw" path="res://default_state_machine.tscn" id="8_43cav"]
 [ext_resource type="Script" uid="uid://2wsc7pehfkxu" path="res://cs_classes/BodyPartComponent.cs" id="8_snrm1"]
+[ext_resource type="Script" uid="uid://lmgq35ey8bl0" path="res://cs_classes/StateLabel.cs" id="10_3ftq2"]
 [ext_resource type="Shader" uid="uid://dvi4jhy1i1x0p" path="res://shaders/group_outline.gdshader" id="10_r7en3"]
 [ext_resource type="PackedScene" uid="uid://hvx6mwkcqf8r" path="res://default_pose_component.tscn" id="12_2iyrq"]
+
+[sub_resource type="Resource" id="Resource_2iyrq"]
+script = ExtResource("2_ns0d8")
+metadata/_custom_type_script = "uid://clr824rxr4tnl"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_43cav"]
 size = Vector2(16, 32)
@@ -21,15 +27,26 @@ size = Vector2(48, 16)
 
 [sub_resource type="BlackboardPlan" id="BlackboardPlan_i42ni"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_43cav"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eoxxv"]
 shader = ExtResource("10_r7en3")
 shader_parameter/line_colour = Color(0, 0, 0, 1)
 shader_parameter/line_thickness = 1.0
 shader_parameter/draw = false
 
-[node name="Unit" type="CharacterBody2D"]
+[node name="Unit" type="CharacterBody2D" node_paths=PackedStringArray("collisions", "pose_component", "body_part_component", "psycho_valuement", "state_machine", "bt_player")]
 script = ExtResource("1_8e872")
+collisions = {
+"Crouch": NodePath("Crouch"),
+"Idle": NodePath("Idle"),
+"Slide": NodePath("Slide")
+}
 debug_colour = Color(0, 0.360784, 0, 0.243137)
+pose_component = NodePath("PoseComponent")
+body_part_component = NodePath("BodyPartComponent")
+psycho_valuement = NodePath("PsychoValuement")
+state_machine = NodePath("StateMachine")
+bt_player = NodePath("UnitBT")
+unit_info = SubResource("Resource_2iyrq")
 metadata/_custom_type_script = "uid://crysbkqye74hu"
 
 [node name="Idle" type="CollisionShape2D" parent="."]
@@ -63,15 +80,33 @@ behavior_tree = ExtResource("4_8d55t")
 blackboard_plan = SubResource("BlackboardPlan_i42ni")
 script = ExtResource("5_msm5p")
 
-[node name="PoseComponent" parent="." node_paths=PackedStringArray("root", "poses", "index_list") instance=ExtResource("12_2iyrq")]
-material = SubResource("ShaderMaterial_43cav")
+[node name="PoseComponent" parent="." node_paths=PackedStringArray("root", "poses") instance=ExtResource("12_2iyrq")]
+material = SubResource("ShaderMaterial_eoxxv")
 root = NodePath("..")
-poses = {}
-index_list = []
+poses = {
+"Crouch": NodePath("Crouch"),
+"Idle": NodePath("Idle"),
+"Jump": NodePath("Jump"),
+"Move": NodePath("Move"),
+"Shift": NodePath("Shift"),
+"Slide": NodePath("Slide")
+}
 
 [node name="StateMachine" parent="." node_paths=PackedStringArray("states") instance=ExtResource("8_43cav")]
-states = {}
+states = {
+"Fall": NodePath("Fall"),
+"Idle": NodePath("Idle"),
+"Jump": NodePath("Jump"),
+"Move": NodePath("Move")
+}
 
 [node name="BodyPartComponent" type="Node2D" parent="."]
 script = ExtResource("8_snrm1")
 metadata/_custom_type_script = "uid://2wsc7pehfkxu"
+
+[node name="StateLabel" type="Label" parent="."]
+offset_left = -34.0
+offset_top = -59.0
+offset_right = 35.0
+offset_bottom = -36.0
+script = ExtResource("10_3ftq2")

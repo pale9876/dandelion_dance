@@ -49,6 +49,7 @@ public partial class AutoSprite : Sprite2D
         VisibilityChanged += on_visible_changed;
 
         AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
+        
         if (parent != null)
         {
             if (!parent.Visible) { Visible = false; }
@@ -77,7 +78,6 @@ public partial class AutoSprite : Sprite2D
         VisibilityChanged -= on_visible_changed;
 
         AutoSpriteComponent parent = GetParentOrNull<AutoSpriteComponent>();
-
 
         if (parent != null)
         {
