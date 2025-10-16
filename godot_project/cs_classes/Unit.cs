@@ -181,9 +181,9 @@ public partial class Unit : Entity
     public void aerial_state_changed(AerialState state)
     {
         var pre_state = _aerial_state;
+        if (pre_state == state) return;
         _aerial_state = state;
-        if (pre_state == _aerial_state) return;
-        GD.Print($"{this.Name} aerial_state_changed: {pre_state} => {state}");
+        // GD.Print($"{this.Name} aerial_state_changed: {pre_state} => {state}");
     }
 
     public virtual void grabbed_event_handler()
@@ -199,20 +199,20 @@ public partial class Unit : Entity
     private void on_mouse_entered()
     {
         get_p_input().mouse_pointing.Add(this);
-        GD.Print($"Add MousePointing => {this}");
+        // GD.Print($"Add MousePointing => {this}");
     }
 
     private void on_mouse_exited()
     {
         get_p_input().mouse_pointing.Remove(this);
-        GD.Print($"Exit MousePointing => {this}");
+        // GD.Print($"Exit MousePointing => {this}");
     }
 
     public void on_child_entered(Node node)
     {
         if (node is UnitCollision)
         {
-            if (collisions.ContainsKey(node.Name)) return;
+            if (collisions.ContainsKey(node.Name)) { return; }
 
             collisions.Add(node.Name, node as UnitCollision);
         }

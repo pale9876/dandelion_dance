@@ -110,3 +110,4 @@ offset_top = -59.0
 offset_right = 35.0
 offset_bottom = -36.0
 script = ExtResource("10_3ftq2")
+debug = false

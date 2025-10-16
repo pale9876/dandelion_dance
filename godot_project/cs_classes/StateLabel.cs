@@ -5,16 +5,18 @@ using System;
 [GlobalClass]
 public partial class StateLabel : Label
 {
-
+    [Export] public bool debug = true;
     [Export] public Unit root = null;
 
     public override void _EnterTree()
     {
         base._EnterTree();
 
-        var parent = GetParentOrNull<Unit>();
+        Unit parent = GetParentOrNull<Unit>();
+
         if (parent != null)
         {
+            root = parent;
             if (!Engine.IsEditorHint())
             {
                 if (parent.state_machine != null)
@@ -30,9 +32,11 @@ public partial class StateLabel : Label
     {
         base._ExitTree();
 
-        var parent = GetParentOrNull<Unit>();
+        Unit parent = GetParentOrNull<Unit>();
+        
         if (parent != null)
         {
+            root = null;
             if (!Engine.IsEditorHint())
             {
                 if (parent.state_machine != null)
@@ -48,9 +52,12 @@ public partial class StateLabel : Label
     {
         var parent = GetParentOrNull<Unit>();
 
-        if (previous != null)
+        if (debug)
         {
-            GD.Print($"{parent.Name} Change State ! {previous.Name} => {current.Name}");
+            if (previous != null)
+            {
+                GD.Print($"{parent.Name} Change State ! {previous.Name} => {current.Name}");
+            }
         }
 
         Text = current.Name;
